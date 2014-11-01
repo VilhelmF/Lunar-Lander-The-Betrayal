@@ -39,26 +39,27 @@ _ground  : [],
 _generateLevel : function()
 {
     var levelArray = getLevel();
+    this.generateGround(0, 800, 550, 500);
+
+/*    var levelDesign = new LevelDesign();
+    levelDesign.setUp(); */
 
     var i = 0;
     var firstX = 0;
-    var firstY = 500;
-    var latterX = 10;
-    var latterY = 500;
+    var firstY = levelArray[i];
+    var latterX = 50;
+    var latterY = levelArray[i+1];
     while(i < levelArray.length-1)
     {
         this.generateGround(firstX, latterX, firstY, latterY);
         i++;
         firstX = latterX;
         firstY = latterY;
-        latterX += 10;
+        latterX += 50;
         latterY = levelArray[i]; 
     }
 
     this.generateGround(firstX, latterX, firstY, latterY);
-
-
-    
 },
 
 
@@ -138,6 +139,7 @@ generateGround : function(x1, x2, y1, y2) {
         latterX  : x2,
         latterY  : y2,
     }));
+
    /* var firstX = 0;
     var firstY = levelArray[0];
     var latterX = 10;
