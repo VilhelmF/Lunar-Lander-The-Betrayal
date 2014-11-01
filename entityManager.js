@@ -40,6 +40,9 @@ _generateLevel : function()
 {
     var levelArray = getLevel();
     this.generateGround(0, 800, 550, 500);
+
+/*    var levelDesign = new LevelDesign();
+    levelDesign.setUp(); */
 },
 
 
@@ -119,6 +122,7 @@ generateGround : function(x1, x2, y1, y2) {
         latterX  : x2,
         latterY  : y2,
     }));
+
    /* var firstX = 0;
     var firstY = levelArray[0];
     var latterX = 10;

@@ -21,6 +21,9 @@ function Ground(descr) {
 
 Ground.prototype = new Entity();
 
+Ground.prototype._gridWidth = 16;
+Ground.prototype._gridHeight = 12;
+
 Ground.prototype.rememberResets = function () {
     // Remember my reset positions
     this.reset_firstX = this.firstX;
@@ -35,9 +38,23 @@ Ground.prototype.firstY = 570;
 Ground.prototype.latterX = 800;
 Ground.prototype.latterY = 500;
 Ground.prototype.type = "Ground";
+Ground.prototype.level = "1";
+Ground.prototype.levelGrid = [];
 
-
-
+Ground.prototype._levelDesign = {
+    "1" : [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1,
+            0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
+}
     
 Ground.prototype.update = function (du) {
 
@@ -73,6 +90,7 @@ Ground.prototype.getSlope = function () {
 
 Ground.prototype.render = function (ctx) {
     //var origScale = this.sprite.scale;
+    ctx.save();
     ctx.strokeStyle = "white";
     ctx.beginPath();
     ctx.moveTo(this.firstX, this.firstY);
