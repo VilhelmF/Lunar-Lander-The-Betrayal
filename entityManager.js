@@ -43,6 +43,23 @@ _generateLevel : function()
 
 /*    var levelDesign = new LevelDesign();
     levelDesign.setUp(); */
+
+    var i = 0;
+    var firstX = 0;
+    var firstY = 500;
+    var latterX = 10;
+    var latterY = 500;
+    while(i < levelArray.length-1)
+    {
+        this.generateGround(firstX, latterX, firstY, latterY);
+        i++;
+        firstX = latterX;
+        firstY = latterY;
+        latterX += 10;
+        latterY = levelArray[i]; 
+    }
+
+    this.generateGround(firstX, latterX, firstY, latterY);
 },
 
 
@@ -188,7 +205,10 @@ update: function(du) {
             if (status === this.KILL_ME_NOW) {
                 // remove the dead guy, and shuffle the others down to
                 // prevent a confusing gap from appearing in the array
-                aCategory.splice(i,1);
+                
+				//Þ:  delete aCategory[i];
+				//Þ: SÉRÐU NÚNA HELVÍTIÐ ÞITT?!
+				aCategory.splice(i,1);
             }
             else {
                 ++i;

@@ -37,6 +37,7 @@ Ground.prototype.firstX = 0;
 Ground.prototype.firstY = 570;
 Ground.prototype.latterX = 800;
 Ground.prototype.latterY = 500;
+<<<<<<< HEAD
 Ground.prototype.type = "Ground";
 Ground.prototype.level = "1";
 Ground.prototype.levelGrid = [];
@@ -56,6 +57,9 @@ Ground.prototype._levelDesign = {
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
 }
     
+=======
+
+>>>>>>> edabf1facd9c548d6d680d5451bdba836fb6dcca
 Ground.prototype.update = function (du) {
 
     //Any Update?

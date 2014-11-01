@@ -92,26 +92,55 @@ collidesWithGround : function(posX, posY, radius)
     {
         var groundBit = this._ground[ID];
         var bottom = posY + radius;
-        if(bottom > groundBit.firstY || bottom > groundBit.latterY)
+        
+        var firstX = groundBit.firstX; 
+        var latterX = groundBit.latterX; 
+        var firstY = groundBit.firstX; 
+        var latterY = groundBit.firstX; 
+
+
+        /*
+
+
+        //Testing, will refactor
+        var bottomLeftX = posX - radius;
+        var bottomLeftY = posY + radius;
+        var bottomRightX = posX + radius;
+        var bottomRightY = posY + radius;
+        
+        if(bottomLeftY > groundBit.firstY || bottomLeftY > groundBit.latterY)
         {
-            var bottomLeftX = posX - radius;
-            var bottomLeftY = posY + radius;
-            var bottomRightX = posX + radius;
-            var bottomRightY = posY + radius;
-
-            var slope = groundBit.getSlope();
-
-
-            var leftY = groundBit.firstY + (bottomLeftX * slope);
-            var rightY = groundBit.firstY + (bottomRightX * slope);
-
-
-
-            if(bottomLeftY > leftY || bottomRightY > rightY)
+            if(bottomLeftX < groundBit.latterX && groundBit.firstX < bottomLeftX)
             {
-                return true;
-            }    
+                var slope = groundBit.getSlope();
+
+                var leftY = groundBit.firstY + ((bottomLeftX - groundBit.firstX) * slope);
+                if(bottomLeftY > leftY)
+                {
+                    return true;
+                } 
+            }   
+              
         }
+        else if(bottomRightY > groundBit.firstY || bottomRightX > groundBit.latterY)
+        {
+            if(bottomRightX < groundBit.latterX && groundBit.firstX < bottomRightX)
+            {
+                var slope = groundBit.getSlope();
+                var rightY = groundBit.firstY + ((bottomRightX - groundBit.firstX) * slope);
+                if(bottomRightY > rightY)
+                {   
+                    console.log(slope);
+                    console.log(groundBit.firstY);
+                    console.log(bottomRightX);
+                    console.log(groundBit.firstX);
+                    console.log(rightY);
+
+                    return true;
+                }
+            }
+            
+        }*/
     }
 },
 
