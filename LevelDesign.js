@@ -60,13 +60,13 @@ LevelDesign.prototype.nextLevel = function() {
 }
 
 LevelDesign.prototype.setUp = function() {
-	var gridIndex = 0;
 	var index = 0;
 
 	for(var i = 0; i < this.rows; i++) {
 		for(var j = 0; j < this.columns; j++) {
 			if(0 != this.levels[this.level][index]) {
-				this.grid[gridIndex++] = j * (g_canvas.height / this.columns);
+				this.grid[j] = i * (g_canvas.height / this.rows);
+				console.log(this.grid[j]);
 			}
 			index++;
 		}
