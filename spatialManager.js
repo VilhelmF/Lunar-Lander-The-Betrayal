@@ -91,12 +91,23 @@ collidesWithGround : function(posX, posY, radius)
     for(var ID in this._ground)
     {
         var groundBit = this._ground[ID];
+        
+        var left = posX - radius;
+        var right = posX + radius;
         var bottom = posY + radius;
         
         var firstX = groundBit.firstX; 
         var latterX = groundBit.latterX; 
         var firstY = groundBit.firstX; 
         var latterY = groundBit.firstX; 
+
+        if(bottom > firstY || latterY < bottom)
+        {
+            if(posX > firstX && posX < latterX)
+            {
+                return true;
+            }
+        }
 
 
         /*
