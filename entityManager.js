@@ -29,10 +29,18 @@ var entityManager = {
 
 _bullets : [],
 _ships   : [],
+_ground  : [],
 
 
 
 // "PRIVATE" METHODS
+
+
+_generateLevel : function()
+{
+    var levelArray = getLevel();
+    this.generateGround(0, 800, 550, 500);
+},
 
 
 _findNearestShip : function(posX, posY) {
@@ -78,11 +86,12 @@ KILL_ME_NOW : -1,
 // i.e. thing which need `this` to be defined.
 //
 deferredSetup : function () {
-    this._categories = [this._bullets, this._ships];
+    this._categories = [this._bullets, this._ships, this._ground];
 },
 
 init: function() {
     //this._generateShip();
+    this._generateLevel();
 },
 
 fireBullet: function(cx, cy, velX, velY, rotation) {
@@ -98,7 +107,45 @@ fireBullet: function(cx, cy, velX, velY, rotation) {
 
 
 generateShip : function(descr) {
+
     this._ships.push(new Ship(descr));
+},
+
+generateGround : function(x1, x2, y1, y2) {
+   
+     this._ground.push(new Ground({
+        firstX   : x1,
+        firstY   : y1,
+        latterX  : x2,
+        latterY  : y2,
+    }));
+   /* var firstX = 0;
+    var firstY = levelArray[0];
+    var latterX = 10;
+    var latterY = levelArray[1];
+
+     firstX = 0;
+     firstY = 500;
+     latterX = 10;
+     latterY = 500;
+    for(var i = 0; i < levelArray.length; i++)
+    {
+        this._ground.push(new Ground({
+        firstX   : firstX,
+        firstY   : firstY,
+        latterX  : latterX,
+        latterX  : latterX,
+    }));
+
+        
+
+    firstX = latterX;
+    latterX = firstX + 10;
+  /*  firstY = latterY;
+    //latterY = levelArray[i + 1];
+
+    }*/
+    
 },
 
 killNearestShip : function(xPos, yPos) {

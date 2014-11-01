@@ -134,6 +134,24 @@ Ship.prototype.update = function (du) {
     
     // TODO: YOUR STUFF HERE! --- Unregister and check for death
 
+     spatialManager.unregister(this);
+
+    var hitEntity = this.findHitEntity();
+    if (hitEntity) {
+        this.warp();
+    }
+
+    if(spatialManager.collidesWithGround(this.cx, this.cy, this.getRadius()))
+    {
+        this.warp();
+    }
+
+    if(this._isDeadNow)
+    {
+        return entityManager.KILL_ME_NOW;  
+    } 
+
+
     // Perform movement substeps
     var steps = this.numSubSteps;
     var dStep = du / steps;
@@ -143,6 +161,17 @@ Ship.prototype.update = function (du) {
 
     // Handle firing
     this.maybeFireBullet();
+
+    var hitEntity = this.findHitEntity();
+    if (hitEntity) 
+    {
+        this.warp();
+    }
+    else
+    {
+        spatialManager.register(this);
+    }
+    
 
     // TODO: YOUR STUFF HERE! --- Warp if isColliding, otherwise Register
 
