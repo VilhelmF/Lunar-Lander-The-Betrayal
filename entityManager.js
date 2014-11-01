@@ -203,7 +203,10 @@ update: function(du) {
             if (status === this.KILL_ME_NOW) {
                 // remove the dead guy, and shuffle the others down to
                 // prevent a confusing gap from appearing in the array
-                aCategory.splice(i,1);
+                
+				//Þ:  delete aCategory[i];
+				//Þ: SÉRÐU NÚNA HELVÍTIÐ ÞITT?!
+				aCategory.splice(i,1);
             }
             else {
                 ++i;
