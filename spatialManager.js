@@ -105,9 +105,9 @@ collidesWithGround : function(posX, posY, radius)
         var slope = groundBit.getSlope();
 
        
-        if((firstX < posX && latterX > posX) ||
-           (firstX < posX + groundLength && latterX > posX + groundLength) ||
-           (firstX < posX - groundLength && latterX > posX - groundLength ))
+        if((firstX <= posX && latterX > posX) ||
+           (firstX <= posX + groundLength && latterX > posX + groundLength) ||
+           (firstX <= posX - groundLength && latterX > posX - groundLength ))
         {       
                 for(var i = 0; i < groundLength; i++)
                 {
@@ -121,9 +121,10 @@ collidesWithGround : function(posX, posY, radius)
                     var d = x + y;
                     if(d < util.square(radius))
                     {
-                        //return slope;
+                        var aGroundAndSlope = [slope, latterY];
+                        return aGroundAndSlope;
 
-                        return true;
+                        //return true;
                     }
                 }
         }       

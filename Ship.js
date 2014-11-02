@@ -141,14 +141,13 @@ Ship.prototype.update = function (du) {
         this.warp();
     }
 
-    if(spatialManager.collidesWithGround(this.cx, this.cy, this.getRadius()))
-    {
-        this.warp();
-    }   
-    /*if(typeof groundSlope !== 'undefined')
+    var aGroundAndSlope = spatialManager.collidesWithGround(this.cx, this.cy, this.getRadius())
+    
+
+    if(typeof aGroundAndSlope !== 'undefined')
     {
 
-        if(groundSlope !== 0)
+        if(aGroundAndSlope[0] !== 0)
         {
             this.warp();
         }
@@ -159,13 +158,14 @@ Ship.prototype.update = function (du) {
                 this.warp();
             }
             else
-            {
+            {   
+                this.cy = aGroundAndSlope[1] - this.getRadius();
                 this.velY = 0;
                 this.velX = 0;
             } 
         }
     }
-*/
+
     if(this._isDeadNow)
     {
         return entityManager.KILL_ME_NOW;  
