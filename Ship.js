@@ -216,10 +216,11 @@ Ship.prototype.computeSubStep = function (du) {
     }
 };
 
-var NOMINAL_GRAVITY = 0.12;
+var NOMINAL_GRAVITY = 0.02;
 
 Ship.prototype.computeGravity = function () {
-    return g_useGravity ? NOMINAL_GRAVITY : 0;
+//    return g_useGravity ? NOMINAL_GRAVITY : 0;
+    return NOMINAL_GRAVITY;
 };
 
 var NOMINAL_THRUST = +0.2;

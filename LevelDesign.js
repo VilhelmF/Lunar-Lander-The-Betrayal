@@ -14,11 +14,8 @@ getLevel = function()
 	}
 */
 	var levelDesign = new LevelDesign();
-	levelDesign.setUp();
 
 	g_level1 = levelDesign.grid;
-
-	console.log(g_level1);
 
 	return g_level1;
 
@@ -66,7 +63,6 @@ LevelDesign.prototype.setUp = function() {
 		for(var j = 0; j < this.columns; j++) {
 			if(0 != this.levels[this.level][index]) {
 				this.grid[j] = i * (g_canvas.height / this.rows);
-				console.log(this.grid[j]);
 			}
 			index++;
 		}
