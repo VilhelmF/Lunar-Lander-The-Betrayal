@@ -144,8 +144,28 @@ Ship.prototype.update = function (du) {
     if(spatialManager.collidesWithGround(this.cx, this.cy, this.getRadius()))
     {
         this.warp();
-    }
+    }   
+    /*if(typeof groundSlope !== 'undefined')
+    {
 
+        if(groundSlope !== 0)
+        {
+            this.warp();
+        }
+        else
+        {
+           if(this.velY > 2)
+            {
+                this.warp();
+            }
+            else
+            {
+                this.velY = 0;
+                this.velX = 0;
+            } 
+        }
+    }
+*/
     if(this._isDeadNow)
     {
         return entityManager.KILL_ME_NOW;  

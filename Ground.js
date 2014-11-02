@@ -69,8 +69,18 @@ Ground.prototype.getSlope = function () {
 
 Ground.prototype.render = function (ctx) {
     //var origScale = this.sprite.scale;
+    
     ctx.save();
-    ctx.strokeStyle = "white";
+    var haha = Math.floor((Math.random() * 2) + 1);
+    if(haha === 1)
+    {
+        ctx.strokeStyle = "red";
+    }
+    else
+    {
+        ctx.strokeStyle = "green";
+    }
+    
     ctx.beginPath();
     ctx.moveTo(this.firstX, this.firstY);
     ctx.lineTo(this.latterX, this.latterY);

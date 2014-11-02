@@ -98,16 +98,39 @@ collidesWithGround : function(posX, posY, radius)
         
         var firstX = groundBit.firstX; 
         var latterX = groundBit.latterX; 
-        var firstY = groundBit.firstX; 
-        var latterY = groundBit.firstX; 
+        var firstY = groundBit.firstY; 
+        var latterY = groundBit.firstY; 
 
-        if(bottom > firstY || latterY < bottom)
-        {
-            if(posX > firstX && posX < latterX)
-            {
-                return true;
-            }
-        }
+        var groundLength = latterX - firstX;
+        var slope = groundBit.getSlope();
+
+       
+        if((firstX < posX && latterX > posX) ||
+           (firstX < posX + groundLength && latterX > posX + groundLength) ||
+           (firstX < posX - groundLength && latterX > posX - groundLength ))
+        {       
+                for(var i = 0; i < groundLength; i++)
+                {
+                    var lineX = firstX + i;
+                    var lineY = firstY + i * slope;
+
+                    var x = util.square(lineX - posX);
+                    var y = util.square(lineY - posY);
+
+
+                    var d = x + y;
+                    if(d < util.square(radius))
+                    {
+                        //return slope;
+
+                        return true;
+                    }
+                }
+        }       
+            
+        
+
+       
 
 
         /*
