@@ -141,20 +141,22 @@ Ship.prototype.update = function (du) {
         this.warp();
     }
 
+
     var aGroundAndSlope = spatialManager.collidesWithGround(this.cx, this.cy, this.getRadius())
     
 
     if(typeof aGroundAndSlope !== 'undefined')
     {
-
         if(aGroundAndSlope[0] !== 0)
         {
+            particleManager.explosion(this.cx, this.cy);
             this.warp();
         }
         else
         {
            if(this.velY > 2)
             {
+                particleManager.explosion(this.cx, this.cy);
                 this.warp();
             }
             else
