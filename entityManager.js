@@ -207,6 +207,7 @@ update: function(du) {
                 
 				//Þ:  delete aCategory[i];
 				//Þ: SÉRÐU NÚNA HELVÍTIÐ ÞITT?!
+                particleManager.explosion(this.getPos().xPos, this.getPos().yPos);
 				aCategory.splice(i,1);
             }
             else {

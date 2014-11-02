@@ -80,6 +80,7 @@ function updateSimulation(du) {
     processDiagnostics();
     
     entityManager.update(du);
+    particleManager.update(du);
 
     // Prevent perpetual firing!
     eatKey(Ship.prototype.KEY_FIRE);
@@ -159,6 +160,7 @@ function processDiagnostics() {
 function renderSimulation(ctx) {
 
     entityManager.render(ctx);
+    particleManager.render(ctx);
 
     if (g_renderSpatialDebug) spatialManager.render(ctx);
 }
