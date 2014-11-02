@@ -143,6 +143,7 @@ Ship.prototype.update = function (du) {
 
     if(spatialManager.collidesWithGround(this.cx, this.cy, this.getRadius()))
     {
+        particleManager.explosion(this.cx, this.cy); ///======================================remove/fix
         this.warp();
     }   
     /*if(typeof groundSlope !== 'undefined')

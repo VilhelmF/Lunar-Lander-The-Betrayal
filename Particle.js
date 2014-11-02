@@ -1,4 +1,4 @@
-Particle.prototype.setup = function (descr) {
+function Particle(descr) {
 
     // Apply all setup properies from the (optional) descriptor
     for (var property in descr) {
@@ -14,8 +14,12 @@ Particle.prototype.rotation = 0;
 Particle.prototype.lifeSpan = 2000 / NOMINAL_UPDATE_INTERVAL;
 
 Particle.prototype.init = function(cx, cy) {
+	console.log(cx + "    " + cy);
+	console.log(util.getRandomInt(cx - 10, cy + 10));
 	this.cx = util.getRandomInt(cx - 10, cx + 10);
 	this.cy = util.getRandomInt(cy - 10, cy + 10);
+
+	console.log(this.cx);
 
 	this.xVel = util.getRandomInt(0, 10)
 	this.xVel *= util.getRandomInt(0,1) === 0 ? 1 : -1;
@@ -27,17 +31,18 @@ Particle.prototype.init = function(cx, cy) {
 	this.height = this.width;
 
 	this.rotation = util.getRandomInt(0, 40) / 100;
-}
+};
 
 Particle.prototype.update = function(du) {
-	this.cx += this.velX * du;
-    this.cy += this.velY * du;
+	this.cx += this.xVel * du;
+    this.cy += this.yVel * du;
 
     this.rotation += this.roation * du;
     this.rotation = util.wrapRange(this.rotation,
                                    0, consts.FULL_CIRCLE);
-}
+};
 
 Particle.prototype.render = function(ctx) {
+	//console.log(this.cx + "  :  " + this.cy + "  :  " +  this.width + "  :  " +  this.height + "  :  ");
 	util.fillBox(ctx, this.cx, this.cy, this.width, this.height, "red");
-}
+};

@@ -6,8 +6,9 @@ _particles : [],
 explosion : function(cx, cy) {
 	for(var i = 0; i < 20; i++) {
 		var particle = new Particle();
-		particle.init();
-		this._particles[i] = particle; 
+		particle.init(cx, cy);
+		console.log("cool");
+		this._particles.push(particle); 
 	}
 },
 
