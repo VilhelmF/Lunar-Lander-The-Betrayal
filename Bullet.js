@@ -18,9 +18,9 @@ function Bullet(descr) {
     // Common inherited setup logic from Entity
     this.setup(descr);
 
-    // Make a noise when I am created (i.e. fired)
-    this.fireSound.play();
-    
+    // Make a noise when I am created (i.e. fired)   
+	g_audio.bulletFire.Play(); 
+	
 /*
     // Diagnostics to check inheritance stuff
     this._bulletProperty = true;
@@ -32,10 +32,10 @@ function Bullet(descr) {
 Bullet.prototype = new Entity();
 
 // HACKED-IN AUDIO (no preloading)
-Bullet.prototype.fireSound = new Audio(
-    "sounds/bulletFire.ogg");
-Bullet.prototype.zappedSound = new Audio(
-    "sounds/bulletZapped.ogg");
+// Bullet.prototype.fireSound = new Audio(
+    // "sounds/bulletFire.ogg");
+// Bullet.prototype.zappedSound = new Audio(
+    // "sounds/bulletZapped.ogg");
     
 // Initial, inheritable, default values
 Bullet.prototype.rotation = 0;
@@ -89,7 +89,7 @@ Bullet.prototype.takeBulletHit = function () {
     this.kill();
     
     // Make a noise when I am zapped by another bullet
-    this.zappedSound.play();
+    g_audio.zappedSound.Play();
 };
 
 Bullet.prototype.render = function (ctx) {

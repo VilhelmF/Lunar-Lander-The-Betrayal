@@ -54,14 +54,18 @@ Ship.prototype.launchVel = 2;
 Ship.prototype.numSubSteps = 1;
 
 // HACKED-IN AUDIO (no preloading)
-Ship.prototype.warpSound = new Audio(
-    "sounds/shipWarp.ogg");
+//Ship.prototype.warpSound = new Audio(
+//    "sounds/shipWarp.ogg");
 
 Ship.prototype.warp = function () {
 
     this._isWarping = true;
     this._scaleDirn = -1;
-    this.warpSound.play();
+	
+	// shipWarping death sound played
+	g_audio.shipWarp.Play();
+	
+	
     
     // Unregister me from my old posistion
     // ...so that I can't be collided with while warping
@@ -138,7 +142,7 @@ Ship.prototype.update = function (du) {
 
     var hitEntity = this.findHitEntity();
     if (hitEntity) {
-        this.warp();
+		this.warp();
     }
 
 
@@ -150,14 +154,14 @@ Ship.prototype.update = function (du) {
         if(aGroundAndSlope[0] !== 0)
         {
             particleManager.explosion(this.cx, this.cy);
-            this.warp();
+			this.warp();
         }
         else
         {
            if(this.velY > 2)
             {
                 particleManager.explosion(this.cx, this.cy);
-                this.warp();
+				this.warp();
             }
             else
             {   
