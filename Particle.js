@@ -14,12 +14,12 @@ Particle.prototype.rotation = 0;
 Particle.prototype.lifeSpan = 2000 / NOMINAL_UPDATE_INTERVAL;
 
 Particle.prototype.init = function(cx, cy) {
-	console.log(cx + "    " + cy);
-	console.log(util.getRandomInt(cx - 10, cy + 10));
+	// console.log(cx + "    " + cy);
+	// console.log(util.getRandomInt(cx - 10, cy + 10));
 	this.cx = util.getRandomInt(cx - 10, cx + 10);
 	this.cy = util.getRandomInt(cy - 10, cy + 10);
 
-	console.log(this.cx);
+	// console.log(this.cx);
 
 	this.xVel = util.getRandomInt(0, 10)
 	this.xVel *= util.getRandomInt(0,1) === 0 ? 1 : -1;
