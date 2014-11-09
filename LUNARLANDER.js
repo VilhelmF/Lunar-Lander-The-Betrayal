@@ -179,9 +179,11 @@ function requestPreloads() {
         ship   : "sprites/randomfreespaceship_80x80.png",
         ship2  : "https://notendur.hi.is/~pk/308G/images/ship_2.png",
         rock   : "https://notendur.hi.is/~pk/308G/images/rock.png"
+
     };
 
 	preLoadAudio();
+	preLoadMountain();
     imagesPreload(requiredImages, g_images, preloadDone);
 }
 

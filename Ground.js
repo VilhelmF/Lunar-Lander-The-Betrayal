@@ -71,8 +71,8 @@ Ground.prototype.render = function (ctx) {
     //var origScale = this.sprite.scale;
     
     ctx.save();
-    ctx.strokeStyle = "white";
-    ctx.fillSTyle = "white";
+    ctx.strokeStyle = "black";
+    ctx.fillStyle = "black";
     
     ctx.beginPath();
     ctx.moveTo(this.firstX, g_canvas.height);
