@@ -71,19 +71,16 @@ Ground.prototype.render = function (ctx) {
     //var origScale = this.sprite.scale;
     
     ctx.save();
-    var haha = Math.floor((Math.random() * 2) + 1);
-    if(haha === 1)
-    {
-        ctx.strokeStyle = "red";
-    }
-    else
-    {
-        ctx.strokeStyle = "green";
-    }
+    ctx.strokeStyle = "white";
+    ctx.fillSTyle = "white";
     
     ctx.beginPath();
-    ctx.moveTo(this.firstX, this.firstY);
+    ctx.moveTo(this.firstX, g_canvas.height);
+    ctx.lineTo(this.firstX, this.firstY);
     ctx.lineTo(this.latterX, this.latterY);
+    ctx.lineTo(this.latterX, g_canvas.height);
+    ctx.lineTo(this.firstX, g_canvas.height);
     ctx.stroke();
+    ctx.fill();
 
 };

@@ -146,9 +146,9 @@ Ship.prototype.update = function (du) {
     }
 
 
+    //Landing detection
     var aGroundAndSlope = spatialManager.collidesWithGround(this.cx, this.cy, this.getRadius())
-    
-
+    var shipsRotation = Math.abs(this.rotation) % (2*Math.PI);
     if(typeof aGroundAndSlope !== 'undefined')
     {
         if(aGroundAndSlope[0] !== 0)
@@ -158,8 +158,9 @@ Ship.prototype.update = function (du) {
         }
         else
         {
-           if(this.velY > 2)
+           if(this.velY > 2 || !(shipsRotation > 6.1 || shipsRotation < 0.18))
             {
+
                 particleManager.explosion(this.cx, this.cy);
 				this.warp();
             }
@@ -171,6 +172,7 @@ Ship.prototype.update = function (du) {
             } 
         }
     }
+
 
     if(this._isDeadNow)
     {
