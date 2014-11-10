@@ -27,17 +27,14 @@ var entityManager = {
 
 // "PRIVATE" DATA
 
-<<<<<<< HEAD
+
 _bullets : [],
 _ships   : [],
 _ground  : [],
 _citizens : [],
-=======
 _background	: [],
-_bullets 	: [],
-_ships   	: [],
-_ground  	: [],
->>>>>>> 87da41b2c70bd9e1563922af607e541909da5c23
+
+
 
 
 
@@ -119,7 +116,8 @@ deferredSetup : function () {
     this._categories = [this._bullets, 
                         this._ships, 
                         this._ground, 
-                        this._citizens];
+                        this._citizens,
+                        _background];
 
 },
 
