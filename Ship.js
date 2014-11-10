@@ -53,6 +53,13 @@ Ship.prototype.velY = 0;
 Ship.prototype.launchVel = 2;
 Ship.prototype.numSubSteps = 1;
 
+Ship.prototype.rightRotation = 0.01;
+Ship.prototype.leftRotation = 0.01;
+
+
+//Mission variables?
+Ship.prototype.landed = false;
+
 // HACKED-IN AUDIO (no preloading)
 //Ship.prototype.warpSound = new Audio(
 //    "sounds/shipWarp.ogg");
@@ -136,7 +143,6 @@ Ship.prototype.update = function (du) {
         return;
     }
     
-    // TODO: YOUR STUFF HERE! --- Unregister and check for death
 
      spatialManager.unregister(this);
 
@@ -145,8 +151,9 @@ Ship.prototype.update = function (du) {
 		this.warp();
     }
 
-
-    //Landing detection
+    //===============================================================
+    //================The Ships Landing Detection====================
+    //===============================================================
     var aGroundAndSlope = spatialManager.collidesWithGround(this.cx, this.cy, this.getRadius())
     var shipsRotation = Math.abs(this.rotation) % (2*Math.PI);
     if(typeof aGroundAndSlope !== 'undefined')
@@ -158,7 +165,7 @@ Ship.prototype.update = function (du) {
         }
         else
         {
-           if(this.velY > 2 || !(shipsRotation > 6.1 || shipsRotation < 0.18))
+           if(this.velY > 2 || ( shipsRotation> 0.5*Math.PI))
             {
 
                 particleManager.explosion(this.cx, this.cy);
@@ -169,10 +176,22 @@ Ship.prototype.update = function (du) {
                 this.cy = aGroundAndSlope[1] - this.getRadius();
                 this.velY = 0;
                 this.velX = 0;
+               // this.rotation = 0;
+                this.landed = true;
+                
+                this.adjustRotation(du);
             } 
         }
     }
-
+    else
+    {
+        this.landed = false;
+        this.leftRotation = 0;
+        this.rightRotation = 0;
+    }
+    //===============================================================
+    //===============================================================
+    //===============================================================
 
     if(this._isDeadNow)
     {
@@ -335,10 +354,10 @@ Ship.prototype.halt = function () {
 var NOMINAL_ROTATE_RATE = 0.1;
 
 Ship.prototype.updateRotation = function (du) {
-    if (keys[this.KEY_LEFT]) {
+    if (keys[this.KEY_LEFT] && !this.landed) {
         this.rotation -= NOMINAL_ROTATE_RATE * du;
     }
-    if (keys[this.KEY_RIGHT]) {
+    if (keys[this.KEY_RIGHT] && !this.landed) {
         this.rotation += NOMINAL_ROTATE_RATE * du;
     }
 };
@@ -352,3 +371,39 @@ Ship.prototype.render = function (ctx) {
     );
     this.sprite.scale = origScale;
 };
+
+Ship.prototype.adjustRotation = function(du) {
+    var shipsRotation = this.rotation % (2*Math.PI);
+    if((shipsRotation < -0.05 && shipsRotation > -0.25*Math.PI)
+        || (shipsRotation > 1.75*Math.PI && shipsRotation < 1.95*Math.PI))
+    {
+        this.rotation += this.rightRotation * du;
+        this.cx += this.rightRotation * 25 * du;
+        this.rightRotation += 0.001;
+
+        
+    }
+    else if((shipsRotation < -1.75*Math.PI && shipsRotation > -1.95*Math.PI) ||
+            (shipsRotation > 0.05 && shipsRotation < 0.25*Math.PI))
+    {
+        this.rotation -= this.leftRotation * du;
+        this.cx -= this.leftRotation * 25 * du;
+        this.leftRotation += 0.001;    
+    }
+    else if((shipsRotation > -0.5*Math.PI && shipsRotation < -0.25*Math.PI)
+        || (shipsRotation < 1.75*Math.PI && shipsRotation > Math.PI))
+    {
+        this.rotation -= this.leftRotation * du;
+        this.cx -= 25 * this.leftRotation * du;
+        this.leftRotation += 0.001; 
+    }
+    else if((shipsRotation > -1.75*Math.PI && shipsRotation < -Math.PI) ||
+            (shipsRotation < Math.PI && shipsRotation > 0.25*Math.PI))
+    {
+        this.rotation += this.rightRotation * du;
+        this.cx += this.rightRotation * 25 * du;
+        this.rightRotation += 0.001;  
+    }
+  
+
+}

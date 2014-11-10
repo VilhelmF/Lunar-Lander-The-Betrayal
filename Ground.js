@@ -72,7 +72,7 @@ Ground.prototype.render = function (ctx) {
     
     ctx.save();
     ctx.strokeStyle = "white";
-    ctx.fillSTyle = "white";
+    ctx.fillStyle = "white";
     
     ctx.beginPath();
     ctx.moveTo(this.firstX, g_canvas.height);

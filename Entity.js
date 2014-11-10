@@ -41,7 +41,7 @@ Entity.prototype.setup = function (descr) {
     
     // Get my (unique) spatial ID
     if(Object.getPrototypeOf(this) === Ground.prototype)
-    {
+    {   
        this._spatialID = spatialManager.getNewGroundID();
     }
     else
