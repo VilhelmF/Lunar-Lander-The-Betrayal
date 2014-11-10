@@ -1,3 +1,6 @@
+//===============
+// MOUNTAIN STUFF
+//===============
 
 function Mountain ( mountain ) {
 	
@@ -28,9 +31,9 @@ Mountain.prototype.drawAt = function(ctx) {
 
 
 
-// =================
-// PRELOAD MOUNTAINS
-// =================
+// =====================================
+// PRELOAD MOUNTAINS AND BACKGROUNDCOLOR
+// =====================================
 
 var requiredMountains = {
 
@@ -57,18 +60,29 @@ var requiredMountains = {
 	mount_4_4 : "sprites/Mountains/Mountain-20.png"
 }; 
 
+var requiredBackgrounds = {
+	
+	level1 : "sprites/background_color/mistyBrown-06.png"
+};
 
 
-
-var g_mountains = [];
+var g_mountains   = [];
+var g_backgrounds = [];
 
 function preLoadMountain() {
 	imagesPreload(requiredMountains, g_mountains, mountainPreloadDone);
 }
 
+function preLoadBackground() {
+	imagesPreload(requiredBackgrounds, g_backgrounds, backgroundPreloadDone);
+}
+
+
+
 
 //  g_mountain keeps track of all mountains
-var g_mountain = [];
+var g_mountain   = [];
+var g_background = [];
 
 function mountainPreloadDone() {
 	
@@ -80,13 +94,20 @@ function mountainPreloadDone() {
 		}
 		i++;
 	}
+	
+}
+
+function backgroundPreloadDone() {
+	
+	for(var background in g_backgrounds) {
+		g_background[background]=new Sprite(g_backgrounds[background]);	}
 }
 
 
 // Pick random background mountains from each stage.
 //
 function findRandomMountains() {
-	console.log("haaaaaallllooooo");
+
 	var random = [
 		
 		Math.floor(util.randRange(1,4)), //1
