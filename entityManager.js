@@ -27,10 +27,17 @@ var entityManager = {
 
 // "PRIVATE" DATA
 
+<<<<<<< HEAD
 _bullets : [],
 _ships   : [],
 _ground  : [],
 _citizens : [],
+=======
+_background	: [],
+_bullets 	: [],
+_ships   	: [],
+_ground  	: [],
+>>>>>>> 87da41b2c70bd9e1563922af607e541909da5c23
 
 
 
@@ -108,12 +115,18 @@ KILL_ME_NOW : -1,
 // i.e. thing which need `this` to be defined.
 //
 deferredSetup : function () {
-    this._categories = [this._bullets, this._ships, this._ground, this._citizens];
+
+    this._categories = [this._bullets, 
+                        this._ships, 
+                        this._ground, 
+                        this._citizens];
+
 },
 
 init: function() {
     //this._generateShip();
     this._generateLevel();
+	this._generateBackground();
 },
 
 fireBullet: function(cx, cy, velX, velY, rotation) {
@@ -171,6 +184,12 @@ generateGround : function(x1, x2, y1, y2) {
 
     }*/
     
+},
+
+_generateBackground : function() {
+
+	this._background.push(new Background());
+
 },
 
 killNearestShip : function(xPos, yPos) {
