@@ -113,11 +113,12 @@ KILL_ME_NOW : -1,
 //
 deferredSetup : function () {
 
-    this._categories = [this._bullets, 
+    this._categories = [this._background,
+                        this._bullets, 
                         this._ships, 
                         this._ground, 
                         this._citizens,
-                        _background];
+                        ];
 
 },
 
