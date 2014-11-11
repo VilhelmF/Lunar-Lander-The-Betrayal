@@ -8,7 +8,10 @@ function Package(descr) {
 	this.width  = this.packagePoint.width;
 	this.height = this.packagePoint.height;
 	this.radius = util.findRadius(this.width, this.height);
-	console.log("radfsdadsfdsffdsdfsa: " + this.radius);
+	
+	
+	//this.cx = this.findSafePlace();
+	
 	//this.radius = 10;
 	
 };
@@ -71,14 +74,20 @@ Package.prototype.render = function(ctx) {
 };
 
 
+Package.prototype.findSafePlace = function(){
+	return this.createRandomX();
+};
 
 Package.prototype.createRandomX = function(){
 	var x = 0;
+	var tempX = 0;
 	
 	for(var i=0; i<100; i++){
 		x = util.getRandomInt(0,800);
-		this.findPlaceOnLand(x);
+		tempX = this.findPlaceOnLand(x);
 	}
+	
+	return tempX;
 };
 	
 	
@@ -91,8 +100,8 @@ Package.prototype.findPlaceOnLand = function(randomX){
 	var tempr    = 0;
 	var tempDist = 0;
 	
-	console.log("ground[1].getSlope: " + ground[1].getSlope)
-	console.log("spatialManager._ground " + spatialManager._ground)
+	console.log("ground[1].getSlope: " + ground);
+	console.log("spatialManager._ground " + spatialManager._ground);
 	
 	for(var r in ground) {
 		
