@@ -143,7 +143,6 @@ fireBullet: function(cx, cy, velX, velY, rotation) {
 generateShip : function(descr) {
 
     this._ships.push(new Ship(descr));
-    this._citizens.push(new Citizen(descr));
 
 },
 
@@ -154,6 +153,11 @@ generateGround : function(x1, x2, y1, y2) {
         firstY   : y1,
         latterX  : x2,
         latterY  : y2,
+    }));
+
+     this._ground.push(new Citizen({
+        cx   : x1,
+        cy   : (y1 - 2*Citizen.prototype.halfHeight),
     }));
 
    /* var firstX = 0;

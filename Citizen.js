@@ -43,53 +43,145 @@ Citizen.prototype.rememberResets = function () {
 Citizen.prototype.rotation = 0;
 Citizen.prototype.cx = 200;
 Citizen.prototype.cy = 200;
+Citizen.prototype.velX = 0;
+Citizen.prototype.velY = 0;
+Citizen.prototype.numSubSteps = 1;
+
 Citizen.prototype.halfHeight = 5;
 Citizen.prototype.halfWidth = 5;
+
+
+Citizen.prototype.isPickedUp = false;
+Citizen.prototype.isDead = false;
+
+
+
+
+Citizen.prototype.getRadius = function() {
+	return 2*this.halfWidth;
+}
 
 
 
     
 Citizen.prototype.update = function (du) {
 
-    console.log("Update Citizen");
+     spatialManager.unregister(this);
+
+    	var hitEntity = this.findHitEntity();
+    	if (hitEntity) 
+    	{
+	       
+	        
+    	}
+
+    var steps = this.numSubSteps;
+	var dStep = du / steps;
+	for (var i = 0; i < steps; ++i) 
+	{
+	    this.computeSubStep(dStep);
+   	}
+
+    //Is he stationary on the ground?
+    var aGroundAndSlope = spatialManager.collidesWithGround(this.cx, this.cy, this.getRadius())
+    if(typeof aGroundAndSlope !== 'undefined')
+    {
+    	
+    	if(this.velY > 2)
+    	{
+    		this.isDead = true;
+    	}
+
+    	this.cy = aGroundAndSlope[1] - this.getRadius();
+        this.velY = 0;
+        this.velX = 0;
+    	
+    }
+    
+
+
+
+
+
+     if(hitEntity && this.isPickedUp)
+     {
+    	if (Object.getPrototypeOf(hitEntity) === Ship.prototype) 
+    	{
+	        console.log("búja");
+	       
+	        var pos = hitEntity.getPos();
+   			this.cx = pos.posX;
+   			this.cy =  pos.posY + hitEntity.getRadius() - this.halfHeight;
+   			this.velY = 0;
+    
+    	}
+    }
+
+
+
+    spatialManager.register(this);
+
+};
+
+Citizen.prototype.pickedUp = function () 
+{
+	if(!this.isDead)
+	{
+		this.isPickedUp = !this.isPickedUp;
+	}
+    
 
 };
 
 
 
+
 Citizen.prototype.render = function (ctx) {
-    ctx.save();
-	
-	ctx.fillStyle = "red";
-    ctx.beginPath();
-    var headR = 3;
-	ctx.arc(this.cx, this.cy - this.halfHeight, headR, 0, Math.PI * 2, true);
-	ctx.fill();
+    if(!this.isPickedUp)
+    {
 
-	
-	//Body	
-	ctx.strokeStyle = "red";
-	ctx.beginPath();
-	ctx.moveTo(this.cx, this.cy -this.halfHeight + headR);
-	ctx.lineTo(this.cx, this.cy + 2*this.halfHeight-headR);
-	ctx.stroke();
+    	if(!this.isDead)
+    	{
+	    ctx.save();
+		
+		ctx.fillStyle = "red";
+	    ctx.beginPath();
+	    var headR = 3;
+		ctx.arc(this.cx, this.cy - this.halfHeight, headR, 0, Math.PI * 2, true);
+		ctx.fill();
 
-	//Both arms
-	ctx.strokeStyle = "red";
-	ctx.beginPath();
-	ctx.moveTo(this.cx, this.cy);
-	ctx.lineTo(this.cx - this.halfWidth	, this.cy + headR);
-	ctx.moveTo(this.cx, this.cy);
-	ctx.lineTo(this.cx + this.halfWidth, this.cy + headR);
-	ctx.stroke();
+		
+		//Body	
+		ctx.strokeStyle = "red";
+		ctx.beginPath();
+		ctx.moveTo(this.cx, this.cy -this.halfHeight + headR);
+		ctx.lineTo(this.cx, this.cy + 2*this.halfHeight-headR);
+		ctx.stroke();
 
-	//Both legs
-	ctx.strokeStyle = "red";
-	ctx.beginPath();
-	ctx.moveTo(this.cx, this.cy + this.halfHeight);
-	ctx.lineTo(this.cx - 0.75*this.halfWidth, this.cy + 2*this.halfHeight);
-	ctx.moveTo(this.cx, this.cy + this.halfHeight);
-	ctx.lineTo(this.cx + 0.75*this.halfWidth, this.cy + 2*this.halfHeight);
-	ctx.stroke();
+		//Both arms
+		ctx.strokeStyle = "red";
+		ctx.beginPath();
+		ctx.moveTo(this.cx, this.cy);
+		ctx.lineTo(this.cx - this.halfWidth	, this.cy + headR);
+		ctx.moveTo(this.cx, this.cy);
+		ctx.lineTo(this.cx + this.halfWidth, this.cy + headR);
+		ctx.stroke();
+
+		//Both legs
+		ctx.strokeStyle = "red";
+		ctx.beginPath();
+		ctx.moveTo(this.cx, this.cy + this.halfHeight);
+		ctx.lineTo(this.cx - 0.75*this.halfWidth, this.cy + 2*this.halfHeight);
+		ctx.moveTo(this.cx, this.cy + this.halfHeight);
+		ctx.lineTo(this.cx + 0.75*this.halfWidth, this.cy + 2*this.halfHeight);
+		ctx.stroke();
+		}
+		else
+		{
+			ctx.fillStyle="red";
+			ctx.fillRect(this.cx, this.cy + this.halfHeight,2*this.halfWidth, this.halfHeight);	
+		}
+
+	}	
 };
 

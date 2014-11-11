@@ -41,8 +41,9 @@ Ship.prototype.KEY_THRUST = 'W'.charCodeAt(0);
 Ship.prototype.KEY_RETRO  = 'S'.charCodeAt(0);
 Ship.prototype.KEY_LEFT   = 'A'.charCodeAt(0);
 Ship.prototype.KEY_RIGHT  = 'D'.charCodeAt(0);
+Ship.prototype.KEY_FIRE   = 'E'.charCodeAt(0);
 
-Ship.prototype.KEY_FIRE   = ' '.charCodeAt(0);
+Ship.prototype.USE   = ' '.charCodeAt(0);
 
 // Initial, inheritable, default values
 Ship.prototype.rotation = 0;
@@ -57,6 +58,7 @@ Ship.prototype.rightRotation = 0.01;
 Ship.prototype.leftRotation = 0.01;
 
 
+
 //Mission variables?
 Ship.prototype.landed = false;
 
@@ -64,6 +66,12 @@ Ship.prototype.landed = false;
 //Ship.prototype.warpSound = new Audio(
 //    "sounds/shipWarp.ogg");
 
+
+
+
+//===========================================================================
+//========================= Warping Functions ===============================
+//===========================================================================
 Ship.prototype.warp = function () {
 
     this._isWarping = true;
@@ -134,6 +142,12 @@ Ship.prototype._moveToASafePlace = function () {
         
     }
 };
+
+//===========================================================================
+//===========================================================================
+//===========================================================================
+
+
     
 Ship.prototype.update = function (du) {
 
@@ -146,10 +160,6 @@ Ship.prototype.update = function (du) {
 
      spatialManager.unregister(this);
 
-    var hitEntity = this.findHitEntity();
-    if (hitEntity) {
-		this.warp();
-    }
 
     //===============================================================
     //================The Ships Landing Detection====================
@@ -176,7 +186,6 @@ Ship.prototype.update = function (du) {
                 this.cy = aGroundAndSlope[1] - this.getRadius();
                 this.velY = 0;
                 this.velX = 0;
-               // this.rotation = 0;
                 this.landed = true;
                 
                 this.adjustRotation(du);
@@ -212,36 +221,24 @@ Ship.prototype.update = function (du) {
     var hitEntity = this.findHitEntity();
     if (hitEntity) 
     {
-        this.warp();
+        if(Object.getPrototypeOf(hitEntity) === Citizen.prototype)
+        {
+            spatialManager.register(this);
+            this.maybePickUpCitizen(hitEntity);
+        }
+        else
+        {
+            this.warp();
+        }
+        
     }
     else
     {
         spatialManager.register(this);
     }
-    
-
-    // TODO: YOUR STUFF HERE! --- Warp if isColliding, otherwise Register
-
 };
 
-Ship.prototype.computeSubStep = function (du) {
-    
-    var thrust = this.computeThrustMag();
 
-    // Apply thrust directionally, based on our rotation
-    var accelX = +Math.sin(this.rotation) * thrust;
-    var accelY = -Math.cos(this.rotation) * thrust;
-    
-    accelY += this.computeGravity();
-
-    this.applyAccel(accelX, accelY, du);
-    
-    this.wrapPosition();
-    
-    if (thrust === 0 || g_allowMixedActions) {
-        this.updateRotation(du);
-    }
-};
 
 var NOMINAL_GRAVITY = 0.02;
 
@@ -265,49 +262,6 @@ Ship.prototype.computeThrustMag = function () {
     }
     
     return thrust;
-};
-
-Ship.prototype.applyAccel = function (accelX, accelY, du) {
-    
-    // u = original velocity
-    var oldVelX = this.velX;
-    var oldVelY = this.velY;
-    
-    // v = u + at
-    this.velX += accelX * du;
-    this.velY += accelY * du; 
-
-    // v_ave = (u + v) / 2
-    var aveVelX = (oldVelX + this.velX) / 2;
-    var aveVelY = (oldVelY + this.velY) / 2;
-    
-    // Decide whether to use the average or not (average is best!)
-    var intervalVelX = g_useAveVel ? aveVelX : this.velX;
-    var intervalVelY = g_useAveVel ? aveVelY : this.velY;
-    
-    // s = s + v_ave * t
-    var nextX = this.cx + intervalVelX * du;
-    var nextY = this.cy + intervalVelY * du;
-    
-    // bounce
-    if (g_useGravity) {
-
-	var minY = g_sprites.ship.height / 2;
-	var maxY = g_canvas.height - minY;
-
-	// Ignore the bounce if the ship is already in
-	// the "border zone" (to avoid trapping them there)
-	if (this.cy > maxY || this.cy < minY) {
-	    // do nothing
-	} else if (nextY > maxY || nextY < minY) {
-            this.velY = oldVelY * -0.9;
-            intervalVelY = this.velY;
-        }
-    }
-    
-    // s = s + v_ave * t
-    this.cx += du * intervalVelX;
-    this.cy += du * intervalVelY;
 };
 
 Ship.prototype.maybeFireBullet = function () {
@@ -351,16 +305,34 @@ Ship.prototype.halt = function () {
     this.velY = 0;
 };
 
-var NOMINAL_ROTATE_RATE = 0.1;
+var NOMINAL_ROTATE_RATE_L = 0.01;
+var NOMINAL_ROTATE_RATE_R = 0.01;
 
 Ship.prototype.updateRotation = function (du) {
     if (keys[this.KEY_LEFT] && !this.landed) {
-        this.rotation -= NOMINAL_ROTATE_RATE * du;
+        this.rotation -= NOMINAL_ROTATE_RATE_L * du;
+        NOMINAL_ROTATE_RATE_L += 0.001
+    }
+    else
+    {
+        NOMINAL_ROTATE_RATE_L = 0.01;
     }
     if (keys[this.KEY_RIGHT] && !this.landed) {
-        this.rotation += NOMINAL_ROTATE_RATE * du;
+        this.rotation += NOMINAL_ROTATE_RATE_R * du;
+        NOMINAL_ROTATE_RATE_R += 0.001
+    }
+    else
+    {
+        NOMINAL_ROTATE_RATE_R = 0.01;
     }
 };
+
+Ship.prototype.maybePickUpCitizen = function (Citizen) {
+     if (keys[this.USE])
+     {
+        Citizen.pickedUp();
+     }
+}
 
 Ship.prototype.render = function (ctx) {
     var origScale = this.sprite.scale;
@@ -374,8 +346,8 @@ Ship.prototype.render = function (ctx) {
 
 Ship.prototype.adjustRotation = function(du) {
     var shipsRotation = this.rotation % (2*Math.PI);
-    if((shipsRotation < -0.05 && shipsRotation > -0.25*Math.PI)
-        || (shipsRotation > 1.75*Math.PI && shipsRotation < 1.95*Math.PI))
+    if((shipsRotation < -0.02 && shipsRotation > -0.25*Math.PI)
+        || (shipsRotation > 1.75*Math.PI && shipsRotation < 1.98*Math.PI))
     {
         this.rotation += this.rightRotation * du;
         this.cx += this.rightRotation * 25 * du;
@@ -383,8 +355,8 @@ Ship.prototype.adjustRotation = function(du) {
 
         
     }
-    else if((shipsRotation < -1.75*Math.PI && shipsRotation > -1.95*Math.PI) ||
-            (shipsRotation > 0.05 && shipsRotation < 0.25*Math.PI))
+    else if((shipsRotation < -1.75*Math.PI && shipsRotation > -1.98*Math.PI) ||
+            (shipsRotation > 0.02 && shipsRotation < 0.25*Math.PI))
     {
         this.rotation -= this.leftRotation * du;
         this.cx -= this.leftRotation * 25 * du;
