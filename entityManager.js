@@ -31,10 +31,9 @@ var entityManager = {
 _bullets : [],
 _ships   : [],
 _ground  : [],
+_package    : [],
 _citizens : [],
 _background	: [],
-
-
 
 
 
@@ -113,19 +112,21 @@ KILL_ME_NOW : -1,
 //
 deferredSetup : function () {
 
+
     this._categories = [this._background,
                         this._bullets, 
-                        this._ships, 
+                        this._ships,
+						this._package,						
                         this._ground, 
                         this._citizens,
                         ];
-
 },
 
 init: function() {
     //this._generateShip();
     this._generateLevel();
 	this._generateBackground();
+	this._generatePackage({cx: 200, cy: -30});
 },
 
 fireBullet: function(cx, cy, velX, velY, rotation) {
@@ -143,6 +144,7 @@ fireBullet: function(cx, cy, velX, velY, rotation) {
 generateShip : function(descr) {
 
     this._ships.push(new Ship(descr));
+
 
 },
 
@@ -193,6 +195,11 @@ _generateBackground : function() {
 
 	this._background.push(new Background());
 
+},
+
+_generatePackage: function(descr) {
+
+	this._package.push(new Package(descr));
 },
 
 killNearestShip : function(xPos, yPos) {

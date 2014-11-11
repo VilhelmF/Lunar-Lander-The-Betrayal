@@ -178,8 +178,9 @@ function requestPreloads() {
         //ship   : "https://notendur.hi.is/~pk/308G/images/ship.png",
         ship   : "sprites/landerShip-36.png",
         ship2  : "https://notendur.hi.is/~pk/308G/images/ship_2.png",
-        rock   : "https://notendur.hi.is/~pk/308G/images/rock.png"
-
+        rock   : "https://notendur.hi.is/~pk/308G/images/rock.png",
+		kassi1 : "sprites/package/kassi1-37.png"
+		
     };
 
 	preLoadAudio();
