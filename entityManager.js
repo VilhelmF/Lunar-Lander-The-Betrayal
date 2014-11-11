@@ -30,6 +30,7 @@ var entityManager = {
 _background	: [],
 _bullets 	: [],
 _ships   	: [],
+_package    : [],
 _ground  	: [],
 
 
@@ -109,7 +110,8 @@ deferredSetup : function () {
     this._categories = [
 						this._background,
 						this._bullets, 
-						this._ships, 
+						this._ships,
+						this._package,
 						this._ground
 						];
 },
@@ -118,6 +120,7 @@ init: function() {
     //this._generateShip();
     this._generateLevel();
 	this._generateBackground();
+	this._generatePackage({cx: 0, cy: -30});
 },
 
 fireBullet: function(cx, cy, velX, velY, rotation) {
@@ -179,6 +182,11 @@ _generateBackground : function() {
 
 	this._background.push(new Background());
 
+},
+
+_generatePackage: function(descr) {
+
+	this._package.push(new Package(descr));
 },
 
 killNearestShip : function(xPos, yPos) {

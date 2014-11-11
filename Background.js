@@ -1,5 +1,4 @@
 
-//var b = 
 
 function Background() {
 	
