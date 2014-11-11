@@ -127,8 +127,17 @@ collidesWithGround : function(posX, posY, radius)
                     var d = x + y;
                     if(d < util.square(radius))
                     {
-                        var aGroundAndSlope = [slope, latterY];
-                        return aGroundAndSlope;
+                        var aGroundAndSlope = [slope, latterY, lineX, lineY];
+                        
+                        return  {
+                                    slope   :   slope,
+                                    latterX :   latterX,
+                                    latterY :   latterY,
+                                    lineX   :   lineX,
+                                    lineY   :   lineY,
+
+
+                                };
 
                         //return true;
                     }

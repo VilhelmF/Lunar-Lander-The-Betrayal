@@ -25,7 +25,6 @@ function Citizen(descr) {
     
     // Set normal drawing scale, and warp state off
     this._scale = 1;
-    this._isWarping = false;
 };
 
 Citizen.prototype = new Entity();
@@ -50,7 +49,6 @@ Citizen.prototype.numSubSteps = 1;
 Citizen.prototype.halfHeight = 5;
 Citizen.prototype.halfWidth = 5;
 
-
 Citizen.prototype.isPickedUp = false;
 Citizen.prototype.isDead = false;
 
@@ -61,50 +59,56 @@ Citizen.prototype.getRadius = function() {
 	return 2*this.halfWidth;
 }
 
-
-
     
 Citizen.prototype.update = function (du) {
 
      spatialManager.unregister(this);
 
-    	var hitEntity = this.findHitEntity();
-    	if (hitEntity) 
-    	{
-	       
-	        
-    	}
 
-    var steps = this.numSubSteps;
-	var dStep = du / steps;
-	for (var i = 0; i < steps; ++i) 
-	{
-	    this.computeSubStep(dStep);
-   	}
-
-    //Is he stationary on the ground?
-    var aGroundAndSlope = spatialManager.collidesWithGround(this.cx, this.cy, this.getRadius())
-    if(typeof aGroundAndSlope !== 'undefined')
+    var hitEntity = this.findHitEntity();
+    if (hitEntity) 
     {
-    	
-    	if(this.velY > 2)
-    	{
-    		this.isDead = true;
-    	}
-
-    	this.cy = aGroundAndSlope[1] - this.getRadius();
-        this.velY = 0;
-        this.velX = 0;
-    	
+		// Die from bullets?               
     }
+
+    if(!this.isPickedUp)
+    {
+    	//Gravity will affect him
+	    var steps = this.numSubSteps;
+		var dStep = du / steps;
+		for (var i = 0; i < steps; ++i) 
+		{
+		    this.computeSubStep(dStep);
+	   	}
+
+
+	    //Is he stationary on the ground?
+	    var aGroundAndSlope = spatialManager.collidesWithGround(this.cx, this.cy, this.getRadius())
+	    if(typeof aGroundAndSlope !== 'undefined' && !this.isPickedUp)
+	    {
+	    	
+	    	if(this.velY > 2)
+	    	{
+	    		this.isDead = true;
+	    	}
+
+	   		var linelength = 50;
+	    	var x1 = this.cx % linelength;
+	    	var y1 = aGroundAndSlope.lineY + (x1 * aGroundAndSlope[0]);
+
+	    	this.cx = aGroundAndSlope.lineX;
+	    	this.cy = aGroundAndSlope.lineY - this.getRadius();
+	        this.velY = 0;
+	        this.velX = 0;
+	    	
+	    }
     
+    }
 
 
-
-
-
-     if(hitEntity && this.isPickedUp)
-     {
+    //Citizen moves with the ship that picked him up
+    if(hitEntity && this.isPickedUp)
+    {
     	if (Object.getPrototypeOf(hitEntity) === Ship.prototype) 
     	{
 	        console.log("búja");
@@ -119,8 +123,11 @@ Citizen.prototype.update = function (du) {
 
 
 
-    spatialManager.register(this);
-
+    if(!this.isDead)
+    {
+    	spatialManager.register(this);
+    }
+    
 };
 
 Citizen.prototype.pickedUp = function () 
