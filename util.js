@@ -61,6 +61,7 @@ distSq: function(x1, y1, x2, y2) {
     return this.square(x2-x1) + this.square(y2-y1);
 },
 
+
 wrappedDistSq: function(x1, y1, x2, y2, xWrap, yWrap) {
     var dx = Math.abs(x2-x1),
 	dy = Math.abs(y2-y1);
@@ -73,6 +74,9 @@ wrappedDistSq: function(x1, y1, x2, y2, xWrap, yWrap) {
     return this.square(dx) + this.square(dy);
 },
 
+findRadius: function(w1, h1) {
+    return Math.sqrt(this.square(w1/2) + this.square(h1/2));
+},
 
 // CANVAS OPS
 // ==========

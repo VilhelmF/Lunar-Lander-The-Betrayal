@@ -110,8 +110,8 @@ collidesWithGround : function(posX, posY, radius)
            (firstX <= posX + groundLength && latterX > posX + groundLength) ||
            (firstX <= posX - groundLength && latterX > posX - groundLength ))
         {
-            if(firstY < (posY + radius)  || latterY < (posY + radius))
-            {
+            //if(firstY < (posY + radius)  || latterY < (posY + radius))
+            //{
 
 
                
@@ -149,7 +149,7 @@ collidesWithGround : function(posX, posY, radius)
                     var aGroundAndSlope = [slope, latterY];
                     return aGroundAndSlope;
                }*/
-            }    
+           // }    
         }       
             
         

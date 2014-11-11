@@ -27,11 +27,13 @@ var entityManager = {
 
 // "PRIVATE" DATA
 
-_background	: [],
-_bullets 	: [],
-_ships   	: [],
+
+_bullets : [],
+_ships   : [],
+_ground  : [],
 _package    : [],
-_ground  	: [],
+_citizens : [],
+_background	: [],
 
 
 
@@ -61,6 +63,8 @@ _generateLevel : function()
     }
 
     this.generateGround(firstX, latterX, firstY, latterY);
+
+
 },
 
 
@@ -107,20 +111,22 @@ KILL_ME_NOW : -1,
 // i.e. thing which need `this` to be defined.
 //
 deferredSetup : function () {
-    this._categories = [
-						this._background,
-						this._bullets, 
-						this._ships,
-						this._package,
-						this._ground
-						];
+
+
+    this._categories = [this._background,
+                        this._bullets, 
+                        this._ships,
+						this._package,						
+                        this._ground, 
+                        this._citizens,
+                        ];
 },
 
 init: function() {
     //this._generateShip();
     this._generateLevel();
 	this._generateBackground();
-	this._generatePackage({cx: 0, cy: -30});
+	this._generatePackage({cx: 200, cy: -30});
 },
 
 fireBullet: function(cx, cy, velX, velY, rotation) {
@@ -138,6 +144,9 @@ fireBullet: function(cx, cy, velX, velY, rotation) {
 generateShip : function(descr) {
 
     this._ships.push(new Ship(descr));
+    this._citizens.push(new Citizen(descr));
+   
+
 },
 
 generateGround : function(x1, x2, y1, y2) {
