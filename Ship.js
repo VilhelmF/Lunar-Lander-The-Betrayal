@@ -333,6 +333,17 @@ Ship.prototype.maybePickUpCitizen = function (Citizen) {
      if (eatKey(this.USE))
      {
         Citizen.pickedUp();
+        for(var i = 0; i < entityManager._ground.length; i+=2)
+        {
+            var Thorgeir;
+            if(typeof(entityManager._ground[i]) !== undefined)
+            {
+                Thorgeir = entityManager._ground[i].getSlope();
+                console.log(Thorgeir);
+            }
+            
+        }
+        
      }
 };
 

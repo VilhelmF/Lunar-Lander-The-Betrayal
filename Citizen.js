@@ -109,17 +109,22 @@ Citizen.prototype.update = function (du) {
     //Citizen moves with the ship that picked him up
     if(hitEntity && this.isPickedUp)
     {
-    	if (Object.getPrototypeOf(hitEntity) === Ship.prototype) 
-    	{
+    	/*if (Object.getPrototypeOf(hitEntity) === Ship.prototype) 
+    	{*/
 	        console.log("búja");
 	       
 	        var pos = hitEntity.getPos();
-   			this.cx = pos.posX;
-   			this.cy =  pos.posY + hitEntity.getRadius() - this.halfHeight;
+
+	        var postest = entityManager._ships[0].getPos();
+   			//this.cx = pos.posX;
+   			//this.cy =  pos.posY + hitEntity.getRadius() - this.halfHeight;
+   			
+   			this.cx = postest.posX;
+   			this.cy = postest.posY + entityManager._ships[0].getRadius() - this.halfHeight;
    			this.velY = 0;
     
     	}
-    }
+    //}
 
 
 
