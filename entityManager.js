@@ -33,7 +33,8 @@ _ships   : [],
 _ground  : [],
 _package    : [],
 _citizens : [],
-_background	: [],
+_background : [],
+_guns	: [],
 
 
 
@@ -115,7 +116,8 @@ deferredSetup : function () {
                         this._bullets, 
                         this._ships,
 						this._package,						
-                        this._ground, 
+                        this._ground,
+                        this._guns, 
                         this._citizens,
                         ];
 },
@@ -127,22 +129,27 @@ init: function() {
 	this._generatePackage({cx: 200, cy: -30});
 },
 
-fireBullet: function(cx, cy, velX, velY, rotation) {
+fireBullet: function(cx, cy, velX, velY, rotation, team) {
     this._bullets.push(new Bullet({
         cx   : cx,
         cy   : cy,
         velX : velX,
         velY : velY,
 
-        rotation : rotation
+        rotation : rotation,
+        team    : team,
     }));
+
 },
 
 
 generateShip : function(descr) {
 
     this._ships.push(new Ship(descr));
-
+    this._guns.push(new Gun({
+                cx   : 600,
+                cy   : 250,
+    }));
 
 },
 
