@@ -21,7 +21,7 @@ function Package(descr) {
 Package.prototype = new Entity();
 
 
-Package.prototype.rotation = 0;
+Package.prototype.packageSlope = 0;
 
 Package.prototype.velX = 0;
 Package.prototype.velY = 0;
@@ -43,12 +43,13 @@ Package.prototype.update = function(du) {
 		var findHit = spatialManager.collidesWithGround(
 													this.cx, 
 													this.cy, 
-					/*SKÍTA FISS +5*/				this.radius+5
+					/*SKÍTA FISS +5*/				this.radius
 													);
 	
 		if( findHit ) {
 			this.velY = 0;
 			this.boxStill  = true;
+			
 		} else {
 			this.velY += 0.01;
 			this.cy += this.velY * du;
@@ -59,13 +60,17 @@ Package.prototype.update = function(du) {
 
 
 Package.prototype.render = function(ctx) { 
-	this.packagePoint.drawAt(ctx, this.cx, this.cy);
+	this.packagePoint.drawCentredAt(ctx, 
+									this.cx, 
+									this.cy, 
+									this.packageSlope);
 };
 
 
 Package.prototype.findSafePlace = function(){
 	
 	var randX = util.getRandomInt(0,800);
+	console.log("randX: " + randX);
 	return this.findPlaceOnLand(randX);
 };
 
@@ -100,13 +105,21 @@ Package.prototype.findPlaceOnLand = function(randomX){
 		}
 	}
 	
-	// if temprDist have been changes then return any thing then..
+	
+//	for(var i=0; i<this.slopes.length; i++){
+//		console.log("this.slopes[" + i + "].getSlope(); " + this.slopes[i].getSlope());
+//	};
+	
+	// if temprDist have been changes
 	if(tempDist > -1)
 	{
-		//if()
-		
 		var x = this.slopes[storer].getPos().posX;
-		return util.getRandomInt(x, x+50);
+		
+		if(this.cx+(this.width) > x+groundLength){
+			this.packageSlope = this.slopes[++storer].getSlope();
+		}
+		
+		return util.getRandomInt(x, x+groundLength);
 	}
 	else
 	{

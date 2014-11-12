@@ -157,7 +157,7 @@ generateGround : function(x1, x2, y1, y2) {
 		cy		 : y1,
     }));
 
-     this._ground.push(new Citizen({
+     this._citizens.push(new Citizen({
         cx   : x1,
         cy   : (y1 - 2*Citizen.prototype.halfHeight),
     }));

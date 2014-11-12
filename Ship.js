@@ -161,14 +161,14 @@ Ship.prototype.update = function (du) {
      spatialManager.unregister(this);
 
 
-    //===============================================================
-    //================The Ships Landing Detection====================
-    //===============================================================
+    //=====================================================================
+    //======================The Ships Landing Detection====================
+    //=====================================================================
     var aGroundAndSlope = spatialManager.collidesWithGround(this.cx, this.cy, this.getRadius())
     var shipsRotation = Math.abs(this.rotation) % (2*Math.PI);
     if(typeof aGroundAndSlope !== 'undefined')
     {
-        if(aGroundAndSlope[0] !== 0)
+        if(aGroundAndSlope.slope !== 0)
         {
             particleManager.explosion(this.cx, this.cy);
 			this.warp();
@@ -183,7 +183,7 @@ Ship.prototype.update = function (du) {
             }
             else
             {   
-                this.cy = aGroundAndSlope[1] - this.getRadius();
+                this.cy = aGroundAndSlope.latterY - this.getRadius();
                 this.velY = 0;
                 this.velX = 0;
                 this.landed = true;
@@ -198,10 +198,12 @@ Ship.prototype.update = function (du) {
         this.leftRotation = 0;
         this.rightRotation = 0;
     }
-    //===============================================================
-    //===============================================================
-    //===============================================================
+    
+    //---------------------------------------------------------------
+    //---------------------------------------------------------------
+    //---------------------------------------------------------------
 
+    
     if(this._isDeadNow)
     {
         return entityManager.KILL_ME_NOW;  
@@ -328,20 +330,21 @@ Ship.prototype.updateRotation = function (du) {
 };
 
 Ship.prototype.maybePickUpCitizen = function (Citizen) {
-     if (keys[this.USE])
+     if (eatKey(this.USE))
      {
         Citizen.pickedUp();
+        for(var i = 0; i < entityManager._ground.length; i+=2)
+        {
+            var Thorgeir;
+            if(typeof(entityManager._ground[i]) !== undefined)
+            {
+                Thorgeir = entityManager._ground[i].getSlope();
+                console.log(Thorgeir);
+            }
+            
+        }
+        
      }
-}
-
-Ship.prototype.render = function (ctx) {
-    var origScale = this.sprite.scale;
-    // pass my scale into the sprite, for drawing
-    this.sprite.scale = this._scale;
-    this.sprite.drawWrappedCentredAt(
-	ctx, this.cx, this.cy, this.rotation
-    );
-    this.sprite.scale = origScale;
 };
 
 Ship.prototype.adjustRotation = function(du) {
@@ -379,3 +382,18 @@ Ship.prototype.adjustRotation = function(du) {
   
 
 }
+
+
+
+
+
+
+Ship.prototype.render = function (ctx) {
+    var origScale = this.sprite.scale;
+    // pass my scale into the sprite, for drawing
+    this.sprite.scale = this._scale;
+    this.sprite.drawWrappedCentredAt(
+    ctx, this.cx, this.cy, this.rotation
+    );
+    this.sprite.scale = origScale;
+};
