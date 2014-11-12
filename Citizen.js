@@ -95,7 +95,6 @@ Citizen.prototype.update = function (du) {
     	this.cy = aGroundAndSlope[1] - this.getRadius();
         this.velY = 0;
         this.velX = 0;
-    	
     }
     
 

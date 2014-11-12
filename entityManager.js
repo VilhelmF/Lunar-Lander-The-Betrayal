@@ -63,8 +63,6 @@ _generateLevel : function()
     }
 
     this.generateGround(firstX, latterX, firstY, latterY);
-
-
 },
 
 
@@ -155,6 +153,8 @@ generateGround : function(x1, x2, y1, y2) {
         firstY   : y1,
         latterX  : x2,
         latterY  : y2,
+		cx		 : x1,
+		cy		 : y1,
     }));
 
      this._ground.push(new Citizen({

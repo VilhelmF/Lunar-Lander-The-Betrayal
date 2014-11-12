@@ -35,6 +35,8 @@ Ground.prototype.firstY = 570;
 Ground.prototype.latterX = 800;
 Ground.prototype.latterY = 500;
 
+
+
 Ground.prototype.update = function (du) {
 
     //Any Update?

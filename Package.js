@@ -5,28 +5,23 @@ function Package(descr) {
 	//this.rememberResets();
 	
 	this.packagePoint = g_sprites.kassi1;
+	
 	this.width  = this.packagePoint.width;
 	this.height = this.packagePoint.height;
 	this.radius = util.findRadius(this.width, this.height);
 	
+	this.slopes = [];
 	
-	//this.cx = this.findSafePlace();
+	this.slopes = util.getGroundSlopes();
 	
-	//this.radius = 10;
-	
+	this.cx = this.findSafePlace();
 };
 
 
 Package.prototype = new Entity();
 
-Package.prototype.rememberResets = function () {
-    // Remember my reset positions
-    this.reset_cx = this.cx;
-    this.reset_cy = this.cy;
-    //this.reset_rotation = this.rotation;
-};
 
-
+Package.prototype.rotation = 0;
 
 Package.prototype.velX = 0;
 Package.prototype.velY = 0;
@@ -40,29 +35,23 @@ Package.prototype.height;
 Package.prototype.boxStill = false;
 
 Package.prototype.update = function(du) { 
-	if( !this.boxStill /*|| this.cy <= 0*/) {
+	if( !this.boxStill ) {
 		
 		spatialManager.unregister(this);
-	
+		
 	
 		var findHit = spatialManager.collidesWithGround(
 													this.cx, 
 													this.cy, 
-													this.radius
+					/*SKÍTA FISS +5*/				this.radius+5
 													);
-		console.log("findHit " + findHit);
 	
-	
-		console.log( "this.cx: " + this.cx + " this.cy: " + this.cy );
-	
-		// console.log(this.packagePoint);
 		if( findHit ) {
 			this.velY = 0;
 			this.boxStill  = true;
 		} else {
 			this.velY += 0.01;
 			this.cy += this.velY * du;
-			//spatialManager.register(this);
 		}
 		spatialManager.register(this);
 	}
@@ -75,50 +64,54 @@ Package.prototype.render = function(ctx) {
 
 
 Package.prototype.findSafePlace = function(){
-	return this.createRandomX();
+	
+	var randX = util.getRandomInt(0,800);
+	return this.findPlaceOnLand(randX);
 };
 
-Package.prototype.createRandomX = function(){
-	var x = 0;
-	var tempX = 0;
-	
-	for(var i=0; i<100; i++){
-		x = util.getRandomInt(0,800);
-		tempX = this.findPlaceOnLand(x);
-	}
-	
-	return tempX;
-};
-	
-	
+
 
 
 Package.prototype.findPlaceOnLand = function(randomX){
 	
-	var ground   = spatialManager._ground;
+	//var slope = entityManager._ground;
+	
+	console.log("this.slopes: " + this.slopes);
+	
 	var nearestX = Number.MAX_VALUE;
-	var tempr    = 0;
-	var tempDist = 0;
+	var storer   = 0;
+	var tempDist = -1;
+	var tempX    = 0;
 	
-	console.log("ground[1].getSlope: " + ground);
-	console.log("spatialManager._ground " + spatialManager._ground);
 	
-	for(var r in ground) {
+	for(var r in this.slopes) {
 		
-		if(ground[r].getSlope == 0){
+		//if ground is flat then...
+		if(this.slopes[r].getSlope() == 0) {
 			
-			tempDist = Math.abs(nearestX - randomX);
+			tempX = this.slopes[r].getPos().posX;
+			tempDist = Math.abs(tempX - randomX);
 			
 			if(tempDist < nearestX){
 			
-				nearestX = tempDist; 
-				tempr = r;
+				nearestX = tempDist;
+				storer = r;
 			}		
 		}
 	}
-		
 	
-	return Mat.abs(ground[tempr].firstX - ground[tempr].latterX);
+	// if temprDist have been changes then return any thing then..
+	if(tempDist > -1)
+	{
+		//if()
+		
+		var x = this.slopes[storer].getPos().posX;
+		return util.getRandomInt(x, x+50);
+	}
+	else
+	{
+		console.log("fail to find flat land !");
+	}
 };
 
 
