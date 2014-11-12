@@ -34,6 +34,7 @@ Gun.prototype.cx = 200;
 Gun.prototype.cy = 200;
 Gun.prototype.width = 10;
 Gun.prototype.height = 30;
+Gun.prototype.vel = 5;
 
 Gun.prototype.firingTime = 0;
 
@@ -43,7 +44,7 @@ Gun.prototype.update = function (du) {
     //Any Update?
     spatialManager.unregister(this);
 
-    if(this.firingTime >= 10)
+    if(this.firingTime >= 2)
     {
     	this.fireBullet();
 
@@ -79,17 +80,30 @@ Gun.prototype.fireBullet = function ()
 	var aim = Math.atan(X/Y);
    
 
-    if(aim < 0)
+    if(X > 0 && Y < 0)
+    {
+    	var velX = +Math.sin(aim) * this.vel;
+    	var velY = +Math.cos(aim) * this.vel;
+    	
+    }
+    else if(X < 0 && Y > 0)
+    {
+    	var velX = -Math.sin(aim) * this.vel;
+    	var velY = -Math.cos(aim) * this.vel;
+    	
+    }
+	else if(X > 0 && Y > 0)
 	{
-		var velX = +Math.cos(aim) * 5;
-    	var velY = -Math.sin(aim) * 5;
+		var velX = -Math.sin(aim) * this.vel;
+		var velY = -Math.cos(aim) * this.vel;
+		
 	}
-	else
+	else if(X < 0 && Y < 0)
 	{
-		var velX = -Math.cos(aim) * 5;
-    	var velY = Math.sin(aim) * 5;
+		var velX = +Math.sin(aim) * this.vel;
+		var velY = +Math.cos(aim) * this.vel;
+		
 	}
-
 
     
 
@@ -111,17 +125,23 @@ Gun.prototype.render = function (ctx) {
     //var origScale = this.sprite.scale;
     
     ctx.save();
+
+    ctx.beginPath();
     if(this.firingTime >= 10)
     {
     	ctx.fillStyle = "blue";
+
     }
     else
     {
     	ctx.fillStyle = "white";
     }	
+	ctx.strokeStyle = "black";
 	
-	ctx.beginPath();
 	ctx.rect(this.cx, this.cy, this.width, -this.height);
+	ctx.rect(this.cx - 10, this.cy - 12, this.width + 20, 2);
+	ctx.rect(this.cx - 7.5, this.cy - 20, this.width + 15, 2);
+	ctx.rect(this.cx - 5, this.cy - 28, this.width + 10, 2);
 	ctx.stroke();
 	ctx.fill();
 

@@ -64,21 +64,11 @@ Citizen.prototype.update = function (du) {
 
      spatialManager.unregister(this);
 
-	
+
     var hitEntity = this.findHitEntity();
     if (hitEntity) 
     {
-    	
-    	if(this.velY > 2)
-    	{
-    		this.isDead = true;
-    	}
-		
-	    if(typeof aGroundAndSlope !== 'undefined'){
-			this.cy = aGroundAndSlope[1] - this.getRadius();
-		}
-		this.velY = 0;
-        this.velX = 0;
+		// Die from bullets?               
     }
 
     if(!this.isPickedUp)
@@ -92,8 +82,8 @@ Citizen.prototype.update = function (du) {
 	   	}
 
 
-		var aGroundAndSlope = spatialManager.collidesWithGround(this.cx, this.cy, this.getRadius())
 	    //Is he stationary on the ground?
+	    var aGroundAndSlope = spatialManager.collidesWithGround(this.cx, this.cy, this.getRadius())
 	    if(typeof aGroundAndSlope !== 'undefined' && !this.isPickedUp)
 	    {
 	    	
@@ -105,7 +95,7 @@ Citizen.prototype.update = function (du) {
 	   		var linelength = 50;
 	    	var x1 = this.cx % linelength;
 	    	var y1 = aGroundAndSlope.lineY + (x1 * aGroundAndSlope[0]);
-
+	    	
 	    	this.cx = aGroundAndSlope.lineX;
 	    	this.cy = aGroundAndSlope.lineY - this.getRadius();
 	        this.velY = 0;
@@ -197,15 +187,13 @@ Citizen.prototype.render = function (ctx) {
 		ctx.moveTo(this.cx, this.cy + this.halfHeight);
 		ctx.lineTo(this.cx + 0.75*this.halfWidth, this.cy + 2*this.halfHeight);
 		ctx.stroke();
-		ctx.restore();
 		}
 		else
 		{
-			ctx.save();
 			ctx.fillStyle="red";
 			ctx.fillRect(this.cx, this.cy + this.halfHeight,2*this.halfWidth, this.halfHeight);	
-			ctx.restore();
 		}
+		ctx.restore();
 
 	}	
 };
