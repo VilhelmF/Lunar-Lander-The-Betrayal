@@ -87,4 +87,6 @@ Ground.prototype.render = function (ctx) {
     ctx.stroke();
     ctx.fill();
 
+    ctx.restore();
+
 };

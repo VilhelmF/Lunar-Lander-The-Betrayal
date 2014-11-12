@@ -197,11 +197,14 @@ Citizen.prototype.render = function (ctx) {
 		ctx.moveTo(this.cx, this.cy + this.halfHeight);
 		ctx.lineTo(this.cx + 0.75*this.halfWidth, this.cy + 2*this.halfHeight);
 		ctx.stroke();
+		ctx.restore();
 		}
 		else
 		{
+			ctx.save();
 			ctx.fillStyle="red";
 			ctx.fillRect(this.cx, this.cy + this.halfHeight,2*this.halfWidth, this.halfHeight);	
+			ctx.restore();
 		}
 
 	}	
