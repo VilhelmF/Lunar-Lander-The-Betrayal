@@ -43,12 +43,14 @@ Bullet.prototype.cx = 200;
 Bullet.prototype.cy = 200;
 Bullet.prototype.velX = 1;
 Bullet.prototype.velY = 1;
+Bullet.prototype.team = 1;
 
 // Convert times from milliseconds to "nominal" time units.
 Bullet.prototype.lifeSpan = 3000 / NOMINAL_UPDATE_INTERVAL;
 
 Bullet.prototype.update = function (du) {
 
+    
     spatialManager.unregister(this);
     this.lifeSpan -= du;
     if (this.lifeSpan < 0)
@@ -64,18 +66,19 @@ Bullet.prototype.update = function (du) {
     this.rotation = util.wrapRange(this.rotation,
                                    0, consts.FULL_CIRCLE);
 
+
     this.wrapPosition();
     
     // TODO? NO, ACTUALLY, I JUST DID THIS BIT FOR YOU! :-)
     //
     // Handle collisions
     //
-    var hitEntity = this.findHitEntity();
+   /* var hitEntity = this.findHitEntity();
     if (hitEntity) {
         var canTakeHit = hitEntity.takeBulletHit;
         if (canTakeHit) canTakeHit.call(hitEntity); 
         return entityManager.KILL_ME_NOW;
-    }
+    }*/
     
     // TODO: YOUR STUFF HERE! --- (Re-)Register
     spatialManager.register(this);
@@ -94,15 +97,28 @@ Bullet.prototype.takeBulletHit = function () {
 
 Bullet.prototype.render = function (ctx) {
 
-    var fadeThresh = Bullet.prototype.lifeSpan / 3;
+    if(this.team === 1)
+    {
+        var fadeThresh = Bullet.prototype.lifeSpan / 3;
 
-    if (this.lifeSpan < fadeThresh) {
-        ctx.globalAlpha = this.lifeSpan / fadeThresh;
+        if (this.lifeSpan < fadeThresh) {
+            ctx.globalAlpha = this.lifeSpan / fadeThresh;
+        }
+
+        g_sprites.bullet.drawWrappedCentredAt(
+            ctx, this.cx, this.cy, this.rotation
+        );
+
+        ctx.globalAlpha = 1;
+    }
+    else if(this.team === 2)
+    {
+        ctx.fillStyle = "blue";
+        var radius = 4;
+        ctx.fillRect(this.cx, this.cy, radius, radius);
+        //ctx.arc(this.cx - radius, this.cy - radius, radius, 0, Math.PI * 2, true);
+        ctx.fill();
     }
 
-    g_sprites.bullet.drawWrappedCentredAt(
-        ctx, this.cx, this.cy, this.rotation
-    );
-
-    ctx.globalAlpha = 1;
+    
 };

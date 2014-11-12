@@ -175,7 +175,7 @@ Ship.prototype.update = function (du) {
         }
         else
         {
-           if(this.velY > 2 || ( shipsRotation> 0.5*Math.PI))
+           if(this.velY > 2 || this.velX > 3 || ( shipsRotation> 0.5*Math.PI))
             {
 
                 particleManager.explosion(this.cx, this.cy);
@@ -281,7 +281,8 @@ Ship.prototype.maybeFireBullet = function () {
         entityManager.fireBullet(
            this.cx + dX * launchDist, this.cy + dY * launchDist,
            this.velX + relVelX, this.velY + relVelY,
-           this.rotation);
+           this.rotation,
+           1);
            
     }
     
