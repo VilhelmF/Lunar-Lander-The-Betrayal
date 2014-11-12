@@ -57,6 +57,15 @@ Ship.prototype.numSubSteps = 1;
 Ship.prototype.rightRotation = 0.01;
 Ship.prototype.leftRotation = 0.01;
 
+Ship.prototype.fuel = {
+    cx : 20,
+    cy : 20,
+
+    height : 20,
+    color : "red",
+
+    level : 100,
+};
 
 
 //Mission variables?
@@ -203,11 +212,16 @@ Ship.prototype.update = function (du) {
     //---------------------------------------------------------------
     //---------------------------------------------------------------
 
-    
+    if(this.fuel.level <= 0) {
+        particleManager.explosion(this.cx, this.cy);
+        this.fuel.level = 100; // FIXME: temporary, should loose life
+        this.warp();
+    }
+
     if(this._isDeadNow)
     {
         return entityManager.KILL_ME_NOW;  
-    } 
+    }
 
 
     // Perform movement substeps
@@ -258,6 +272,8 @@ Ship.prototype.computeThrustMag = function () {
     
     if (keys[this.KEY_THRUST]) {
         thrust += NOMINAL_THRUST;
+        this.fuel.level -= 0.8;
+        particleManager.thrust(this.cx, this.cy, this.rotation, this.getRadius());
     }
     if (keys[this.KEY_RETRO]) {
         thrust += NOMINAL_RETRO;
@@ -385,10 +401,6 @@ Ship.prototype.adjustRotation = function(du) {
 }
 
 
-
-
-
-
 Ship.prototype.render = function (ctx) {
     var origScale = this.sprite.scale;
     // pass my scale into the sprite, for drawing
@@ -397,4 +409,7 @@ Ship.prototype.render = function (ctx) {
     ctx, this.cx, this.cy, this.rotation
     );
     this.sprite.scale = origScale;
+
+    //render fuel
+    util.fillBox(ctx, this.fuel.cx, this.fuel.cy, this.fuel.level, this.fuel.height, this.fuel.color);
 };

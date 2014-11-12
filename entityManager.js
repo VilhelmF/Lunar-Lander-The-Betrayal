@@ -223,6 +223,13 @@ yoinkNearestShip : function(xPos, yPos) {
     }
 },
 
+getShipPos : function() {
+    var theShip = this._findNearestShip(1, 1).theShip;
+    if(theShip) {
+        return theShip.getPos();
+    }
+},
+
 resetShips: function() {
     this._forEachOf(this._ships, Ship.prototype.reset);
 },

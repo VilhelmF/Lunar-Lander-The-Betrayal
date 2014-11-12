@@ -92,11 +92,13 @@ var g_allowMixedActions = true;
 var g_useGravity = false;
 var g_useAveVel = true;
 var g_renderSpatialDebug = false;
+var g_doZoom = false;
 
 var KEY_MIXED   = keyCode('M');;
 var KEY_GRAVITY = keyCode('G');
 var KEY_AVE_VEL = keyCode('V');
 var KEY_SPATIAL = keyCode('X');
+var KEY_ZOOM = keyCode('Z'); // temporary zoom button for ship
 
 var KEY_HALT  = keyCode('H');
 var KEY_RESET = keyCode('R');
@@ -118,6 +120,8 @@ function processDiagnostics() {
     if (eatKey(KEY_AVE_VEL)) g_useAveVel = !g_useAveVel;
 
     if (eatKey(KEY_SPATIAL)) g_renderSpatialDebug = !g_renderSpatialDebug;
+
+    if (eatKey(KEY_ZOOM)) g_doZoom = !g_doZoom; //temporary zoom button
 
     if (eatKey(KEY_HALT)) entityManager.haltShips();
 
@@ -158,11 +162,24 @@ function processDiagnostics() {
 // GAME-SPECIFIC RENDERING
 
 function renderSimulation(ctx) {
+    if(g_doZoom) {
+        ctx.save();
+        var scale = 2;
+        var pos = entityManager.getShipPos();
+
+        var newWidth = pos.posX * scale;
+        var newHeight = pos.posY * scale;
+
+        ctx.translate(-((newWidth - pos.posX)), -((newHeight - pos.posY)));
+        ctx.scale(2, 2);
+    }
 
     entityManager.render(ctx);
     particleManager.render(ctx);
 
     if (g_renderSpatialDebug) spatialManager.render(ctx);
+
+    if(g_doZoom) ctx.restore();
 }
 
 
