@@ -23,4 +23,4 @@ var NOMINAL_UPDATE_INTERVAL = 16.666;
 var SECS_TO_NOMINALS = 1000 / NOMINAL_UPDATE_INTERVAL;
 
 
-var groundLength = 100;
+var groundLength = 50;

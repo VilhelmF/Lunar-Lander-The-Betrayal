@@ -22,12 +22,11 @@ Package.prototype = new Entity();
 
 
 Package.prototype.packageSlope = 0;
+Package.prototype.rotation = 0;
+
 
 Package.prototype.velX = 0;
 Package.prototype.velY = 0;
-
-//Package.prototype.cx   = 100;
-// Package.prototype.cy   = -30;
 
 Package.prototype.width;
 Package.prototype.height;
@@ -40,16 +39,20 @@ Package.prototype.update = function(du) {
 		spatialManager.unregister(this);
 		
 	
-		var findHit = spatialManager.collidesWithGround(
+		var groundHit = spatialManager.collidesWithGround(
 													this.cx, 
 													this.cy, 
-					/*SKÍTA FISS +5*/				this.radius
+													this.radius-8  //SKÍTA FIX
 													);
-	
-		if( findHit ) {
+		
+		
+		if( groundHit ) {
+		
+			//var ground = this.slopes[groundHit.index];
+			//var x1 = groundHit.latterx;
+
 			this.velY = 0;
 			this.boxStill  = true;
-			
 		} else {
 			this.velY += 0.01;
 			this.cy += this.velY * du;
@@ -63,14 +66,13 @@ Package.prototype.render = function(ctx) {
 	this.packagePoint.drawCentredAt(ctx, 
 									this.cx, 
 									this.cy, 
-									this.packageSlope);
+									this.rotation);
 };
 
 
 Package.prototype.findSafePlace = function(){
 	
 	var randX = util.getRandomInt(0,800);
-	console.log("randX: " + randX);
 	return this.findPlaceOnLand(randX);
 };
 
@@ -79,14 +81,14 @@ Package.prototype.findSafePlace = function(){
 
 Package.prototype.findPlaceOnLand = function(randomX){
 	
-	//var slope = entityManager._ground;
-	
-	console.log("this.slopes: " + this.slopes);
 	
 	var nearestX = Number.MAX_VALUE;
-	var storer   = 0;
+	var index   = 0;
 	var tempDist = -1;
 	var tempX    = 0;
+	
+	var leftLimit = 0;
+	var rightLimit = 0;
 	
 	
 	for(var r in this.slopes) {
@@ -94,49 +96,33 @@ Package.prototype.findPlaceOnLand = function(randomX){
 		//if ground is flat then...
 		if(this.slopes[r].getSlope() == 0) {
 			
-			tempX = this.slopes[r].getPos().posX;
-			tempDist = Math.abs(tempX - randomX);
+			leftLimit = this.slopes[r].getPos().posX;
+			rightLimit = leftLimit+groundLength;
 			
-			if(tempDist < nearestX){
+			tempDist = Math.abs(leftLimit - randomX);
+			//if(leftLimit)
+			if(tempDist < nearestX ){
 			
 				nearestX = tempDist;
-				storer = r;
+				index = r;
 			}		
 		}
 	}
 	
-	
-//	for(var i=0; i<this.slopes.length; i++){
-//		console.log("this.slopes[" + i + "].getSlope(); " + this.slopes[i].getSlope());
-//	};
-	
 	// if temprDist have been changes
 	if(tempDist > -1)
 	{
-		var x = this.slopes[storer].getPos().posX;
+		var x = this.slopes[index].getPos().posX;
+		var randX = util.getRandomInt(x, x+groundLength);
 		
-		if(this.cx+(this.width) > x+groundLength){
-			this.packageSlope = this.slopes[++storer].getSlope();
-		}
 		
-		return util.getRandomInt(x, x+groundLength);
+		//this.givePackageSlope(x, index, randX);
+	
+		return randX;
 	}
 	else
 	{
 		console.log("fail to find flat land !");
 	}
-};
-
-
-
-
-
-
-
-
-
-
-
-
-
+};	
 
