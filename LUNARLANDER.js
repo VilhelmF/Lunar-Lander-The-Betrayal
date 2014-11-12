@@ -162,13 +162,17 @@ function processDiagnostics() {
 // GAME-SPECIFIC RENDERING
 
 function renderSimulation(ctx) {
-    if(g_doZoom) {
+    
+	if(g_doZoom) {
         ctx.save();
         var scale = 2;
         var pos = entityManager.getShipPos();
 
         var newWidth = pos.posX * scale;
         var newHeight = pos.posY * scale;
+		
+		console.log("newWidth: " + newWidth);
+		console.log("newHeight: " + newHeight);
 
         ctx.translate(-((newWidth - pos.posX)), -((newHeight - pos.posY)));
         ctx.scale(2, 2);

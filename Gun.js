@@ -152,6 +152,8 @@ Gun.prototype.render = function (ctx) {
 	ctx.fillStyle = grd;
 	ctx.arc(this.cx + this.width/2, this.cy -this.height - headR, headR, 0, Math.PI * 2, true);
 	ctx.fill();
+	
+	ctx.restore();
 
 
 };
