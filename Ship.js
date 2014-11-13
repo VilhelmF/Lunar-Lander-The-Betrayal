@@ -22,13 +22,25 @@ function Ship(descr) {
     
     // Default sprite, if not otherwise specified
     this.sprite = this.sprite || g_sprites.ship;
-    
+	this.fuelBar = this.fuelBuild();
+	
     // Set normal drawing scale, and warp state off
     this._scale = 1;
     this._isWarping = false;
 };
 
 Ship.prototype = new Entity();
+
+
+Ship.prototype.fuelBuild = function () {
+	var array = [];
+	
+	array[0] = g_sprites.fuelBarOutline;
+	array[1] = g_sprites.fuelBarFill;
+	array[2] = g_sprites.fuelBarSlide;
+	
+	return array;
+};
 
 Ship.prototype.rememberResets = function () {
     // Remember my reset positions
@@ -58,9 +70,12 @@ Ship.prototype.rightRotation = 0.01;
 Ship.prototype.leftRotation = 0.01;
 
 Ship.prototype.fuel = {
-    cx : 20,
-    cy : 20,
+    cx : 0,
+    cy : 0,
 
+	//image   : this.fuelBar,
+	status: 1,				// 100%
+	
     height : 20,
     color : "red",
 
@@ -212,9 +227,11 @@ Ship.prototype.update = function (du) {
     //---------------------------------------------------------------
     //---------------------------------------------------------------
 
-    if(this.fuel.level <= 0) {
+    if(this.fuel.status <= 0) {
         particleManager.explosion(this.cx, this.cy);
-        this.fuel.level = 100; // FIXME: temporary, should loose life
+        //this.fuel.level = 100; // FIXME: temporary, should loose life
+		this.fuel.status = 1;
+		
         this.warp();
     }
 
@@ -272,7 +289,8 @@ Ship.prototype.computeThrustMag = function () {
     
     if (keys[this.KEY_THRUST]) {
         thrust += NOMINAL_THRUST;
-        this.fuel.level -= 0.8;
+        //this.fuel.level -= 0.8;
+		this.fuel.status -= 0.005;
         particleManager.thrust(this.cx, this.cy, this.rotation, this.getRadius());
     }
     if (keys[this.KEY_RETRO]) {
@@ -409,7 +427,16 @@ Ship.prototype.render = function (ctx) {
     ctx, this.cx, this.cy, this.rotation
     );
     this.sprite.scale = origScale;
+	
+	console.log(this.fuel.cx);
+	
+	this.fuelBar[2].cropImageBy (ctx, this.fuel.cx, this.fuel.cy, this.fuel.status);
+	this.fuelBar[1].cropImageBy (ctx, this.fuel.cx, this.fuel.cy, this.fuel.status-0.03);
+	
+	this.fuelBar[0].drawAt(ctx, this.fuel.cx, this.fuel.cy);
+	//this.fuelBar[1].drawAt(ctx, this.fuel.cx, this.fuel.cy);
+	
 
     //render fuel
-    util.fillBox(ctx, this.fuel.cx, this.fuel.cy, this.fuel.level, this.fuel.height, this.fuel.color);
+   // util.fillBox(ctx, this.fuel.cx, this.fuel.cy, this.fuel.level, this.fuel.height, this.fuel.color);
 };
