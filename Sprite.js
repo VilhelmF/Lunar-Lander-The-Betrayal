@@ -78,9 +78,9 @@ Sprite.prototype.cropImageBy = function (ctx, cx, cy, percent) {
 	var scaleWidth = this.width * percent;
 	
 	if(this.image == g_sprites.fuelBarSlide.image){
-		if( scaleWidth < 30){
+		/*if( scaleWidth < 30){
 			break;
-		}
+		}*/
 		ctx.drawImage( this.image, cx, cy, this.width, this.height, cx, cy, scaleWidth, this.height);
 	}
 	else {

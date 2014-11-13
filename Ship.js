@@ -460,7 +460,7 @@ Ship.prototype.render = function (ctx) {
 	
 	console.log(this.fuel.cx);
 	
-	this.fuelBar[2].cropImageBy (ctx, this.fuel.cx, this.fuel.cy, this.fuel.status);
+	//this.fuelBar[2].cropImageBy (ctx, this.fuel.cx, this.fuel.cy, this.fuel.status);
 	this.fuelBar[1].cropImageBy (ctx, this.fuel.cx, this.fuel.cy, this.fuel.status-0.03);
 	
 	this.fuelBar[0].drawAt(ctx, this.fuel.cx, this.fuel.cy);
