@@ -33,6 +33,8 @@ Package.prototype.width;
 Package.prototype.height;
 
 Package.prototype.boxStill = false;
+Package.prototype.destroy = false;
+
 
 
 
@@ -60,7 +62,7 @@ Package.prototype .createGroundarrayInfo = function(index1, index2){
 
 Package.prototype.update = function(du) { 
 	
-	if( !this.boxStill ) {
+	//if( !this.boxStill ) {
 		spatialManager.unregister(this);
 		
 		var groundHit = spatialManager.collidesWithGround(
@@ -79,21 +81,24 @@ Package.prototype.update = function(du) {
 			this.velY += 0.01;
 			this.cy += this.velY * du;
 		}
+
+		if(this.destroy)
+		{
+			 return entityManager.KILL_ME_NOW;  
+		}
 		
 		spatialManager.register(this);
-	}
+	//}
 };
 
+Package.prototype.getPackage = function(Player)
+{
+	this.destroy = true;
+	//Random powerups?
 
+	Player.giveFuel(100);
 
-Package.prototype.render = function(ctx) { 
-	this.packagePoint.drawCentredAt(ctx, 
-									this.cx, 
-									this.cy, 
-									this.rotation);
-};
-
-
+}
 
 
 Package.prototype.findSafePlace = function(){
@@ -102,7 +107,9 @@ Package.prototype.findSafePlace = function(){
 	return this.findPlaceOnLand(randX);
 };
 
-
+Package.prototype.getRadius = function () {
+    return this.radius;
+};
 
 
 Package.prototype.findPlaceOnLand = function(randomX){
@@ -148,3 +155,16 @@ Package.prototype.findPlaceOnLand = function(randomX){
 	}
 };	
 
+
+
+
+
+
+
+
+Package.prototype.render = function(ctx) { 
+	this.packagePoint.drawCentredAt(ctx, 
+									this.cx, 
+									this.cy, 
+									this.rotation);
+};

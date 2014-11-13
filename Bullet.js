@@ -73,12 +73,16 @@ Bullet.prototype.update = function (du) {
     //
     // Handle collisions
     //
-   /* var hitEntity = this.findHitEntity();
+    var hitEntity = this.findHitEntity();
     if (hitEntity) {
         var canTakeHit = hitEntity.takeBulletHit;
         if (canTakeHit) canTakeHit.call(hitEntity); 
         return entityManager.KILL_ME_NOW;
-    }*/
+    }
+    var ground = spatialManager.collidesWithGround(this.cx, this.cy, this.getRadius())
+    if (ground) {
+        return entityManager.KILL_ME_NOW;
+    }
     
     // TODO: YOUR STUFF HERE! --- (Re-)Register
     spatialManager.register(this);
@@ -96,7 +100,7 @@ Bullet.prototype.takeBulletHit = function () {
 };
 
 Bullet.prototype.render = function (ctx) {
-
+    ctx.save();
     if(this.team === 1)
     {
         var fadeThresh = Bullet.prototype.lifeSpan / 3;
@@ -119,6 +123,6 @@ Bullet.prototype.render = function (ctx) {
         //ctx.arc(this.cx - radius, this.cy - radius, radius, 0, Math.PI * 2, true);
         ctx.fill();
     }
-
+    ctx.restore();
     
 };

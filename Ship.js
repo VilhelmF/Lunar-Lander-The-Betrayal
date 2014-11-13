@@ -85,6 +85,7 @@ Ship.prototype.fuel = {
 
 //Mission variables?
 Ship.prototype.landed = false;
+Ship.prototype.Citizen = 0; 
 
 // HACKED-IN AUDIO (no preloading)
 //Ship.prototype.warpSound = new Audio(
@@ -100,6 +101,12 @@ Ship.prototype.warp = function () {
 
     this._isWarping = true;
     this._scaleDirn = -1;
+
+    if(this.Citizen)
+    {
+        this.Citizen.reset();
+        this.Citizen = 0;
+    }
 	
 	// shipWarping death sound played
 	g_audio.shipWarp.Play();
@@ -118,7 +125,10 @@ Ship.prototype._updateWarp = function (du) {
     
     if (this._scale < 0.2) {
     
-        this._moveToASafePlace();
+        //this._moveToASafePlace();
+        this.cx = this.reset_cx;    
+        this.cy = this.reset_cy;    
+
         this.halt();
         this._scaleDirn = 1;
         
@@ -188,11 +198,11 @@ Ship.prototype.update = function (du) {
     //=====================================================================
     //======================The Ships Landing Detection====================
     //=====================================================================
-    var aGroundAndSlope = spatialManager.collidesWithGround(this.cx, this.cy, this.getRadius())
+    var ground = spatialManager.collidesWithGround(this.cx, this.cy, this.getRadius())
     var shipsRotation = Math.abs(this.rotation) % (2*Math.PI);
-    if(typeof aGroundAndSlope !== 'undefined')
+    if(typeof ground !== 'undefined')
     {
-        if(aGroundAndSlope.slope !== 0)
+        if(ground.slope !== 0)
         {
             particleManager.explosion(this.cx, this.cy);
 			this.warp();
@@ -207,22 +217,15 @@ Ship.prototype.update = function (du) {
             }
             else
             {   
-                this.cy = aGroundAndSlope.latterY - this.getRadius();
-                this.velY = 0;
-                this.velX = 0;
+                if(this.velY > 0) this.velY = 0;
+                if(this.velX !== 0) this.velX = 0;
                 this.landed = true;
                 
                 this.adjustRotation(du);
             } 
         }
     }
-    else
-    {
-        this.landed = false;
-        this.leftRotation = 0;
-        this.rightRotation = 0;
-    }
-    
+   
     //---------------------------------------------------------------
     //---------------------------------------------------------------
     //---------------------------------------------------------------
@@ -256,8 +259,33 @@ Ship.prototype.update = function (du) {
     {
         if(Object.getPrototypeOf(hitEntity) === Citizen.prototype)
         {
-            spatialManager.register(this);
             this.maybePickUpCitizen(hitEntity);
+            spatialManager.register(this);
+        }
+        else if(Object.getPrototypeOf(hitEntity) === Plank.prototype && !(shipsRotation> 0.5*Math.PI))
+        {
+                if((this.cy + this.getRadius()) > (hitEntity.cy - hitEntity.halfHeight)
+                    && (this.cy + this.getRadius()) < (hitEntity.cy + hitEntity.halfHeight))
+                {
+                    if(this.velY > 0) this.velY = 0;
+                    if(this.velX !== 0) this.velX = 0;
+                    this.landed = true;
+                    this.adjustRotation(du);
+                    this.fuel.level = 100;            
+                }
+                if((this.cy - this.getRadius()) > (hitEntity.cy - hitEntity.halfHeight)
+                    && (this.cy - this.getRadius()) < (hitEntity.cy + hitEntity.halfHeight))
+                {
+                    this.velY = 0;
+                    this.cy = hitEntity.cy + hitEntity.halfHeight + this.getRadius();
+                }
+               
+            
+                 spatialManager.register(this);
+        }
+        else if(Object.getPrototypeOf(hitEntity) === Package.prototype)
+        {
+            hitEntity.getPackage(this);
         }
         else
         {
@@ -269,19 +297,24 @@ Ship.prototype.update = function (du) {
     {
         spatialManager.register(this);
     }
+
+    if(!this.landed)
+    {
+        this.leftRotation = 0;
+        this.rightRotation = 0;
+    }
+
+    if(this.Citizen)
+    {
+        this.maybePickUpCitizen();
+    }
+    
+
 };
 
 
-
-var NOMINAL_GRAVITY = 0.02;
-
-Ship.prototype.computeGravity = function () {
-//    return g_useGravity ? NOMINAL_GRAVITY : 0;
-    return NOMINAL_GRAVITY;
-};
 
 var NOMINAL_THRUST = +0.2;
-var NOMINAL_RETRO  = -0.1;
 
 Ship.prototype.computeThrustMag = function () {
     
@@ -292,9 +325,7 @@ Ship.prototype.computeThrustMag = function () {
         //this.fuel.level -= 0.8;
 		this.fuel.status -= 0.005;
         particleManager.thrust(this.cx, this.cy, this.rotation, this.getRadius());
-    }
-    if (keys[this.KEY_RETRO]) {
-        thrust += NOMINAL_RETRO;
+        this.landed = false;
     }
     
     return thrust;
@@ -322,11 +353,17 @@ Ship.prototype.maybeFireBullet = function () {
     
 };
 
+Ship.prototype.giveFuel = function (fuel)
+{
+    this.fuel.level += fuel;
+}
+
 Ship.prototype.getRadius = function () {
     return (this.sprite.width / 2) * 0.9;
 };
 
 Ship.prototype.takeBulletHit = function () {
+    particleManager.explosion(this.cx, this.cy);
     this.warp();
 };
 
@@ -367,19 +404,12 @@ Ship.prototype.updateRotation = function (du) {
 Ship.prototype.maybePickUpCitizen = function (Citizen) {
      if (eatKey(this.USE))
      {
-        Citizen.pickedUp();
-        for(var i = 0; i < entityManager._ground.length; i+=2)
-        {
-            var Thorgeir;
-            if(typeof(entityManager._ground[i]) !== undefined)
-            {
-                Thorgeir = entityManager._ground[i].getSlope();
-                console.log(Thorgeir);
-            }
-            
-        }
-        
-     }
+        if(!this.Citizen) this.Citizen = Citizen.pickedUp();
+        else this.Citizen = this.Citizen.pickedUp();
+     }   
+     
+
+
 };
 
 Ship.prototype.adjustRotation = function(du) {

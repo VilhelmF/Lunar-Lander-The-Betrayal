@@ -44,7 +44,7 @@ Gun.prototype.update = function (du) {
     //Any Update?
     spatialManager.unregister(this);
 
-    if(this.firingTime >= 2)
+    if(this.firingTime >= 10)
     {
     	this.fireBullet();
 
