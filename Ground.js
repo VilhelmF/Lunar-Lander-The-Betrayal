@@ -119,7 +119,7 @@ Ground.prototype.render = function (ctx) {
    ctx.strokeStyle = "black";
     ctx.fillStyle = "black";
 
-   /* 
+   
     ctx.beginPath();
     ctx.moveTo(this.firstX, g_canvas.height);
     ctx.lineTo(this.firstX, this.firstY);
@@ -128,7 +128,7 @@ Ground.prototype.render = function (ctx) {
     ctx.lineTo(this.firstX, g_canvas.height);
     ctx.stroke();
     ctx.fill();
-   */
+   
   var x = this.firstX + (this.latterX - this.firstX)/2; 
   var y = this.firstY + (this.latterY - this.firstY)/2; 
   

@@ -197,14 +197,14 @@ function requestPreloads() {
 
     var requiredImages = {
         //ship   : "https://notendur.hi.is/~pk/308G/images/ship.png",
-<<<<<<< HEAD
+
         ship            : "sprites/landerShip-36.png",
         ship2           : "https://notendur.hi.is/~pk/308G/images/ship_2.png",
         rock            : "https://notendur.hi.is/~pk/308G/images/rock.png",
 		kassi1          : "sprites/package/kassi1-37.png",
 		fuelBarOutline  : "sprites/fuelBar/fuelBar-32.png",
 		fuelBarFill     : "sprites/fuelBar/fuelBar-33.png",
-        fuelBarFill2    : "sprites/fuelBar/gameStart-38.png"
+        fuelBarFill2    : "sprites/fuelBar/gameStart-38.png",
 		fuelBarSlide    : "sprites/fuelBar/fuelBar-35.png",
         ground          : "sprites/ground-39.png" 
 

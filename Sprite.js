@@ -80,11 +80,11 @@ Sprite.prototype.cropImageBy = function (ctx, cx, cy, percent) {
 
 	if(this.image == g_sprites.fuelBarSlide.image && percent > 0.17) {
 		ctx.drawImage( this.image, cx, cy, this.width, this.height, cx, cy, scaleWidth, this.height );
-		var temp = 
+		//var temp = 
 	}
-	else if(this.image == g_sprites.fuelBarSlide.image && percent <= 0.17){
-		var temp = 0.3;
-	}
+	//else if(this.image == g_sprites.fuelBarSlide.image && percent <= 0.17){
+	//	var temp = 0.3;
+	//}
 	else {
 		ctx.drawImage( this.image, cx, cy, scaleWidth, this.height, cx, cy, scaleWidth, this.height);
 	}
