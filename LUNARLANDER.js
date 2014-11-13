@@ -202,8 +202,10 @@ function requestPreloads() {
         rock   : "https://notendur.hi.is/~pk/308G/images/rock.png",
 		kassi1 : "sprites/package/kassi1-37.png",
 		fuelBarOutline : "sprites/fuelBar/fuelBar-32.png",
-		fuelBarFill    : "sprites/fuelBar/fuelBar-33.png",
-		fuelBarSlide   : "sprites/fuelBar/fuelBar-35.png"
+		//fuelBarFill    : "sprites/fuelBar/fuelBar-33.png",
+		fuelBarSlide   : "sprites/fuelBar/fuelBar-35.png",
+		fuelBarFill    : "sprites/fuelBar/gameStart-37.png",
+		fuelBarFill2    : "sprites/fuelBar/gameStart-38.png"
 		
     };
 

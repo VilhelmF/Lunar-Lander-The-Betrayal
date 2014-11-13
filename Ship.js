@@ -38,6 +38,7 @@ Ship.prototype.fuelBuild = function () {
 	array[0] = g_sprites.fuelBarOutline;
 	array[1] = g_sprites.fuelBarFill;
 	array[2] = g_sprites.fuelBarSlide;
+	array[3] = g_sprites.fuelBarFill2;
 	
 	return array;
 };
@@ -460,7 +461,8 @@ Ship.prototype.render = function (ctx) {
 	
 	console.log(this.fuel.cx);
 	
-	//this.fuelBar[2].cropImageBy (ctx, this.fuel.cx, this.fuel.cy, this.fuel.status);
+	this.fuelBar[3].cropImageBy (ctx, this.fuel.cx, this.fuel.cy, this.fuel.status-0.03);
+	this.fuelBar[2].cropImageBy (ctx, this.fuel.cx, this.fuel.cy, this.fuel.status);
 	this.fuelBar[1].cropImageBy (ctx, this.fuel.cx, this.fuel.cy, this.fuel.status-0.03);
 	
 	this.fuelBar[0].drawAt(ctx, this.fuel.cx, this.fuel.cy);
