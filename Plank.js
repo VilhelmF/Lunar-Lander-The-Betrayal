@@ -13,6 +13,9 @@ function Plank(descr) {
     // Common inherited setup logic from Entity
     this.setup(descr);
 
+	this.sprite = g_sprites.ground;
+    
+
     this.rememberResets();
     
     // Set normal drawing scale, and warp state off
@@ -109,7 +112,7 @@ Plank.prototype.render = function (ctx) {
 		var factor = ((this.halfWidth * 2)/this.returningFull);
 
 		var halfDrawWidth = (factor * width)/2;
-		
+
 		ctx.fillStyle = "green";
 		ctx.rect(this.cx - halfDrawWidth,
     			this.cy - this.halfHeight,

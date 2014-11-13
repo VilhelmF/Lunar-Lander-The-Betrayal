@@ -17,6 +17,8 @@ function Ground(descr) {
     
     // Set normal drawing scale, and warp state off
     this._scale = 1;
+    this.sprite = g_sprites.ground;
+    this.prepareSprite();
 };
 
 Ground.prototype = new Entity();
@@ -29,11 +31,51 @@ Ground.prototype.rememberResets = function () {
     this.reset_latterY = this.latterY;
 };
 
+Ground.prototype.prepareSprite = function ()
+{
+    var width = 72;
+    var aSprites = [];
+    var i = 1;   
+    
+    while(width <= this.sprite.width - 72)
+    {
+        aSprites[i] = width;
+        width += 72;
+        i++;
+    }
+
+    var pick = Math.floor((Math.random() * aSprites.length) + 1);
+    this.spritePick = aSprites[pick];
+
+    console.log(pick);
+
+    this.getSpriteLength();
+
+
+}
+
+Ground.prototype.getSpriteLength = function ()
+{   
+
+    var x = this.latterX - this.firstX;
+    var y = this.latterY - this.firstY;
+    var x2 = Math.pow(x, 2);
+    var y2 = Math.pow(y, 2);
+
+    var c = Math.sqrt(x2 + y2);
+    this.spriteLength = c;
+    this.rotation = Math.atan(y/x);
+}
+
 // Initial, inheritable, default values
 Ground.prototype.firstX = 0;
 Ground.prototype.firstY = 570;
 Ground.prototype.latterX = 800;
 Ground.prototype.latterY = 500;
+
+Ground.prototype.spritePick = 0;
+Ground.prototype.spriteLength = 0;
+Ground.prototype.rotation = 0;
 
 
 
@@ -74,10 +116,10 @@ Ground.prototype.render = function (ctx) {
     
     ctx.save();
 
-    ctx.strokeStyle = "black";
+   ctx.strokeStyle = "black";
     ctx.fillStyle = "black";
 
-    
+   /* 
     ctx.beginPath();
     ctx.moveTo(this.firstX, g_canvas.height);
     ctx.lineTo(this.firstX, this.firstY);
@@ -86,6 +128,24 @@ Ground.prototype.render = function (ctx) {
     ctx.lineTo(this.firstX, g_canvas.height);
     ctx.stroke();
     ctx.fill();
+   */
+  var x = this.firstX + (this.latterX - this.firstX)/2; 
+  var y = this.firstY + (this.latterY - this.firstY)/2; 
+  
+
+  ctx.translate(this.firstX, this.firstY);  
+  ctx.rotate(this.rotation);
+  ctx.translate(-this.firstX,-this.firstY);
+
+    ctx.drawImage(this.sprite.image, 
+                    this.spritePick, 
+                    0, 
+                    72, 
+                    6, 
+                    this.firstX, 
+                    this.firstY - this.sprite.image.height, 
+                    this.spriteLength, 
+                    6);
 
     ctx.restore();
 
