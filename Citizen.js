@@ -76,7 +76,13 @@ Citizen.prototype.update = function (du) {
     var hitEntity = this.findHitEntity();
     if (hitEntity) 
     {
-		// Die from bullets?               
+		if(Object.getPrototypeOf(hitEntity) === Plank.prototype)
+		{
+			
+			entityManager._plank[0].returnCitizen(du);
+			return entityManager.KILL_ME_NOW;
+
+		}          
     }
 
     if(!this.isPickedUp)
@@ -101,23 +107,13 @@ Citizen.prototype.update = function (du) {
 	    	}
 	    	this.landed = true;
 
-	   		//this.cx = aGroundAndSlope.lineX;
-	    	//this.cy = aGroundAndSlope.lineY - this.getRadius();
-	    	/*if(aGroundAndSlope.slope > 0)
-	    	{
-	    		this.cx = aGroundAndSlope.lineX - 2;
-	    	}
-	    	else if(aGroundAndSlope < 0)
-	    	{
-	    		this.cx = aGroundAndSlope.lineX + 2;
-	    	}*/
-	    	
 	    	if(this.velY > 0) this.velY = 0;
-	    	if(this.velX !== 0) this.velX = 0;
-	    	
-	    	
+	    	if(this.velX !== 0) this.velX = 0;   	
 	    }
-    
+    }
+    else
+    {
+    	this.landed = false;
     }
 
 
@@ -133,7 +129,7 @@ Citizen.prototype.update = function (du) {
    
 
 
-    if(!this.isDead)
+    if(!this.isDead && !this.isPickedUp)
     {
     	spatialManager.register(this);
     }
@@ -161,10 +157,10 @@ Citizen.prototype.takeBulletHit = function () {
 Citizen.prototype.render = function (ctx) {
     if(!this.isPickedUp)
     {
-
+    	ctx.save();
     	if(!this.isDead)
     	{
-	    ctx.save();
+	    
 		
 		ctx.fillStyle = "red";
 	    ctx.beginPath();

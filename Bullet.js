@@ -100,7 +100,7 @@ Bullet.prototype.takeBulletHit = function () {
 };
 
 Bullet.prototype.render = function (ctx) {
-
+    ctx.save();
     if(this.team === 1)
     {
         var fadeThresh = Bullet.prototype.lifeSpan / 3;
@@ -123,6 +123,6 @@ Bullet.prototype.render = function (ctx) {
         //ctx.arc(this.cx - radius, this.cy - radius, radius, 0, Math.PI * 2, true);
         ctx.fill();
     }
-
+    ctx.restore();
     
 };

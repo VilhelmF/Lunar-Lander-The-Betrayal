@@ -28,13 +28,14 @@ var entityManager = {
 // "PRIVATE" DATA
 
 
-_bullets : [],
-_ships   : [],
-_ground  : [],
+_bullets    : [],
+_ships      : [],
+_ground     : [],
 _package    : [],
-_citizens : [],
+_citizens   : [],
 _background : [],
-_guns	: [],
+_guns	    : [],
+_plank      : [],
 
 
 
@@ -64,6 +65,7 @@ _generateLevel : function()
     }
 
     this.generateGround(firstX, latterX, firstY, latterY);
+
 },
 
 
@@ -119,6 +121,7 @@ deferredSetup : function () {
                         this._ground,
                         this._guns, 
                         this._citizens,
+                        this._plank,
                         ];
 },
 
@@ -150,6 +153,7 @@ generateShip : function(descr) {
                 cx   : 600,
                 cy   : 250,
     }));
+    this._plank.push(new Plank());
 
 },
 

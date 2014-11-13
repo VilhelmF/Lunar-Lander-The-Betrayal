@@ -210,13 +210,7 @@ Ship.prototype.update = function (du) {
             } 
         }
     }
-    else
-    {
-        this.landed = false;
-        this.leftRotation = 0;
-        this.rightRotation = 0;
-    }
-    
+   
     //---------------------------------------------------------------
     //---------------------------------------------------------------
     //---------------------------------------------------------------
@@ -248,8 +242,33 @@ Ship.prototype.update = function (du) {
     {
         if(Object.getPrototypeOf(hitEntity) === Citizen.prototype)
         {
-            spatialManager.register(this);
             this.maybePickUpCitizen(hitEntity);
+            spatialManager.register(this);
+        }
+        else if(Object.getPrototypeOf(hitEntity) === Plank.prototype && !(shipsRotation> 0.5*Math.PI))
+        {
+                if((this.cy + this.getRadius()) > (hitEntity.cy - hitEntity.halfHeight)
+                    && (this.cy + this.getRadius()) < (hitEntity.cy + hitEntity.halfHeight))
+                {
+                    if(this.velY > 0) this.velY = 0;
+                    if(this.velX !== 0) this.velX = 0;
+                    this.landed = true;
+                    this.adjustRotation(du);
+                    this.fuel.level = 100;            
+                }
+                if((this.cy - this.getRadius()) > (hitEntity.cy - hitEntity.halfHeight)
+                    && (this.cy - this.getRadius()) < (hitEntity.cy + hitEntity.halfHeight))
+                {
+                    this.velY = 0;
+                    this.cy = hitEntity.cy + hitEntity.halfHeight + this.getRadius();
+                }
+               
+            
+                 spatialManager.register(this);
+        }
+        else if(Object.getPrototypeOf(hitEntity) === Package.prototype)
+        {
+            hitEntity.getPackage(this);
         }
         else
         {
@@ -261,6 +280,19 @@ Ship.prototype.update = function (du) {
     {
         spatialManager.register(this);
     }
+
+    if(!this.landed)
+    {
+        this.leftRotation = 0;
+        this.rightRotation = 0;
+    }
+
+    if(this.Citizen)
+    {
+        this.maybePickUpCitizen();
+    }
+    
+
 };
 
 
@@ -275,6 +307,7 @@ Ship.prototype.computeThrustMag = function () {
         thrust += NOMINAL_THRUST;
         this.fuel.level -= 0.8;
         particleManager.thrust(this.cx, this.cy, this.rotation, this.getRadius());
+        this.landed = false;
     }
     
     return thrust;
@@ -301,6 +334,11 @@ Ship.prototype.maybeFireBullet = function () {
     }
     
 };
+
+Ship.prototype.giveFuel = function (fuel)
+{
+    this.fuel.level += fuel;
+}
 
 Ship.prototype.getRadius = function () {
     return (this.sprite.width / 2) * 0.9;
@@ -348,8 +386,11 @@ Ship.prototype.updateRotation = function (du) {
 Ship.prototype.maybePickUpCitizen = function (Citizen) {
      if (eatKey(this.USE))
      {
-        this.Citizen = Citizen.pickedUp();
-     }
+        if(!this.Citizen) this.Citizen = Citizen.pickedUp();
+        else this.Citizen = this.Citizen.pickedUp();
+     }   
+     
+
 
 };
 
