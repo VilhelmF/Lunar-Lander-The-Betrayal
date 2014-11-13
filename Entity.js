@@ -102,7 +102,8 @@ var NOMINAL_GRAVITY = 0.02;
 
 Entity.prototype.computeGravity = function () {
 //    return g_useGravity ? NOMINAL_GRAVITY : 0;
-    return NOMINAL_GRAVITY;
+    if(!this.landed) return NOMINAL_GRAVITY;
+    else return 0;
 };
 
 Entity.prototype.computeThrustMag = function()

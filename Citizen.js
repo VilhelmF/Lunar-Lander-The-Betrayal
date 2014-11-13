@@ -51,6 +51,8 @@ Citizen.prototype.halfWidth = 5;
 
 Citizen.prototype.isPickedUp = false;
 Citizen.prototype.isDead = false;
+Citizen.prototype.landed = false;
+
 
 
 
@@ -58,6 +60,12 @@ Citizen.prototype.isDead = false;
 Citizen.prototype.getRadius = function() {
 	return 2*this.halfWidth;
 }
+
+Citizen.prototype.reset = function () {
+    this.setPos(this.reset_cx, this.reset_cy);
+    this.isPickedUp = false;
+    this.isDead = false;
+};
 
     
 Citizen.prototype.update = function (du) {
@@ -91,15 +99,22 @@ Citizen.prototype.update = function (du) {
 	    	{
 	    		this.isDead = true;
 	    	}
+	    	this.landed = true;
 
-	   		var linelength = 50;
-	    	var x1 = this.cx % linelength;
-	    	var y1 = aGroundAndSlope.lineY + (x1 * aGroundAndSlope[0]);
+	   		//this.cx = aGroundAndSlope.lineX;
+	    	//this.cy = aGroundAndSlope.lineY - this.getRadius();
+	    	/*if(aGroundAndSlope.slope > 0)
+	    	{
+	    		this.cx = aGroundAndSlope.lineX - 2;
+	    	}
+	    	else if(aGroundAndSlope < 0)
+	    	{
+	    		this.cx = aGroundAndSlope.lineX + 2;
+	    	}*/
 	    	
-	    	this.cx = aGroundAndSlope.lineX;
-	    	this.cy = aGroundAndSlope.lineY - this.getRadius();
-	        this.velY = 0;
-	        this.velX = 0;
+	    	if(this.velY > 0) this.velY = 0;
+	    	if(this.velX !== 0) this.velX = 0;
+	    	
 	    	
 	    }
     
@@ -107,25 +122,15 @@ Citizen.prototype.update = function (du) {
 
 
     //Citizen moves with the ship that picked him up
-    if(hitEntity && this.isPickedUp)
+    if(this.isPickedUp)
     {
-    	/*if (Object.getPrototypeOf(hitEntity) === Ship.prototype) 
-    	{*/
-	        console.log("búja");
-	       
-	        var pos = hitEntity.getPos();
-
-	        var postest = entityManager._ships[0].getPos();
-   			//this.cx = pos.posX;
-   			//this.cy =  pos.posY + hitEntity.getRadius() - this.halfHeight;
-   			
-   			this.cx = postest.posX;
-   			this.cy = postest.posY + entityManager._ships[0].getRadius() - this.halfHeight;
-   			this.velY = 0;
-    
-    	}
-    //}
-
+    	
+	    var postest = entityManager._ships[0].getPos();
+   		this.cx = postest.posX;
+   		this.cy = postest.posY + entityManager._ships[0].getRadius() - this.halfHeight;
+   		this.velY = 0;
+    }
+   
 
 
     if(!this.isDead)
@@ -140,9 +145,14 @@ Citizen.prototype.pickedUp = function ()
 	if(!this.isDead)
 	{
 		this.isPickedUp = !this.isPickedUp;
+		if(this.isPickedUp) return this;
+		else return 0;
+		
 	}
-    
+};
 
+Citizen.prototype.takeBulletHit = function () {
+    this.isDead = true;
 };
 
 

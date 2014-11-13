@@ -73,12 +73,16 @@ Bullet.prototype.update = function (du) {
     //
     // Handle collisions
     //
-   /* var hitEntity = this.findHitEntity();
+    var hitEntity = this.findHitEntity();
     if (hitEntity) {
         var canTakeHit = hitEntity.takeBulletHit;
         if (canTakeHit) canTakeHit.call(hitEntity); 
         return entityManager.KILL_ME_NOW;
-    }*/
+    }
+    var ground = spatialManager.collidesWithGround(this.cx, this.cy, this.getRadius())
+    if (ground) {
+        return entityManager.KILL_ME_NOW;
+    }
     
     // TODO: YOUR STUFF HERE! --- (Re-)Register
     spatialManager.register(this);
