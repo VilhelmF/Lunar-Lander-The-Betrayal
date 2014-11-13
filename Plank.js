@@ -109,7 +109,7 @@ Plank.prototype.render = function (ctx) {
 		var factor = ((this.halfWidth * 2)/this.returningFull);
 
 		var halfDrawWidth = (factor * width)/2;
-
+		
 		ctx.fillStyle = "green";
 		ctx.rect(this.cx - halfDrawWidth,
     			this.cy - this.halfHeight,
