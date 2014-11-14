@@ -139,7 +139,7 @@ function processDiagnostics() {
         cx : g_mouseX,
         cy : g_mouseY,
         
-        sprite : g_sprites.ship2
+        sprite : g_sprites.ship
         });
 
     if (eatKey(KEY_K)) entityManager.killNearestShip(
@@ -167,12 +167,9 @@ function renderSimulation(ctx) {
         ctx.save();
         var scale = 2;
         var pos = entityManager.getShipPos();
-
+		
         var newWidth = pos.posX * scale;
         var newHeight = pos.posY * scale;
-		
-		console.log("newWidth: " + newWidth);
-		console.log("newHeight: " + newHeight);
 
         ctx.translate(-((newWidth - pos.posX)), -((newHeight - pos.posY)));
         ctx.scale(2, 2);
@@ -199,22 +196,18 @@ function requestPreloads() {
         //ship   : "https://notendur.hi.is/~pk/308G/images/ship.png",
 
         ship            : "sprites/landerShip-36.png",
-        ship2           : "https://notendur.hi.is/~pk/308G/images/ship_2.png",
+        shipZoom        : "sprites/landerShip-40.png",
         rock            : "https://notendur.hi.is/~pk/308G/images/rock.png",
 		kassi1          : "sprites/package/kassi1-37.png",
 		fuelBarOutline  : "sprites/fuelBar/fuelBar-32.png",
 		fuelBarFill     : "sprites/fuelBar/fuelBar-33.png",
-        fuelBarFill2    : "sprites/fuelBar/gameStart-38.png",
 		fuelBarSlide    : "sprites/fuelBar/fuelBar-35.png",
         ground          : "sprites/ground-39.png" 
-
-		
     };
 
 	preLoadAudio();
 	preLoadMountain();
 	preLoadBackground();
-	//preLoadFuelBar();
     imagesPreload(requiredImages, g_images, preloadDone);
 }
 
