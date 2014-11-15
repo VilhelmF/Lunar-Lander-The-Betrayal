@@ -248,19 +248,12 @@ Ship.prototype.update = function (du) {
     //======================The Ships Landing Detection====================
     //=====================================================================
     var ground = spatialManager.collidesWithGround(this.cx, this.cy, this.getRadius())
-    var shipsRotation = Math.abs(this.rotation) % (2*Math.PI);
+    var shipsRotation = this.rotation % (2*Math.PI);
     if(typeof ground !== 'undefined')
     {
-        if(ground.slope !== 0)
-        {
-            particleManager.explosion(this.cx, this.cy);
-			this.warp();
-        }
-        else
-        {
-           if(this.velY > 2 || this.velX > 3 || ( shipsRotation> 0.5*Math.PI))
+      
+           if(this.velY > 2 || this.velX > 3 || this.rotationalLanding(shipsRotation, ground.rotation))
             {
-
                 particleManager.explosion(this.cx, this.cy);
 				this.warp();
             }
@@ -270,9 +263,8 @@ Ship.prototype.update = function (du) {
                 if(this.velX !== 0) this.velX = 0;
                 this.landed = true;
                 
-                this.adjustRotation(du);
+                if(ground.rotation === 0) this.adjustRotation(du);
             } 
-        }
     }
    
     //---------------------------------------------------------------
@@ -311,8 +303,10 @@ Ship.prototype.update = function (du) {
             this.maybePickUpCitizen(hitEntity);
             spatialManager.register(this);
         }
-        else if(Object.getPrototypeOf(hitEntity) === Plank.prototype && !(shipsRotation> 0.5*Math.PI))
+        else if(Object.getPrototypeOf(hitEntity) === Plank.prototype && !(Math.abs(shipsRotation) > 0.5*Math.PI))
         {
+
+                
                 if((this.cy + this.getRadius()) > (hitEntity.cy - hitEntity.halfHeight)
                     && (this.cy + this.getRadius()) < (hitEntity.cy + hitEntity.halfHeight))
                 {
@@ -328,6 +322,11 @@ Ship.prototype.update = function (du) {
                     this.velY = 0;
                     this.cy = hitEntity.cy + hitEntity.halfHeight + this.getRadius();
                 }
+                if(hitEntity.cx > this.cx + this.getRadius() || hitEntity.cx < this.cx - this.getRadius())
+                {
+                    this.velX = 0;
+                }
+               
                
             
                  spatialManager.register(this);
@@ -493,8 +492,45 @@ Ship.prototype.adjustRotation = function(du) {
         this.cx += this.rightRotation * 25 * du;
         this.rightRotation += 0.001;  
     }
-  
+}
 
+Ship.prototype.rotationalLanding = function (shipsRotation, groundRotation)
+{
+    if(groundRotation === 0 && Math.abs(shipsRotation) > 0.5*Math.PI) return true; 
+    if(groundRotation > 0 && !(shipsRotation < (groundRotation * 1.05) && (shipsRotation > (groundRotation * 0.95)))) return true;
+    if(groundRotation < 0 && !(shipsRotation > (groundRotation * 1.05) && (shipsRotation < (groundRotation * 0.95)))) return true;
+    
+    /*    if((shipsRotation < (groundRotation * 1.1)) && (shipsRotation > (groundRotation * 0.9)))
+        {
+            return false
+        }
+
+        if((shipsRotation < (groundRotation * 1.1)) && (shipsRotation > (groundRotation * 0.9)))
+        {
+            var x1 = shipsRotation < (groundRotation * 1.1);
+            var x2 = shipsRotation > (groundRotation * 0.9);
+            console.log(x1);
+            console.log(x2)
+            return false;
+        }
+        else
+        {
+             var x1 = shipsRotation < (groundRotation * 1.1);
+            var x2 = shipsRotation > (groundRotation * 0.9);
+            console.log(x1);
+            console.log(x2)
+            console.log("búmm");
+            console.log(shipsRotation);
+            console.log(groundRotation);
+            console.log(groundRotation * 1.1);
+            console.log(groundRotation * 0.9);
+            
+
+            return true;
+        }
+       
+    } */  
+    return false;
 }
 
 
@@ -507,5 +543,20 @@ Ship.prototype.render = function (ctx) {
     );
     this.sprite.scale = origScale;
 	
+
+//	console.log(this.fuel.cx);
+	
+/*	this.fuelBar[3].cropImageBy (ctx, this.fuel.cx, this.fuel.cy, this.fuel.status-0.03);
+	this.fuelBar[2].cropImageBy (ctx, this.fuel.cx, this.fuel.cy, this.fuel.status);
+	this.fuelBar[1].cropImageBy (ctx, this.fuel.cx, this.fuel.cy, this.fuel.status-0.03);
+	
+	this.fuelBar[0].drawAt(ctx, this.fuel.cx, this.fuel.cy);
+	//this.fuelBar[1].drawAt(ctx, this.fuel.cx, this.fuel.cy);
+*/	
+
+    //render fuel
+   // util.fillBox(ctx, this.fuel.cx, this.fuel.cy, this.fuel.level, this.fuel.height, this.fuel.color);
+
 	this.fuel.render(ctx, this.cx, this.cy);
+
 };
