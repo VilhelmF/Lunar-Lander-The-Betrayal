@@ -8,6 +8,22 @@
 
 var util = {
 
+// GROUNDINFO
+// ==========
+
+getGroundSlopes: function() {
+	var tempArray = entityManager._ground;
+	var slope = [];
+	for(var i=0; i<tempArray.length; i++) {
+		slope[i] = tempArray[i];
+	}
+	return slope;
+},
+
+
+
+
+
 
 // RANGES
 // ======

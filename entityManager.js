@@ -28,29 +28,28 @@ var entityManager = {
 // "PRIVATE" DATA
 
 
-_bullets : [],
-_ships   : [],
-_ground  : [],
+_bullets    : [],
+_ships      : [],
+_ground     : [],
 _package    : [],
-_citizens : [],
-_background	: [],
+_citizens   : [],
+_background : [],
+_guns	    : [],
+_plank      : [],
 
 
 
 // "PRIVATE" METHODS
 
 
-_generateLevel : function()
-{
-    var levelArray = getLevel();
-
-/*    var levelDesign = new LevelDesign();
-    levelDesign.setUp(); */
-
+_generateLevel : function() {
+    levelDesign.setUp();
+    var levelArray = levelDesign.getLevel();
+/*
     var i = 0;
     var firstX = 0;
     var firstY = levelArray[i];
-    var latterX = 50;
+    var latterX = Ground.prototype.plankWidth;
     var latterY = levelArray[i+1];
     while(i < levelArray.length-1)
     {
@@ -58,12 +57,11 @@ _generateLevel : function()
         i++;
         firstX = latterX;
         firstY = latterY;
-        latterX += 50;
+        latterX += Ground.prototype.plankWidth;
         latterY = levelArray[i]; 
     }
 
-    this.generateGround(firstX, latterX, firstY, latterY);
-
+    this.generateGround(firstX, latterX, firstY, latterY); */
 
 },
 
@@ -117,8 +115,10 @@ deferredSetup : function () {
                         this._bullets, 
                         this._ships,
 						this._package,						
-                        this._ground, 
+                        this._ground,
+                        this._guns, 
                         this._citizens,
+                        this._plank,
                         ];
 },
 
@@ -129,35 +129,56 @@ init: function() {
 	this._generatePackage({cx: 200, cy: -30});
 },
 
-fireBullet: function(cx, cy, velX, velY, rotation) {
+fireBullet: function(cx, cy, velX, velY, rotation, team) {
     this._bullets.push(new Bullet({
         cx   : cx,
         cy   : cy,
         velX : velX,
         velY : velY,
 
-        rotation : rotation
+        rotation : rotation,
+        team    : team,
     }));
+
 },
 
 
 generateShip : function(descr) {
-
     this._ships.push(new Ship(descr));
+},
 
+generateGun : function(cx, cy) {
+    this._guns.push(new Gun({
+        cx   : cx,
+        cy   : cy,
+    }));
+},
 
+generatePlank : function(cx, cy) {
+    this._plank.push(new Plank({
+        cx : cx,
+        cy : cy,
+    }));
+},
+
+generateCitizen : function(cx, cy) {
+    this._citizens.push(new Citizen({
+        cx : cx,
+        cy : cy,
+    }));
 },
 
 generateGround : function(x1, x2, y1, y2) {
-   
-     this._ground.push(new Ground({
+    this._ground.push(new Ground({
         firstX   : x1,
         firstY   : y1,
         latterX  : x2,
         latterY  : y2,
+		cx		 : x1,
+		cy		 : y1,
     }));
 
-     this._citizens.push(new Citizen({
+/*     this._citizens.push(new Citizen({
         cx   : x1,
         cy   : (y1 - 2*Citizen.prototype.halfHeight),
     }));

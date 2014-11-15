@@ -5,132 +5,166 @@ function Package(descr) {
 	//this.rememberResets();
 	
 	this.packagePoint = g_sprites.kassi1;
+	
 	this.width  = this.packagePoint.width;
 	this.height = this.packagePoint.height;
 	this.radius = util.findRadius(this.width, this.height);
 	
 	
-	//this.cx = this.findSafePlace();
+	this.createGroundarrayInfo();
 	
-	//this.radius = 10;
+	this.findGroundLengthBetween(0,1);
 	
+	// Find x-coordinate on flat-land
+	this.cx = this.findSafePlace();
 };
 
 
 Package.prototype = new Entity();
 
-Package.prototype.rememberResets = function () {
-    // Remember my reset positions
-    this.reset_cx = this.cx;
-    this.reset_cy = this.cy;
-    //this.reset_rotation = this.rotation;
-};
 
+Package.prototype.rotation = 0;
 
 
 Package.prototype.velX = 0;
 Package.prototype.velY = 0;
 
-//Package.prototype.cx   = 100;
-// Package.prototype.cy   = -30;
-
 Package.prototype.width;
 Package.prototype.height;
 
 Package.prototype.boxStill = false;
+Package.prototype.destroy = false;
+
+
+
+
+Package.prototype .findGroundLengthBetween = function(index1, index2){
+	
+	var firstX = this.groundInfo[index1].getPos().posX
+	var secondX= this.groundInfo[index2].getPos().posX
+	
+	this.groundLength = Math.abs(secondX - firstX);
+};
+
+
+
+
+// package gets all ground information into array.
+Package.prototype .createGroundarrayInfo = function(index1, index2){
+	this.groundInfo = [];
+	this.groundInfo = util.getGroundSlopes();
+};
+
+
+
+
+
 
 Package.prototype.update = function(du) { 
-	if( !this.boxStill /*|| this.cy <= 0*/) {
-		
+	
+	//if( !this.boxStill ) {
 		spatialManager.unregister(this);
-	
-	
-		var findHit = spatialManager.collidesWithGround(
+		
+		var groundHit = spatialManager.collidesWithGround(
 													this.cx, 
 													this.cy, 
-													this.radius
+													this.radius-8  //SKÍTA FIX
 													);
-		console.log("findHit " + findHit);
-	
-	
-		console.log( "this.cx: " + this.cx + " this.cy: " + this.cy );
-	
-		// console.log(this.packagePoint);
-		if( findHit ) {
+		
+		// package stop if groundHit is true
+		// otherwise keep falling down
+		if( groundHit ) {
+			// 
 			this.velY = 0;
 			this.boxStill  = true;
 		} else {
 			this.velY += 0.01;
 			this.cy += this.velY * du;
-			//spatialManager.register(this);
 		}
+
+		if(this.destroy)
+		{
+			 return entityManager.KILL_ME_NOW;  
+		}
+		
 		spatialManager.register(this);
-	}
+	//}
 };
 
+Package.prototype.getPackage = function(Player)
+{
+	this.destroy = true;
+	//Random powerups?
 
-Package.prototype.render = function(ctx) { 
-	this.packagePoint.drawAt(ctx, this.cx, this.cy);
-};
+	Player.giveFuel(100);
+
+}
 
 
 Package.prototype.findSafePlace = function(){
-	return this.createRandomX();
+	
+	var randX = util.getRandomInt(0,800);
+	return this.findPlaceOnLand(randX);
 };
 
-Package.prototype.createRandomX = function(){
-	var x = 0;
-	var tempX = 0;
-	
-	for(var i=0; i<100; i++){
-		x = util.getRandomInt(0,800);
-		tempX = this.findPlaceOnLand(x);
-	}
-	
-	return tempX;
+Package.prototype.getRadius = function () {
+    return this.radius;
 };
-	
-	
 
 
 Package.prototype.findPlaceOnLand = function(randomX){
 	
-	var ground   = spatialManager._ground;
 	var nearestX = Number.MAX_VALUE;
-	var tempr    = 0;
-	var tempDist = 0;
+	var index   = 0;
+	var tempDist = -1;
+	var tempX    = 0;
 	
-	console.log("ground[1].getSlope: " + ground);
-	console.log("spatialManager._ground " + spatialManager._ground);
+	var leftLimit = 0;
+	var rightLimit = 0;
 	
-	for(var r in ground) {
+	// find the shortest distence between randomX and 
+	for(var r in this.groundInfo) {
 		
-		if(ground[r].getSlope == 0){
+		//if ground is flat then...
+		if(this.groundInfo[r].getSlope() == 0) {
 			
-			tempDist = Math.abs(nearestX - randomX);
+			leftLimit = this.groundInfo[r].getPos().posX;
+			rightLimit = leftLimit+this.groundLength;
+			
+			tempDist = Math.abs(leftLimit - randomX);
 			
 			if(tempDist < nearestX){
 			
-				nearestX = tempDist; 
-				tempr = r;
+				nearestX = tempDist;
+				index = r;
 			}		
 		}
 	}
-		
 	
-	return Mat.abs(ground[tempr].firstX - ground[tempr].latterX);
+	// if temprDist have been changes then...
+	if(tempDist > -1)
+	{
+		var x = this.groundInfo[index].getPos().posX;
+		
+		// center of groundPaddle
+		return x+(this.groundLength/2);
+	}
+	else
+	{
+		console.log("fail to find a flat land !");
+	}
+};	
+
+
+
+
+
+
+
+
+Package.prototype.render = function(ctx) { 
+	this.packagePoint.drawCentredAt(ctx, 
+									this.cx, 
+									this.cy, 
+									this.rotation);
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-

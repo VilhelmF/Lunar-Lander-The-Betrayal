@@ -71,3 +71,16 @@ Sprite.prototype.drawWrappedVerticalCentredAt = function (ctx, cx, cy, rotation)
     this.drawCentredAt(ctx, cx, cy - sh, rotation);
     this.drawCentredAt(ctx, cx, cy + sh, rotation);
 };
+
+
+
+Sprite.prototype.cropImageBy = function (ctx, cx, cy, percent) {
+	var scaleWidth = this.width * percent;
+	
+	if(this.image == g_sprites.fuelBarSlide.image) {
+		ctx.drawImage( this.image, cx, cy, this.width, this.height, cx, cy, scaleWidth, this.height ); 
+	}
+	else{
+		ctx.drawImage( this.image, cx, cy, scaleWidth, this.height, cx, cy, scaleWidth, this.height);
+	}
+};
