@@ -151,8 +151,11 @@ collidesWithGround : function(posX, posY, radius)
 },
 
 render: function(ctx) {
+    
     var oldStyle = ctx.strokeStyle;
     ctx.strokeStyle = "red";
+
+
     
     for (var ID in this._entities) {
         var e = this._entities[ID];
@@ -169,8 +172,8 @@ render: function(ctx) {
         var e = this._ground[ID];
         
         ctx.fillStyle = "red";
-        ctx.fillRect(e.firstX, e.firstY, 5, 5);
-        ctx.fillRect(e.latterX, e.latterY, 5, 5);
+        util.strokeBox(ctx, e.firstX, e.firstY, 5, 5);
+        ctx.fillRect(ctx, e.latterX, e.latterY, 5, 5);
     }
     
     ctx.strokeStyle = oldStyle;

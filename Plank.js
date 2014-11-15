@@ -35,7 +35,7 @@ Plank.prototype.setSize = function()
 {
     this.halfWidth = this.sprite.width/2;
     this.halfHeight = this.sprite.height/2;
-    this.radius = this.halfWidth/2;
+    this.radius = this.halfHeight;
 }
 
 // Initial, inheritable, default values
@@ -101,8 +101,8 @@ Plank.prototype.reset = function () {
 Plank.prototype.render = function (ctx) {
     //var origScale = this.sprite.scale;
     
-    /*ctx.save();
-	
+    ctx.save();
+	/*
     ctx.beginPath();
     ctx.fillStyle = "grey";
     ctx.strokeStyle = "black";
