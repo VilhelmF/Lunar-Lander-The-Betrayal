@@ -104,7 +104,9 @@ Ship.prototype._updateWarp = function (du) {
     
         //this._moveToASafePlace();
         this.cx = this.reset_cx;    
-        this.cy = this.reset_cy;    
+        this.cy = this.reset_cy; 
+        NOMINAL_ROTATE_RATE_L = 0.01;
+        NOMINAL_ROTATE_RATE_R = 0.01;   
 
         this.halt();
         this._scaleDirn = 0.5;
@@ -371,7 +373,7 @@ Ship.prototype.updateRotation = function (du) {
             this.rotation += NOMINAL_ROTATE_RATE_R * du;
             NOMINAL_ROTATE_RATE_R += 0.001;    
         }
-        else this.laned = false;
+        else this.landed = false;
     }
     else
     {

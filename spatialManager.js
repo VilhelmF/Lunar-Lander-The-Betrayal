@@ -25,10 +25,6 @@ _nextGroundID : 1,
 _entities : [],
 _ground   : [],
 
-// "PRIVATE" METHODS
-//
-// <none yet>
-
 
 // PUBLIC METHODS
 
@@ -43,7 +39,6 @@ getNewGroundID : function() {
     return this._nextGroundID++;
 
 },
-
 
 
 register: function(entity) {
@@ -80,14 +75,11 @@ findEntityInRange: function(posX, posY, radius) {
         var distanceSq = util.distSq( posX, posY, e.cx, e.cy );
         var limitSq = util.square(radius + e.getRadius());
         if (distanceSq < limitSq) { return e; }
-        //else { return false}
     }
-
 },
 
 collidesWithGround : function(posX, posY, radius)
 {
-
     for(var ID in this._ground)
     {
         var groundBit = this._ground[ID];
@@ -104,16 +96,13 @@ collidesWithGround : function(posX, posY, radius)
         var groundLength = latterX - firstX;
         var slope = groundBit.getSlope();
         var lineC = latterY - slope*latterX;
-
-       
+      
         if((firstX <= posX && latterX > posX) ||
            (firstX <= posX + groundLength && latterX > posX + groundLength) ||
            (firstX <= posX - groundLength && latterX > posX - groundLength ))
         {
             //if(firstY < (posY + radius)  || latterY < (posY + radius))
             //{
-
-
                
                 for(var i = 0; i < groundLength; i++)
                 {
@@ -138,8 +127,6 @@ collidesWithGround : function(posX, posY, radius)
                                     rotation:   groundBit.rotation,
 									index   :   i,
                                 };
-
-                        //return true;
                     }
                 }
 
@@ -157,10 +144,9 @@ collidesWithGround : function(posX, posY, radius)
                {
                     var aGroundAndSlope = [slope, latterY];
                     return aGroundAndSlope;
-               }*/
-           // }    
+               }
+             } */   
         }       
-        
     }
 },
 
@@ -172,18 +158,22 @@ render: function(ctx) {
         var e = this._entities[ID];
         util.strokeCircle(ctx, e.cx, e.cy, e.getRadius());
         
-
         var e = this._entities[ID];
         var cx = e.cx - e.getRadius();
         var cy = e.cy - e.getRadius();
         var box = 2 * e.getRadius();
         util.strokeBox(ctx, cx, cy, box, box);
     }
-   
 
-
+    for (var ID in this._ground) {
+        var e = this._ground[ID];
+        
+        ctx.fillStyle = "red";
+        ctx.fillRect(e.firstX, e.firstY, 5, 5);
+        ctx.fillRect(e.latterX, e.latterY, 5, 5);
+    }
+    
     ctx.strokeStyle = oldStyle;
-
 }
 
-}
+};

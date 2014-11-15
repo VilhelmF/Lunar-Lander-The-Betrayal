@@ -127,6 +127,8 @@ Ground.prototype.render = function (ctx) {
     ctx.lineTo(this.firstX, g_canvas.height);
     ctx.stroke();
     ctx.fill();
+
+    
    
   
   

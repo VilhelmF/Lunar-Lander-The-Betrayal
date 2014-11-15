@@ -70,13 +70,13 @@ Citizen.prototype.reset = function () {
     
 Citizen.prototype.update = function (du) {
 
-     spatialManager.unregister(this);
+    spatialManager.unregister(this);
 
 
     var hitEntity = this.findHitEntity();
     if (hitEntity) 
     {
-		if(Object.getPrototypeOf(hitEntity) === Plank.prototype)
+		if(Object.getPrototypeOf(hitEntity) === Plank.prototype  && this.isPickedUp === false)
 		{
 			
 			entityManager._plank[0].returnCitizen(du);

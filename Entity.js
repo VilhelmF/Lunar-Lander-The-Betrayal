@@ -49,9 +49,6 @@ Entity.prototype.setup = function (descr) {
         this._spatialID = spatialManager.getNewSpatialID();    
     }
     
-    //spatialManager.register(this);
-    
-    // I am not dead yet!
     this._isDeadNow = false;
 };
 
