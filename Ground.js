@@ -74,6 +74,7 @@ Ground.prototype.latterY = 500;
 Ground.prototype.spritePick = 0;
 Ground.prototype.spriteLength = 0;
 Ground.prototype.rotation = 0;
+Ground.prototype.width = g_canvas.width / 16;
 
 
 
@@ -114,7 +115,7 @@ Ground.prototype.render = function (ctx) {
     
     ctx.save();
 
-   ctx.strokeStyle = "black";
+    ctx.strokeStyle = "black";
     ctx.fillStyle = "black";
 
   
