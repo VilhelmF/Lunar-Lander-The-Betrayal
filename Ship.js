@@ -21,27 +21,17 @@ function Ship(descr) {
     this.rememberResets();
     
     // Default sprite, if not otherwise specified
-    this.sprite = this.sprite || g_sprites.ship;
-	this.fuelBar = this.fuelBuild();
+    this.sprite = this.sprite || g_sprites.shipZoom;
+
 	
     // Set normal drawing scale, and warp state off
-    this._scale = 1;
+    this._scale = 0.5;
     this._isWarping = false;
 };
 
 Ship.prototype = new Entity();
 
 
-Ship.prototype.fuelBuild = function () {
-	var array = [];
-	
-	array[0] = g_sprites.fuelBarOutline;
-	array[1] = g_sprites.fuelBarFill;
-	array[2] = g_sprites.fuelBarSlide;
-	array[3] = g_sprites.fuelBarFill2;
-	
-	return array;
-};
 
 Ship.prototype.rememberResets = function () {
     // Remember my reset positions
@@ -74,25 +64,81 @@ Ship.prototype.fuel = {
     cx : 0,
     cy : 0,
 
-	//image   : this.fuelBar,
-	status: 1,				// 100%
+	status: 1,	// 100%
 	
     height : 20,
     color : "red",
 
-    level : 100,
+	render: function(ctx, cx, cy) {
+	
+		if(!g_doZoom){
+			if(this.status > 0.23){
+			
+				g_sprites.fuelBarSlide.cropImageBy (ctx, 
+													this.cx, 
+													this.cy, 
+													this.status);
+				g_sprites.fuelBarFill.cropImageBy  (ctx, 
+													this.cx, 
+													this.cy, 
+													this.status-0.04);
+			}
+			else 
+			{
+				g_sprites.fuelBarFill.cropImageBy  (ctx, 
+													this.cx, 
+													this.cy, 
+													this.status);
+			}
+	
+			//fuel bar outline
+			g_sprites.fuelBarOutline.drawAt(ctx, this.cx, this.cy);
+		
+			//fuel bar status shown on screen right 
+			//side of sprite fuelBarOutline. 
+			ctx.save();
+			ctx.fillStyle = "black";
+			ctx.font = "bold 12px Courier New";
+			ctx.fillText(
+						Math.floor(this.status * 100) + "%", 
+						g_sprites.fuelBarOutline.width, 
+						28
+					);
+			ctx.restore();
+			
+		}
+		else {
+			
+			// zoom mode, 
+			// Þorgeir þarf að tala við sævar um þetta
+			
+			ctx.save();
+			
+			var y = cy+25;
+			var x = cx+35;
+			
+			ctx.fillStyle = "green";
+			ctx.font = "bold 10px Courier New";
+			ctx.fillText(Math.floor(this.status * 100) + "%",
+							x+5, 
+							y);
+							
+			ctx.font = "bold 8px Courier New";
+			ctx.fillText("FUEL",
+							x, 
+							y-8);
+			
+			ctx.restore();
+
+		
+		}
+	},
 };
 
 
 //Mission variables?
 Ship.prototype.landed = false;
 Ship.prototype.Citizen = 0; 
-
-// HACKED-IN AUDIO (no preloading)
-//Ship.prototype.warpSound = new Audio(
-//    "sounds/shipWarp.ogg");
-
-
 
 
 //===========================================================================
@@ -101,7 +147,7 @@ Ship.prototype.Citizen = 0;
 Ship.prototype.warp = function () {
 
     this._isWarping = true;
-    this._scaleDirn = -1;
+    this._scaleDirn = -0.5;
 
     if(this.Citizen)
     {
@@ -109,8 +155,10 @@ Ship.prototype.warp = function () {
         this.Citizen = 0;
     }
 	
+	
+	//ÞESSI ER EITTHVAÐ AÐ KLIKKA!!
 	// shipWarping death sound played
-	g_audio.shipWarp.Play();
+	g_audio.shipWarp.Play();				
 	
 	
     
@@ -131,11 +179,11 @@ Ship.prototype._updateWarp = function (du) {
         this.cy = this.reset_cy;    
 
         this.halt();
-        this._scaleDirn = 1;
+        this._scaleDirn = 0.5;
         
-    } else if (this._scale > 1) {
+    } else if (this._scale > 0.5) {
     
-        this._scale = 1;
+        this._scale = 0.5;
         this._isWarping = false;
         
         // Reregister me from my old posistion
@@ -323,7 +371,7 @@ Ship.prototype.computeThrustMag = function () {
     if (keys[this.KEY_THRUST]) {
         thrust += NOMINAL_THRUST;
         //this.fuel.level -= 0.8;
-		this.fuel.status -= 0.005;
+		this.fuel.status -= 0.0005;
         particleManager.thrust(this.cx, this.cy, this.rotation, this.getRadius());
         this.landed = false;
     }
@@ -359,7 +407,7 @@ Ship.prototype.giveFuel = function (fuel)
 }
 
 Ship.prototype.getRadius = function () {
-    return (this.sprite.width / 2) * 0.9;
+	return ((this.sprite.width / 2) * 0.9)/2;
 };
 
 Ship.prototype.takeBulletHit = function () {
@@ -495,16 +543,20 @@ Ship.prototype.render = function (ctx) {
     );
     this.sprite.scale = origScale;
 	
+
 //	console.log(this.fuel.cx);
 	
-	this.fuelBar[3].cropImageBy (ctx, this.fuel.cx, this.fuel.cy, this.fuel.status-0.03);
+/*	this.fuelBar[3].cropImageBy (ctx, this.fuel.cx, this.fuel.cy, this.fuel.status-0.03);
 	this.fuelBar[2].cropImageBy (ctx, this.fuel.cx, this.fuel.cy, this.fuel.status);
 	this.fuelBar[1].cropImageBy (ctx, this.fuel.cx, this.fuel.cy, this.fuel.status-0.03);
 	
 	this.fuelBar[0].drawAt(ctx, this.fuel.cx, this.fuel.cy);
 	//this.fuelBar[1].drawAt(ctx, this.fuel.cx, this.fuel.cy);
-	
+*/	
 
     //render fuel
    // util.fillBox(ctx, this.fuel.cx, this.fuel.cy, this.fuel.level, this.fuel.height, this.fuel.color);
+
+	this.fuel.render(ctx, this.cx, this.cy);
+
 };

@@ -23,6 +23,7 @@ function handleMouse(evt) {
     var button = evt.buttons === undefined ? evt.which : evt.buttons;
     if (!button) return;
     
+	g_startGame = true;
     entityManager.yoinkNearestShip(g_mouseX, g_mouseY);
 }
 

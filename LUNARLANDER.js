@@ -77,13 +77,36 @@ function gatherInputs() {
 
 function updateSimulation(du) {
     
-    processDiagnostics();
+	//Þ: TÍMABUNDIÐ !!
+	if(!g_startGame){
+		g_tickCount += 1;
+			
+        if (g_tickCount > g_ticksPerFrame) {
+        
+        	g_tickCount = 0;
+        	
+			 // If the current frame index is in range
+            if (g_frameIndex < g_numberOfFrames - 1) {	
+                // Go to the next frame
+                g_frameIndex += 1;
+                g_posX += 2;
+            } else {
+				g_frameIndex = 0;
+            }
+        }
+			
+    }
+		
+	else
+	{
+		processDiagnostics();
     
-    entityManager.update(du);
-    particleManager.update(du);
+		entityManager.update(du);
+		particleManager.update(du);
 
-    // Prevent perpetual firing!
-    eatKey(Ship.prototype.KEY_FIRE);
+		// Prevent perpetual firing!
+		eatKey(Ship.prototype.KEY_FIRE);
+	}
 }
 
 // GAME-SPECIFIC DIAGNOSTICS
@@ -93,8 +116,19 @@ var g_useGravity = false;
 var g_useAveVel = true;
 var g_renderSpatialDebug = false;
 var g_doZoom = false;
+var g_startGame = false;
 
-var KEY_MIXED   = keyCode('M');;
+// KILL THIS VARIABLE
+var g_tickCount = 0;
+var g_ticksPerFrame = 10;
+var g_frameIndex = 0; 
+var g_numberOfFrames = 10;
+var g_posX = 0;
+        
+
+
+
+var KEY_MIXED   = keyCode('M');
 var KEY_GRAVITY = keyCode('G');
 var KEY_AVE_VEL = keyCode('V');
 var KEY_SPATIAL = keyCode('X');
@@ -139,7 +173,7 @@ function processDiagnostics() {
         cx : g_mouseX,
         cy : g_mouseY,
         
-        sprite : g_sprites.ship2
+        sprite : g_sprites.ship
         });
 
     if (eatKey(KEY_K)) entityManager.killNearestShip(
@@ -163,27 +197,71 @@ function processDiagnostics() {
 
 function renderSimulation(ctx) {
     
-	if(g_doZoom) {
-        ctx.save();
-        var scale = 2;
-        var pos = entityManager.getShipPos();
-
-        var newWidth = pos.posX * scale;
-        var newHeight = pos.posY * scale;
+	if( !g_startGame ){
+		//STARTSCREEN kóði sem hægt er að nota sem endar þarna -> (*)
+		g_sprites.st_screenLayer1.drawAt(ctx, 0, 0);
+		g_sprites.st_screenLayer2.drawAt(ctx, 0, 0);
 		
-		console.log("newWidth: " + newWidth);
-		console.log("newHeight: " + newHeight);
+		//position of sprite:
+		//			st_screenLayer3
+		//			st_screenLayer4
+		var pos = {x: 295, y: 295};
+		
+		var beginXLimit = pos.x;
+		var endXLimit   = pos.x + g_sprites.st_screenLayer3.width;
+		
+		var beginYLimit = pos.y;
+		var endYLimit   = pos.y + g_sprites.st_screenLayer3.height;
+		
+		if
+		( 	
+			util.isBetween( g_mouseX, beginXLimit, endXLimit ) &&
+			util.isBetween( g_mouseY, beginYLimit, endYLimit )
+		)
+		{	
+			g_sprites.st_screenLayer4.drawAt(ctx, pos.x, pos.y);
+		}
+		else 
+		{
+			g_sprites.st_screenLayer3.drawAt(ctx, pos.x, pos.y);
+		}
+		
+		g_sprites.st_screenLayer5.drawAt(ctx, 0, 0);
+		
+		// (*)
+		
+		
+		//tímabundið dóterí, vildi bara sjá kallinn hreyfast
+		var w = g_sprites.oldManWalking.width;
+		var h = g_sprites.oldManWalking.height;
+		
+		
+		ctx.drawImage(g_sprites.oldManWalking.image,
+		g_frameIndex * w/10, 0, w/10, h, g_posX, 450, w/10, h);
+		
+	}
+	else
+	{	
+		
+		if(g_doZoom) {
+			ctx.save();
+			var scale = 2;
+			var pos = entityManager.getShipPos();
+			
+			var newWidth = pos.posX * scale;
+			var newHeight = pos.posY * scale;
 
-        ctx.translate(-((newWidth - pos.posX)), -((newHeight - pos.posY)));
-        ctx.scale(2, 2);
-    }
+			ctx.translate(-((newWidth - pos.posX)), -((newHeight - pos.posY)));
+			ctx.scale(2, 2);
+		}
 
-    entityManager.render(ctx);
-    particleManager.render(ctx);
+		entityManager.render(ctx);
+		particleManager.render(ctx);
 
-    if (g_renderSpatialDebug) spatialManager.render(ctx);
+		if (g_renderSpatialDebug) spatialManager.render(ctx);
 
-    if(g_doZoom) ctx.restore();
+		if(g_doZoom) ctx.restore();
+	}
 }
 
 
@@ -199,22 +277,24 @@ function requestPreloads() {
         //ship   : "https://notendur.hi.is/~pk/308G/images/ship.png",
 
         ship            : "sprites/landerShip-36.png",
-        ship2           : "https://notendur.hi.is/~pk/308G/images/ship_2.png",
+        shipZoom        : "sprites/landerShip-40.png",
         rock            : "https://notendur.hi.is/~pk/308G/images/rock.png",
 		kassi1          : "sprites/package/kassi1-37.png",
 		fuelBarOutline  : "sprites/fuelBar/fuelBar-32.png",
 		fuelBarFill     : "sprites/fuelBar/fuelBar-33.png",
-        fuelBarFill2    : "sprites/fuelBar/gameStart-38.png",
 		fuelBarSlide    : "sprites/fuelBar/fuelBar-35.png",
-        ground          : "sprites/ground-39.png" 
-
-		
+        ground          : "sprites/ground-39.png",
+		st_screenLayer1 : "sprites/startScreen/gameStart-40.png",
+		st_screenLayer2 : "sprites/startScreen/gameStart-42.png",
+		st_screenLayer3 : "sprites/startScreen/gameStart-44.png",
+		st_screenLayer4 : "sprites/startScreen/gameStart-47.png",
+		st_screenLayer5 : "sprites/startScreen/gameStart-43.png",
+		oldManWalking	: "sprites/startScreen/oldManWalking-38.png"
     };
 
 	preLoadAudio();
 	preLoadMountain();
 	preLoadBackground();
-	//preLoadFuelBar();
     imagesPreload(requiredImages, g_images, preloadDone);
 }
 
