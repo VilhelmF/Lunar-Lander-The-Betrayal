@@ -240,50 +240,7 @@ Ship.prototype.update = function (du) {
         return;
     }
     
-
-     spatialManager.unregister(this);
-
-
-    //=====================================================================
-    //======================The Ships Landing Detection====================
-    //=====================================================================
-    var ground = spatialManager.collidesWithGround(this.cx, this.cy, this.getRadius())
-    var shipsRotation = this.rotation % (2*Math.PI);
-    if(typeof ground !== 'undefined')
-    {
-      
-           if(this.velY > 2 || this.velX > 3 || this.rotationalLanding(shipsRotation, ground.rotation))
-            {
-                particleManager.explosion(this.cx, this.cy);
-				this.warp();
-            }
-            else
-            {   
-                if(this.velY > 0) this.velY = 0;
-                if(this.velX !== 0) this.velX = 0;
-                this.landed = true;
-                
-                if(ground.rotation === 0) this.adjustRotation(du);
-            } 
-    }
-   
-    //---------------------------------------------------------------
-    //---------------------------------------------------------------
-    //---------------------------------------------------------------
-
-    if(this.fuel.status <= 0) {
-        particleManager.explosion(this.cx, this.cy);
-        //this.fuel.level = 100; // FIXME: temporary, should loose life
-		this.fuel.status = 1;
-		
-        this.warp();
-    }
-
-    if(this._isDeadNow)
-    {
-        return entityManager.KILL_ME_NOW;  
-    }
-
+    spatialManager.unregister(this);
 
     // Perform movement substeps
     var steps = this.numSubSteps;
@@ -292,9 +249,22 @@ Ship.prototype.update = function (du) {
         this.computeSubStep(dStep);
     }
 
-    // Handle firing
-    this.maybeFireBullet();
 
+    /*-------------------------------------------------------------------------------------------
+                                    The Ship's Landing Detection
+    ---------------------------------------------------------------------------------------------*/
+    
+    var ground = spatialManager.collidesWithGround(this.cx, this.cy, this.getRadius())
+    var shipsRotation = this.rotation % (2*Math.PI);
+    if(typeof ground !== 'undefined')
+    {
+        this.landingOnGround(shipsRotation, ground, du);     
+    }
+
+
+    /*-------------------------------------------------------------------------------------------
+                                    The Ship's hit entity checks
+    ---------------------------------------------------------------------------------------------*/
     var hitEntity = this.findHitEntity();
     if (hitEntity) 
     {
@@ -305,31 +275,8 @@ Ship.prototype.update = function (du) {
         }
         else if(Object.getPrototypeOf(hitEntity) === Plank.prototype && !(Math.abs(shipsRotation) > 0.5*Math.PI))
         {
-
+            this.landingOnPlank(shipsRotation, hitEntity, du);
                 
-                if((this.cy + this.getRadius()) > (hitEntity.cy - hitEntity.halfHeight)
-                    && (this.cy + this.getRadius()) < (hitEntity.cy + hitEntity.halfHeight))
-                {
-                    if(this.velY > 0) this.velY = 0;
-                    if(this.velX !== 0) this.velX = 0;
-                    this.landed = true;
-                    this.adjustRotation(du);
-                    this.fuel.level = 100;            
-                }
-                if((this.cy - this.getRadius()) > (hitEntity.cy - hitEntity.halfHeight)
-                    && (this.cy - this.getRadius()) < (hitEntity.cy + hitEntity.halfHeight))
-                {
-                    this.velY = 0;
-                    this.cy = hitEntity.cy + hitEntity.halfHeight + this.getRadius();
-                }
-                if(hitEntity.cx > this.cx + this.getRadius() || hitEntity.cx < this.cx - this.getRadius())
-                {
-                    this.velX = 0;
-                }
-               
-               
-            
-                 spatialManager.register(this);
         }
         else if(Object.getPrototypeOf(hitEntity) === Package.prototype)
         {
@@ -337,13 +284,35 @@ Ship.prototype.update = function (du) {
         }
         else
         {
-            this.warp();
+            particleManager.explosion(this.cx, this.cy);
+            this.warp();          
         }
         
     }
     else
     {
         spatialManager.register(this);
+    }
+
+   
+   /*--------------------------------------------------------------------------------------------
+                                    Required shipstatus checks
+    ---------------------------------------------------------------------------------------------*/                      
+    // Handle firing
+    this.maybeFireBullet();
+
+    if(this.fuel.status <= 0) 
+    {
+        particleManager.explosion(this.cx, this.cy);
+        //this.fuel.level = 100; // FIXME: temporary, should loose life
+        this.fuel.status = 1;
+        
+        this.warp();
+    }
+
+    if(this._isDeadNow)
+    {
+        return entityManager.KILL_ME_NOW;  
     }
 
     if(!this.landed)
@@ -356,28 +325,11 @@ Ship.prototype.update = function (du) {
     {
         this.maybePickUpCitizen();
     }
-    
-
 };
 
-
-
-var NOMINAL_THRUST = +0.2;
-
-Ship.prototype.computeThrustMag = function () {
-    
-    var thrust = 0;
-    
-    if (keys[this.KEY_THRUST]) {
-        thrust += NOMINAL_THRUST;
-        //this.fuel.level -= 0.8;
-		this.fuel.status -= 0.0005;
-        particleManager.thrust(this.cx, this.cy, this.rotation, this.getRadius());
-        this.landed = false;
-    }
-    
-    return thrust;
-};
+/*-----------------------------------------------------------------------------------
+                        Player input functions
+------------------------------------------------------------------------------------*/                        
 
 Ship.prototype.maybeFireBullet = function () {
 
@@ -397,13 +349,42 @@ Ship.prototype.maybeFireBullet = function () {
            this.rotation,
            1);
            
+    }    
+};
+
+Ship.prototype.maybePickUpCitizen = function (Citizen) {
+     if (eatKey(this.USE))
+     {
+        if(!this.Citizen) this.Citizen = Citizen.pickedUp();
+        else this.Citizen = this.Citizen.pickedUp();
+     }   
+};
+
+/*-----------------------------------------------------------------------------
+  ----------------------------------------------------------------------------*/
+
+
+var NOMINAL_THRUST = +0.2;
+
+Ship.prototype.computeThrustMag = function () {
+    
+    var thrust = 0;
+    
+    if (keys[this.KEY_THRUST]) {
+        thrust += NOMINAL_THRUST;
+        //this.fuel.level -= 0.8;
+		this.fuel.status -= 0.0005;
+        particleManager.thrust(this.cx, this.cy, this.rotation, this.getRadius());
+        this.landed = false;
     }
     
+    return thrust;
 };
+
 
 Ship.prototype.giveFuel = function (fuel)
 {
-    this.fuel.level += fuel;
+    this.fuel.status += fuel;
 }
 
 Ship.prototype.getRadius = function () {
@@ -427,13 +408,21 @@ Ship.prototype.halt = function () {
     this.velY = 0;
 };
 
+
+
+/*---------------------------------------------------------------------------------------
+                        Functions handling ship's rotation
+-----------------------------------------------------------------------------------------*/                        
+
 var NOMINAL_ROTATE_RATE_L = 0.01;
 var NOMINAL_ROTATE_RATE_R = 0.01;
 
 Ship.prototype.updateRotation = function (du) {
-    if (keys[this.KEY_LEFT] && !this.landed) {
+    if (keys[this.KEY_LEFT] && !this.landed) 
+    {
         this.rotation -= NOMINAL_ROTATE_RATE_L * du;
         NOMINAL_ROTATE_RATE_L += 0.001
+        if(this.velY !== 0) this.landed = false;
     }
     else
     {
@@ -442,6 +431,7 @@ Ship.prototype.updateRotation = function (du) {
     if (keys[this.KEY_RIGHT] && !this.landed) {
         this.rotation += NOMINAL_ROTATE_RATE_R * du;
         NOMINAL_ROTATE_RATE_R += 0.001
+        if(this.velY !== 0) this.landed = false;
     }
     else
     {
@@ -449,16 +439,6 @@ Ship.prototype.updateRotation = function (du) {
     }
 };
 
-Ship.prototype.maybePickUpCitizen = function (Citizen) {
-     if (eatKey(this.USE))
-     {
-        if(!this.Citizen) this.Citizen = Citizen.pickedUp();
-        else this.Citizen = this.Citizen.pickedUp();
-     }   
-     
-
-
-};
 
 Ship.prototype.adjustRotation = function(du) {
     var shipsRotation = this.rotation % (2*Math.PI);
@@ -492,7 +472,7 @@ Ship.prototype.adjustRotation = function(du) {
         this.cx += this.rightRotation * 25 * du;
         this.rightRotation += 0.001;  
     }
-}
+};
 
 Ship.prototype.rotationalLanding = function (shipsRotation, groundRotation)
 {
@@ -531,8 +511,55 @@ Ship.prototype.rotationalLanding = function (shipsRotation, groundRotation)
        
     } */  
     return false;
-}
+};
 
+/*---------------------------------------------------------------------------------------
+                                    Landing functions
+----------------------------------------------------------------------------------------*/
+Ship.prototype.landingOnGround = function(shipsRotation, ground, du)
+{
+    if(this.velY > 2 || this.velX > 3 || this.rotationalLanding(shipsRotation, ground.rotation))
+    {
+        particleManager.explosion(this.cx, this.cy);
+        this.warp();
+    }
+    else
+    {   
+        if(this.velY > 0) this.velY = 0;
+        if(this.velX !== 0) this.velX = 0;
+        this.landed = true;
+                
+        if(ground.rotation === 0) this.adjustRotation(du);
+    }  
+};
+
+Ship.prototype.landingOnPlank = function(shipsRotation, hitEntity, du)
+{       
+    if((this.cy + this.getRadius()) > (hitEntity.cy - hitEntity.halfHeight)
+        && (this.cy + this.getRadius()) < (hitEntity.cy + hitEntity.halfHeight))
+    {
+        if(this.velY > 0) this.velY = 0;
+        if(this.velX !== 0) this.velX = 0;
+        this.landed = true;
+        this.adjustRotation(du);
+        this.fuel.status = 1;            
+    }
+    if((this.cy - this.getRadius()) > (hitEntity.cy - hitEntity.halfHeight)
+        && (this.cy - this.getRadius()) < (hitEntity.cy + hitEntity.halfHeight))
+    {
+        this.velY = 0;
+        this.cy = hitEntity.cy + hitEntity.halfHeight + this.getRadius();
+    }
+    if(hitEntity.cx > this.cx + this.getRadius() || hitEntity.cx < this.cx - this.getRadius())
+    {
+        this.velX = 0;
+    }                
+                
+    spatialManager.register(this);
+};
+
+/*-------------------------------------------------------------------------------------------------------
+  ------------------------------------------------------------------------------------------------------*/
 
 Ship.prototype.render = function (ctx) {
     var origScale = this.sprite.scale;

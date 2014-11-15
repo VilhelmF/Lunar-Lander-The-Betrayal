@@ -96,7 +96,7 @@ Package.prototype.getPackage = function(Player)
 	this.destroy = true;
 	//Random powerups?
 
-	Player.giveFuel(100);
+	Player.giveFuel(0.25);
 
 }
 

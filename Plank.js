@@ -13,7 +13,7 @@ function Plank(descr) {
     // Common inherited setup logic from Entity
     this.setup(descr);
 
-	this.sprite = g_sprites.ground;
+	
     
 
     this.rememberResets();
@@ -37,7 +37,7 @@ Plank.prototype.cx = 400;
 Plank.prototype.cy = 100;
 Plank.prototype.halfWidth = 30;
 Plank.prototype.halfHeight = 5;
-Plank.prototype.radius = 60;
+Plank.prototype.radius = 20;
 
 //For the level. Temporary?
 Plank.prototype.rescueNumber = 0;
@@ -76,7 +76,7 @@ Plank.prototype.returnCitizen = function (du)
 }
 
 Plank.prototype.getRadius = function () {
-    return this.halfWidth;
+    return this.radius;
 };
 
 
