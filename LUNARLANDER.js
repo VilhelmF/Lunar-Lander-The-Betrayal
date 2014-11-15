@@ -291,7 +291,7 @@ function requestPreloads() {
 		oldManWalking	: "sprites/startScreen/oldManWalking-38.png",
 		fuelPackage		: "sprites/package/package-42.png",
 		randomPackage	: "sprites/package/package-41.png",
-		plank        	: "sprites/plank-06.png"
+		plank        	: "sprites/plank-48.png"
     };
 
 	preLoadAudio();
