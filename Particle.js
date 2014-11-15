@@ -27,14 +27,16 @@ Particle.prototype.initExplosion = function(cx, cy) {
 	this.yVel = util.getRandomInt(0, 10);
 	this.yVel *= util.getRandomInt(0, 1) === 0 ? 1 : -1;
 
-	this.width = util.getRandomInt(1, 20);
+	this.width = util.getRandomInt(1, 30);
 	this.height = this.width;
 
 	this.rotation = util.getRandomInt(0, 40) / 100;
 
 	this.radius = 0;
 
-	this.color = '#' + Math.floor(Math.random() * 16777215).toString(16);
+	this.color = util.getRandomInt(0,1) === 0 ? "red" : 
+				 util.getRandomInt(0,1) === 0 ? "orange" : "yellow";
+//	this.color = '#' + Math.floor(Math.random() * 16777215).toString(16);
 };
 
 Particle.prototype.initThrust = function(cx, cy, rotation, radius) {
@@ -79,7 +81,8 @@ Particle.prototype.render = function(ctx) {
     ctx.translate(this.cx, this.cy);
     ctx.rotate(this.rotation);
 
-	util.fillBox(ctx, 0, this.radius, this.width, this.height, this.color);
+//	util.fillBox(ctx, 0, this.radius, this.width, this.height, this.color);
+	util.fillCircle(ctx, 0, this.radius, this.width, this.color);
 
 	ctx.globalAlpha = 1;
 
