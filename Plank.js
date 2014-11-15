@@ -39,6 +39,7 @@ Plank.prototype.halfWidth = 30;
 Plank.prototype.halfHeight = 5;
 Plank.prototype.radius = 60;
 
+
 //For the level. Temporary?
 Plank.prototype.rescueNumber = 0;
 
@@ -93,10 +94,10 @@ Plank.prototype.reset = function () {
 Plank.prototype.render = function (ctx) {
     //var origScale = this.sprite.scale;
     
-	this.sprite.drawAt(ctx, this.cx - this.halfWidth, this.cy - this.halfHeight);
+	//this.sprite.drawAt(ctx, (this.cx - this.halfWidth), (this.cy - this.halfHeight));
 	
     ctx.save();
-	/*
+	
     ctx.beginPath();
     ctx.fillStyle = "grey";
     ctx.strokeStyle = "black";
@@ -105,7 +106,7 @@ Plank.prototype.render = function (ctx) {
     			this.halfWidth * 2,
     			this.halfHeight * 2);
     ctx.fill();
-   	ctx.stroke();*/
+   	ctx.stroke();
 
    	if(this.returning > 0)
    	{
