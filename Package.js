@@ -4,7 +4,7 @@ function Package(descr) {
 	
 	//this.rememberResets();
 	
-	this.packagePoint = g_sprites.kassi1;
+	this.packagePoint = g_sprites.fuelPackage;
 	
 	this.width  = this.packagePoint.width;
 	this.height = this.packagePoint.height;
@@ -68,7 +68,7 @@ Package.prototype.update = function(du) {
 		var groundHit = spatialManager.collidesWithGround(
 													this.cx, 
 													this.cy, 
-													this.radius-8  //SKÍTA FIX
+													this.radius-4  //SKÍTA FIX
 													);
 		
 		// package stop if groundHit is true
@@ -78,6 +78,7 @@ Package.prototype.update = function(du) {
 			this.velY = 0;
 			this.boxStill  = true;
 		} else {
+			this.rotation += 0.09;
 			this.velY += 0.01;
 			this.cy += this.velY * du;
 		}

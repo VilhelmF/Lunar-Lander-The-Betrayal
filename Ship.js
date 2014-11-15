@@ -60,80 +60,8 @@ Ship.prototype.numSubSteps = 1;
 Ship.prototype.rightRotation = 0.01;
 Ship.prototype.leftRotation = 0.01;
 
-Ship.prototype.fuel = {
-    cx : 0,
-    cy : 0,
-
-	status: 1,	// 100%
-	
-    height : 20,
-    color : "red",
-
-	render: function(ctx, cx, cy) {
-	
-		if(!g_doZoom){
-			if(this.status > 0.23){
-			
-				g_sprites.fuelBarSlide.cropImageBy (ctx, 
-													this.cx, 
-													this.cy, 
-													this.status);
-				g_sprites.fuelBarFill.cropImageBy  (ctx, 
-													this.cx, 
-													this.cy, 
-													this.status-0.04);
-			}
-			else 
-			{
-				g_sprites.fuelBarFill.cropImageBy  (ctx, 
-													this.cx, 
-													this.cy, 
-													this.status);
-			}
-	
-			//fuel bar outline
-			g_sprites.fuelBarOutline.drawAt(ctx, this.cx, this.cy);
-		
-			//fuel bar status shown on screen right 
-			//side of sprite fuelBarOutline. 
-			ctx.save();
-			ctx.fillStyle = "black";
-			ctx.font = "bold 12px Courier New";
-			ctx.fillText(
-						Math.floor(this.status * 100) + "%", 
-						g_sprites.fuelBarOutline.width, 
-						28
-					);
-			ctx.restore();
-			
-		}
-		else {
-			
-			// zoom mode, 
-			// Þorgeir þarf að tala við sævar um þetta
-			
-			ctx.save();
-			
-			var y = cy+25;
-			var x = cx+35;
-			
-			ctx.fillStyle = "green";
-			ctx.font = "bold 10px Courier New";
-			ctx.fillText(Math.floor(this.status * 100) + "%",
-							x+5, 
-							y);
-							
-			ctx.font = "bold 8px Courier New";
-			ctx.fillText("FUEL",
-							x, 
-							y-8);
-			
-			ctx.restore();
-
-		
-		}
-	},
-};
+Ship.prototype.fuel = new Fuel();
+   
 
 
 //Mission variables?
@@ -263,7 +191,7 @@ Ship.prototype.update = function (du) {
 
 
     /*-------------------------------------------------------------------------------------------
-                                    The Ship's hit entity checks
+                                    The Ship's hitentity checks
     ---------------------------------------------------------------------------------------------*/
     var hitEntity = this.findHitEntity();
     if (hitEntity) 
@@ -360,10 +288,6 @@ Ship.prototype.maybePickUpCitizen = function (Citizen) {
      }   
 };
 
-/*-----------------------------------------------------------------------------
-  ----------------------------------------------------------------------------*/
-
-
 var NOMINAL_THRUST = +0.2;
 
 Ship.prototype.computeThrustMag = function () {
@@ -373,18 +297,27 @@ Ship.prototype.computeThrustMag = function () {
     if (keys[this.KEY_THRUST]) {
         thrust += NOMINAL_THRUST;
         //this.fuel.level -= 0.8;
-		this.fuel.status -= 0.0005;
+        this.fuel.status -= 0.0005;
         particleManager.thrust(this.cx, this.cy, this.rotation, this.getRadius());
         this.landed = false;
     }
     
     return thrust;
 };
+/*-----------------------------------------------------------------------------
+  ----------------------------------------------------------------------------*/
+
+
+
 
 
 Ship.prototype.giveFuel = function (fuel)
 {
     this.fuel.status += fuel;
+    if(this.fuel.status > 1)
+    {
+        this.fuel.status = 1;
+    }
 }
 
 Ship.prototype.getRadius = function () {
@@ -418,20 +351,27 @@ var NOMINAL_ROTATE_RATE_L = 0.01;
 var NOMINAL_ROTATE_RATE_R = 0.01;
 
 Ship.prototype.updateRotation = function (du) {
-    if (keys[this.KEY_LEFT] && !this.landed) 
+    if (keys[this.KEY_LEFT]) 
     {
-        this.rotation -= NOMINAL_ROTATE_RATE_L * du;
-        NOMINAL_ROTATE_RATE_L += 0.001
-        if(this.velY !== 0) this.landed = false;
+        if(!this.landed)
+        {
+            this.rotation -= NOMINAL_ROTATE_RATE_L * du;
+            NOMINAL_ROTATE_RATE_L += 0.001;    
+        }
+        else this.landed = false;
     }
     else
     {
         NOMINAL_ROTATE_RATE_L = 0.01;
     }
-    if (keys[this.KEY_RIGHT] && !this.landed) {
-        this.rotation += NOMINAL_ROTATE_RATE_R * du;
-        NOMINAL_ROTATE_RATE_R += 0.001
-        if(this.velY !== 0) this.landed = false;
+    if (keys[this.KEY_RIGHT]) 
+    {   
+        if(!this.landed)
+        {
+            this.rotation += NOMINAL_ROTATE_RATE_R * du;
+            NOMINAL_ROTATE_RATE_R += 0.001;    
+        }
+        else this.laned = false;
     }
     else
     {
