@@ -74,8 +74,8 @@ Ship.prototype.Citizen = 0;
 //===========================================================================
 Ship.prototype.warp = function () {
 
-    this._isWarping = true;
-    this._scaleDirn = -0.5;
+//    this._isWarping = true;
+//    this._scaleDirn = -0.5;
 
     if(this.Citizen)
     {
@@ -83,16 +83,21 @@ Ship.prototype.warp = function () {
         this.Citizen = 0;
     }
 	
+    this.velX = 0;
+    this.velY = 0;
+    this.rotation = 0;
+
+    this.warpToPlank();
 	
 	//ÞESSI ER EITTHVAÐ AÐ KLIKKA!!
 	// shipWarping death sound played
-	g_audio.shipWarp.Play();				
+	//g_audio.shipWarp.Play();				
 	
 	
     
     // Unregister me from my old posistion
     // ...so that I can't be collided with while warping
-    spatialManager.unregister(this);
+//    spatialManager.unregister(this);
 };
 
 Ship.prototype._updateWarp = function (du) {
@@ -343,6 +348,16 @@ Ship.prototype.halt = function () {
     this.velY = 0;
 };
 
+Ship.prototype.setPos = function(cx, cy) {
+    this.cx = cx;
+    this.cy = cy;
+}
+
+Ship.prototype.warpToPlank = function() {
+    var pos = entityManager.getPlankPos();
+    this.cx = pos.posX;
+    this.cy = pos.posY - this.getRadius() - 10;
+}
 
 
 /*---------------------------------------------------------------------------------------

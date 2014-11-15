@@ -128,8 +128,8 @@ deferredSetup : function () {
 },
 
 init: function() {
-    //this._generateShip();
     this._generateLevel();
+    this.generateShip();
 	this._generateBackground();
 	this._generatePackage({cx: 200, cy: -30});
 },
@@ -148,8 +148,10 @@ fireBullet: function(cx, cy, velX, velY, rotation, team) {
 },
 
 
-generateShip : function(descr) {
-    this._ships.push(new Ship(descr));
+generateShip : function() {
+    var ship = new Ship();
+    ship.warpToPlank();
+    this._ships.push(ship);
 },
 
 generateGun : function(cx, cy) {
@@ -215,6 +217,12 @@ generateGround : function(x1, x2, y1, y2) {
 
     }*/
     
+},
+
+getPlankPos : function() {
+    if(this._plank[0]) {
+        return this._plank[0].getPos();
+    }
 },
 
 _generateBackground : function() {
