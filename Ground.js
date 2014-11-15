@@ -74,6 +74,7 @@ Ground.prototype.latterY = 500;
 Ground.prototype.spritePick = 0;
 Ground.prototype.spriteLength = 0;
 Ground.prototype.rotation = 0;
+Ground.prototype.width = 50;
 
 
 

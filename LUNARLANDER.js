@@ -250,9 +250,9 @@ function renderSimulation(ctx) {
 			var newWidth = pos.posX * scale;
 			var newHeight = pos.posY * scale;
 
-			ctx.translate(-((newWidth - pos.posX)), -((newHeight - pos.posY)));
-			ctx.scale(2, 2);
-		}
+            ctx.translate(-((newWidth - pos.posX)), -((newHeight - pos.posY)));
+            ctx.scale(scale, scale);
+        }
 
 		entityManager.render(ctx);
 		particleManager.render(ctx);
