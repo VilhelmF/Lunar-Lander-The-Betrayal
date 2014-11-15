@@ -32,8 +32,8 @@ Gun.prototype.rememberResets = function () {
 Gun.prototype.rotation = 0;
 Gun.prototype.cx = 200;
 Gun.prototype.cy = 200;
-Gun.prototype.width = 10;
-Gun.prototype.height = 30;
+Gun.prototype.halfWidth = 5;
+Gun.prototype.halfHeight = 30;
 Gun.prototype.vel = 5;
 
 Gun.prototype.firingTime = 0;
@@ -111,7 +111,7 @@ Gun.prototype.fireBullet = function ()
 
 
         entityManager.fireBullet(  this.cx, 
-						           this.cy - this.height - 8,
+						           this.cy - this.halfHeight - 8,
 						           velX, 
 						           velY,
 						           0,
@@ -138,15 +138,15 @@ Gun.prototype.render = function (ctx) {
     }	
 	ctx.strokeStyle = "black";
 	
-	ctx.rect(this.cx, this.cy, this.width, -this.height);
-	ctx.rect(this.cx - 10, this.cy - 12, this.width + 20, 2);
-	ctx.rect(this.cx - 7.5, this.cy - 20, this.width + 15, 2);
-	ctx.rect(this.cx - 5, this.cy - 28, this.width + 10, 2);
+	ctx.rect(this.cx, this.cy, 2*this.halfWidth, -this.halfHeight);
+	ctx.rect(this.cx - 10, this.cy - 12, 2*this.halfWidth + 20, 2);
+	ctx.rect(this.cx - 7.5, this.cy - 20, 2*this.halfWidth + 15, 2);
+	ctx.rect(this.cx - 5, this.cy - 28, 2*this.halfWidth + 10, 2);
 	ctx.stroke();
 	ctx.fill();
 
 	ctx.beginPath();
-	ctx.rect(this.cx - this.width/2, this.cy - 4, this.width * 2, 4);
+	ctx.rect(this.cx - this.halfWidth, this.cy - 4, this.halfWidth * 4, 4);
 	ctx.fillStyle = "red";
 	ctx.stroke();
 	ctx.fill();
@@ -158,19 +158,17 @@ Gun.prototype.render = function (ctx) {
 	{
 		blue = 0;
 	}
-	var grd = ctx.createRadialGradient( this.cx + this.width/2,
-										this.cy -this.height - headR,
+	var grd = ctx.createRadialGradient( this.cx + this.halfWidth,
+										this.cy - this.halfHeight - headR,
 										headR/4,
-										this.cx + this.width/2,
-										this.cy -this.height - headR,
+										this.cx + this.halfWidth,
+										this.cy - this.halfHeight - headR,
 										headR);
 	grd.addColorStop(0,"white");
 	grd.addColorStop(blue,"blue");
 	
-	
-	
 	ctx.fillStyle = grd;
-	ctx.arc(this.cx + this.width/2, this.cy -this.height - headR, headR, 0, Math.PI * 2, true);
+	ctx.arc(this.cx + this.halfWidth, this.cy - this.halfHeight - headR, headR, 0, Math.PI * 2, true);
 	ctx.fill();
 	
 	ctx.restore();

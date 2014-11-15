@@ -16,6 +16,7 @@ function Plank(descr) {
 	this.sprite = g_sprites.plank;
 
     this.rememberResets();
+    this.setSize();
     
     // Set normal drawing scale, and warp state off
     this._scale = 1;
@@ -29,6 +30,13 @@ Plank.prototype.rememberResets = function () {
     this.reset_cy = this.cy;
     this.reset_rotation = this.rotation;
 };
+
+Plank.prototype.setSize = function()
+{
+    this.halfWidth = this.sprite.width/2;
+    this.halfHeight = this.sprite.height/2;
+    this.radius = this.halfWidth/2;
+}
 
 // Initial, inheritable, default values
 Plank.prototype.rotation = 0;
@@ -93,8 +101,6 @@ Plank.prototype.reset = function () {
 Plank.prototype.render = function (ctx) {
     //var origScale = this.sprite.scale;
     
-	this.sprite.drawAt(ctx, (this.cx - this.halfWidth), (this.cy - this.halfHeight));
-	
     /*ctx.save();
 	
     ctx.beginPath();
@@ -117,14 +123,15 @@ Plank.prototype.render = function (ctx) {
 
 		ctx.fillStyle = "green";
 		ctx.rect(this.cx - halfDrawWidth,
-    			this.cy - this.halfHeight,
+    			this.cy,
     			halfDrawWidth * 2,
     		    -(this.cy - this.halfHeight));
 
 		ctx.fill();
    	}
 	
-
+    this.sprite.drawAt(ctx, (this.cx - this.halfWidth), (this.cy - this.halfHeight));
+    
 	ctx.restore();
 
 
