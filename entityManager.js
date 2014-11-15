@@ -43,10 +43,10 @@ _plank      : [],
 
 
 _generateLevel : function() {
-    this._bullets = [];
-    this._ground = [];
-    this._guns = [];
-    this._citizens = [];
+ //   this._bullets = [];
+ //   this._ground = [];
+ //   this._guns = [];
+ //   this._citizens = [];
 
     levelDesign.setUp();
 //    var levelArray = levelDesign.getLevel();

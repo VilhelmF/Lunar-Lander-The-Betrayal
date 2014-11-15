@@ -80,11 +80,8 @@ var levelDesign = {
     			if(0 != this.levels[this.level][index]) {
     				this.grid[j] = i * (g_canvas.height / this.rows);
 
-//                    console.log("-------------------------" + j);
-//                    y = i * (g_canvas.height / this.rows);
 
                     if(this.items.gun === this.levels[this.level][index]) {
-                        //console.log("-----------------------" + j);
                         var cx = j * Ground.prototype.width - Ground.prototype.width/2;
                         var cy = i * (g_canvas.height / this.rows);
                         entityManager.generateGun(cx, cy);
