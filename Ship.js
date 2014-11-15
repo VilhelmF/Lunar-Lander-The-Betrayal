@@ -155,8 +155,10 @@ Ship.prototype.warp = function () {
         this.Citizen = 0;
     }
 	
+	
+	//ÞESSI ER EITTHVAÐ AÐ KLIKKA!!
 	// shipWarping death sound played
-	g_audio.shipWarp.Play();
+	g_audio.shipWarp.Play();				
 	
 	
     
