@@ -13,7 +13,7 @@ function Plank(descr) {
     // Common inherited setup logic from Entity
     this.setup(descr);
 
-	this.sprite = g_sprites.ground;
+	this.sprite = g_sprites.plank;
     
 
     this.rememberResets();
@@ -93,8 +93,10 @@ Plank.prototype.reset = function () {
 Plank.prototype.render = function (ctx) {
     //var origScale = this.sprite.scale;
     
+	this.sprite.drawAt(ctx, this.cx - this.halfWidth, this.cy - this.halfHeight);
+	
     ctx.save();
-
+	/*
     ctx.beginPath();
     ctx.fillStyle = "grey";
     ctx.strokeStyle = "black";
@@ -103,7 +105,7 @@ Plank.prototype.render = function (ctx) {
     			this.halfWidth * 2,
     			this.halfHeight * 2);
     ctx.fill();
-   	ctx.stroke();
+   	ctx.stroke();*/
 
    	if(this.returning > 0)
    	{
