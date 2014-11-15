@@ -171,7 +171,7 @@ function renderSimulation(ctx) {
         var newHeight = pos.posY * scale;
 
         ctx.translate(-((newWidth - pos.posX)), -((newHeight - pos.posY)));
-        ctx.scale(2, 2);
+        ctx.scale(scale, scale);
     }
 
     entityManager.render(ctx);
