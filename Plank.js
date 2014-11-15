@@ -14,7 +14,6 @@ function Plank(descr) {
     this.setup(descr);
 
 	this.sprite = g_sprites.plank;
-    
 
     this.rememberResets();
     
@@ -37,7 +36,7 @@ Plank.prototype.cx = 400;
 Plank.prototype.cy = 100;
 Plank.prototype.halfWidth = 30;
 Plank.prototype.halfHeight = 5;
-Plank.prototype.radius = 60;
+Plank.prototype.radius = 20;
 
 
 //For the level. Temporary?
@@ -77,7 +76,7 @@ Plank.prototype.returnCitizen = function (du)
 }
 
 Plank.prototype.getRadius = function () {
-    return this.halfWidth;
+    return this.radius;
 };
 
 
@@ -94,9 +93,9 @@ Plank.prototype.reset = function () {
 Plank.prototype.render = function (ctx) {
     //var origScale = this.sprite.scale;
     
-	//this.sprite.drawAt(ctx, (this.cx - this.halfWidth), (this.cy - this.halfHeight));
+	this.sprite.drawAt(ctx, (this.cx - this.halfWidth), (this.cy - this.halfHeight));
 	
-    ctx.save();
+    /*ctx.save();
 	
     ctx.beginPath();
     ctx.fillStyle = "grey";
@@ -106,7 +105,7 @@ Plank.prototype.render = function (ctx) {
     			this.halfWidth * 2,
     			this.halfHeight * 2);
     ctx.fill();
-   	ctx.stroke();
+   	ctx.stroke();*/
 
    	if(this.returning > 0)
    	{
