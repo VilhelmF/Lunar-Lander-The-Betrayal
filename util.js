@@ -117,10 +117,13 @@ strokeBox : function (ctx, x, y, width, height )
     ctx.stroke();
 },
 
-fillCircle: function (ctx, x, y, r) {
+fillCircle: function (ctx, x, y, r, style) {
+    var oldStyle = ctx.fillStyle;
+    ctx.fillStyle = style;
     ctx.beginPath();
     ctx.arc(x, y, r, 0, Math.PI * 2);
     ctx.fill();
+    ctx.fillStyle = oldStyle;
 },
 
 fillBox: function (ctx, x, y, w, h, style) {
