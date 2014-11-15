@@ -135,6 +135,7 @@ collidesWithGround : function(posX, posY, radius)
                                     latterY :   latterY,
                                     lineX   :   lineX,
                                     lineY   :   lineY,
+                                    rotation:   groundBit.rotation,
 									index   :   i,
                                 };
 
