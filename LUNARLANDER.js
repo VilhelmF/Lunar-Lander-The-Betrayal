@@ -93,8 +93,7 @@ function updateSimulation(du) {
             } else {
 				g_frameIndex = 0;
             }
-        }
-			
+        }	
     }
 		
 	else
@@ -289,7 +288,10 @@ function requestPreloads() {
 		st_screenLayer3 : "sprites/startScreen/gameStart-44.png",
 		st_screenLayer4 : "sprites/startScreen/gameStart-47.png",
 		st_screenLayer5 : "sprites/startScreen/gameStart-43.png",
-		oldManWalking	: "sprites/startScreen/oldManWalking-38.png"
+		oldManWalking	: "sprites/startScreen/oldManWalking-38.png",
+		fuelPackage		: "sprites/package/package-42.png",
+		randomPackage	: "sprites/package/package-41.png",
+		plank        	: "sprites/plank-06.png"
     };
 
 	preLoadAudio();

@@ -50,8 +50,6 @@ Ground.prototype.prepareSprite = function ()
     console.log(pick);
 
     this.getSpriteLength();
-
-
 }
 
 Ground.prototype.getSpriteLength = function ()

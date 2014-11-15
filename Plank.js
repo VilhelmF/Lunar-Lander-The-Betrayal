@@ -13,7 +13,7 @@ function Plank(descr) {
     // Common inherited setup logic from Entity
     this.setup(descr);
 
-	this.sprite = g_sprites.ground;
+	this.sprite = g_sprites.plank;
     
 
     this.rememberResets();
@@ -38,6 +38,7 @@ Plank.prototype.cy = 100;
 Plank.prototype.halfWidth = 30;
 Plank.prototype.halfHeight = 5;
 Plank.prototype.radius = 60;
+
 
 //For the level. Temporary?
 Plank.prototype.rescueNumber = 0;
@@ -93,8 +94,10 @@ Plank.prototype.reset = function () {
 Plank.prototype.render = function (ctx) {
     //var origScale = this.sprite.scale;
     
+	//this.sprite.drawAt(ctx, (this.cx - this.halfWidth), (this.cy - this.halfHeight));
+	
     ctx.save();
-
+	
     ctx.beginPath();
     ctx.fillStyle = "grey";
     ctx.strokeStyle = "black";
