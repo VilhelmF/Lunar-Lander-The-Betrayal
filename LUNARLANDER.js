@@ -41,7 +41,7 @@ var g_ctx = g_canvas.getContext("2d");
 // ====================
 // CREATE INITIAL SHIPS
 // ====================
-
+/*
 function createInitialShips() {
 
     entityManager.generateShip({
@@ -49,7 +49,7 @@ function createInitialShips() {
         cy : 200
     });
     
-}
+}*/
 
 // =============
 // GATHER INPUTS
@@ -100,7 +100,7 @@ var g_useGravity = false;
 var g_useAveVel = true;
 var g_renderSpatialDebug = false;
 var g_doZoom = false;
-var g_startGame = false;
+var g_startGame = true; //FIXME: change this to false
 
 
 
@@ -287,7 +287,6 @@ function preloadDone() {
 	
 	
     entityManager.init();
-    createInitialShips();
 
     main.init();
 }

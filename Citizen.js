@@ -197,7 +197,7 @@ Citizen.prototype.render = function (ctx) {
 		else
 		{
 			ctx.fillStyle="red";
-			ctx.fillRect(this.cx, this.cy + this.halfHeight,2*this.halfWidth, this.halfHeight);	
+			ctx.fillRect(this.cx - this.halfWidth, this.cy + this.halfHeight,2*this.halfWidth, this.halfHeight);	
 		}
 		ctx.restore();
 
