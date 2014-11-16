@@ -39,9 +39,9 @@ Particle.prototype.initExplosion = function(cx, cy) {
 //	this.color = '#' + Math.floor(Math.random() * 16777215).toString(16);
 };
 
-Particle.prototype.initThrust = function(cx, cy, rotation, radius) {
-	this.cx = util.getRandomInt(cx - 10, cx + 10);
-	this.cy = util.getRandomInt(cy, cy + 10);
+Particle.prototype.initThrust = function(cx, cy, rotation, radius, i) {
+	this.cx = util.getRandomInt(cx - 10 + i*2, cx + 10 - i*2);
+	this.cy = util.getRandomInt(cy, cy + 10 + i);
 
 	this.rotation = util.wrapRange(rotation, 0, consts.FULL_CIRCLE)
 

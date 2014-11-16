@@ -15,7 +15,7 @@ explosion : function(cx, cy) {
 thrust : function(cx, cy, rotation, radius) {
 	for(var i = 0; i < 6; i++) {
 		var particle = new Particle();
-		particle.initThrust(cx, cy, rotation, radius-i);
+		particle.initThrust(cx, cy, rotation, radius-i, i);
 		this._particles.push(particle);
 	}
 },

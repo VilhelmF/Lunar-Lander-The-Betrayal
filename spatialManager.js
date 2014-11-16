@@ -104,7 +104,7 @@ collidesWithGround : function(posX, posY, radius)
             //if(firstY < (posY + radius)  || latterY < (posY + radius))
             //{
                
-                /*for(var i = 0; i < groundLength; i++)
+                for(var i = 0; i < groundLength; i++)
                 {
                     var lineX = firstX + i;
                     var lineY = firstY + i * slope;
@@ -128,12 +128,12 @@ collidesWithGround : function(posX, posY, radius)
 									index   :   i,
                                 };
                     }
-                }*/
+                }
 
-                var dX = latterX - firstX;
+/*                var dX = latterX - firstX;
                 var dY = latterY - firstY;
                 var fX = firstX - posX;
-                var fY = firstY - posY;
+                var fY = firstY - posY; */
 
               /*  //  y = mx + c  and (x - p)^2 + (y - q)^2 = r^2
                 //  so (x - p)^2 + (mx + c - q)^2 = r^2
