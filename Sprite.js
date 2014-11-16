@@ -115,8 +115,14 @@ Sprite.prototype.spriteSheetconstruction = function () {
 		this.frameIndex = 0;
 		this.posX = 0;
 		this.posY = 0;
+		
+		
+		this.midPointX = (this.width/this.ticksPerFrame) / 2;
+		
+		
+		this.midPointY = {y1: this.height/3, y2: this.height/1.2}; 
 	
-		//i know every sprite sheet have 10 frames.
+		//i know every sprite sheet have 10 frames. not cool i know
 		this.numberOfFrames = 10;
 		this.walk = false;
 		
@@ -192,7 +198,7 @@ Sprite.prototype.walkRender = function (ctx, posX, posY) {
 			0,
 			this.width/this.numberOfFrames,
 			this.height,
-			this.posX,
+			posX,
 			posY, 				// 450 for old man
 			this.width/this.numberOfFrames,
 			this.height

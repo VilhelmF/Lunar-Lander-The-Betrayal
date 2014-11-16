@@ -262,7 +262,7 @@ function requestPreloads() {
 		fuelPackage		: "sprites/package/package-42.png",
 		randomPackage	: "sprites/package/package-41.png",
 		plank        	: "sprites/plank-48.png",
-		manWalking		: "sprites/manWalking-45.png"
+		manWalking		: "sprites/manWalking-58.png"
     };
 
 	preLoadAudio();
