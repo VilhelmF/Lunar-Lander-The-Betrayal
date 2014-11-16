@@ -31,8 +31,6 @@ function Ship(descr) {
 
 Ship.prototype = new Entity();
 
-
-
 Ship.prototype.rememberResets = function () {
     // Remember my reset positions
     this.reset_cx = this.cx;
@@ -65,7 +63,7 @@ Ship.prototype.fuel = new Fuel();
 
 Ship.prototype.cooldown = 150 / NOMINAL_UPDATE_INTERVAL;
    
-
+Ship.prototype.zoomEntity = new Entity();
 
 //Mission variables?
 Ship.prototype.landed = false;
@@ -178,6 +176,14 @@ Ship.prototype.update = function (du) {
         this._updateWarp(du);
         return;
     }
+
+    //FIXME: maybe fix this? looks a little dirty
+    if (this.zoomEntity.getRadius() === 0) {
+        this.zoomEntity.setup();
+        this.zoomEntity.radius = this.getRadius() * 3;
+    }
+
+    this.zoomEntity.setPos(this.cx, this.cy);
     
     spatialManager.unregister(this);
 
@@ -206,18 +212,45 @@ Ship.prototype.update = function (du) {
                                     The Ship's Landing Detection
     ---------------------------------------------------------------------------------------------*/
     
-    var ground = spatialManager.collidesWithGround(this.cx, this.cy, this.getRadius())
+    var ground = spatialManager.collidesWithGround(this.cx, this.cy, this.getRadius());
     var shipsRotation = this.rotation % (2*Math.PI);
     if(typeof ground !== 'undefined')
     {
         console.log(ground);
-        this.landingOnGround(shipsRotation, ground, du);     
+        this.landingOnGround(shipsRotation, ground, du);
     }
 
+    /*-------------------------------------------------------------------------------------------
+                                Check if we should zoom in on the ship
+    ---------------------------------------------------------------------------------------------*/
+
+
+    var zoomGround = spatialManager.collidesWithGround(this.zoomEntity.getPos().posX, this.zoomEntity.getPos().posY, this.zoomEntity.getRadius());
+    if(zoomGround){
+        g_doZoom = true;
+    }
+    else {
+        var zoomHitEntity = this.zoomEntity.findHitEntity();
+        if(zoomHitEntity){
+            var type = Object.getPrototypeOf(zoomHitEntity);
+
+            if(type === Citizen.prototype || 
+               type === Plank.prototype) {
+                g_doZoom = true;
+            }
+            else {
+                g_doZoom = false;
+            }
+        }
+        else {
+            g_doZoom = false;
+        }
+    }
 
     /*-------------------------------------------------------------------------------------------
                                     The Ship's hitentity checks
     ---------------------------------------------------------------------------------------------*/
+
     var hitEntity = this.findHitEntity();
     if (hitEntity) 
     {
