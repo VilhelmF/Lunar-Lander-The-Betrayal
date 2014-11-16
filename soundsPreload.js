@@ -14,7 +14,7 @@ var s_ctx = canvas.getContext("2d");
 
 Audio.prototype.asyncLoad = function(src, asyncCallback) {
 	
-	this.oncanplaythrough	= asyncCallback;
+//	this.oncanplaythrough	= asyncCallback;
 	this.onerror 		 	= asyncCallback;
 	this.onloadstart 	 	= asyncCallback;
     

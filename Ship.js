@@ -62,6 +62,8 @@ Ship.prototype.rightRotation = 0.01;
 Ship.prototype.leftRotation = 0.01;
 
 Ship.prototype.fuel = new Fuel();
+
+Ship.prototype.cooldown = 150 / NOMINAL_UPDATE_INTERVAL;
    
 
 
@@ -165,6 +167,11 @@ Ship.prototype._moveToASafePlace = function () {
 
     
 Ship.prototype.update = function (du) {
+
+    if(this.cooldown > 0) {
+        this.cooldown -= du;
+        return;
+    }
 
     // Handle warping
     if (this._isWarping) {
@@ -366,6 +373,7 @@ Ship.prototype.setPos = function(cx, cy) {
 }
 
 Ship.prototype.warpToPlank = function() {
+    this.cooldown = Ship.prototype.cooldown;
     this.velX = 0;
     this.velY = 0;
     this.rotation = 0;

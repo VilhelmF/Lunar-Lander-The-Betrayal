@@ -17,6 +17,8 @@ function Gun(descr) {
     
     // Set normal drawing scale, and warp state off
     this._scale = 1;
+
+    this.cooldown = this.getCooldown();
 };
 
 Gun.prototype = new Entity();
@@ -36,7 +38,13 @@ Gun.prototype.halfWidth = 5;
 Gun.prototype.halfHeight = 30;
 Gun.prototype.vel = 5;
 
-Gun.prototype.firingTime = 0;
+//Gun.prototype.firingTime = 0;
+Gun.prototype.cooldownRange = {
+	"min" : 4000,
+	"max" : 8000,
+}
+Gun.prototype.origCooldown = util.getRandomInt(Gun.prototype.cooldownRange.min, Gun.prototype.cooldownRange.max) / NOMINAL_UPDATE_INTERVAL;
+Gun.prototype.cooldown = this.origCooldown;
 
 
 Gun.prototype.update = function (du) {
@@ -44,14 +52,15 @@ Gun.prototype.update = function (du) {
     //Any Update?
     spatialManager.unregister(this);
 
-    if(this.firingTime >= 10)
+    if(this.cooldown <= 0)
     {
     	this.fireBullet();
 
-    	this.firingTime = 0;
+    	this.cooldown = this.getCooldown();
     }
 
-    this.firingTime += 0.016 * du;
+    //this.firingTime += 0.016 * du;
+    this.cooldown -= du;
 
     
 
@@ -64,6 +73,11 @@ Gun.prototype.update = function (du) {
 Gun.prototype.takeBulletHit = function () {
     // Destructible Gun?
 };
+
+Gun.prototype.getCooldown = function() {
+	this.origCooldown = util.getRandomInt(Gun.prototype.cooldownRange.min, Gun.prototype.cooldownRange.max) / NOMINAL_UPDATE_INTERVAL;
+	return this.origCooldown;
+}
 
 Gun.prototype.reset = function () {
     this.setPos(this.reset_cx, this.reset_cy);
@@ -127,7 +141,7 @@ Gun.prototype.render = function (ctx) {
     ctx.save();
 
     ctx.beginPath();
-    if(this.firingTime >= 10)
+    if(this.cooldown <= 0)
     {
     	ctx.fillStyle = "blue";
 
@@ -153,14 +167,17 @@ Gun.prototype.render = function (ctx) {
 
 	ctx.beginPath();
 	var headR = 8;
-	var blue = 1 - this.firingTime/10;
+	var blue = this.cooldown/this.origCooldown;
 	if(blue < 0)
 	{
 		blue = 0;
 	}
+	else if (blue > 1) {
+		blue = 1;
+	}
 	var grd = ctx.createRadialGradient( this.cx + this.halfWidth,
 										this.cy - this.halfHeight - headR,
-										headR/4,
+										headR/8,
 										this.cx + this.halfWidth,
 										this.cy - this.halfHeight - headR,
 										headR);
