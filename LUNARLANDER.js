@@ -79,7 +79,8 @@ function updateSimulation(du) {
     
 	//Þ: TÍMABUNDIÐ !!
 	if(!g_startGame){
-		g_sprites.oldManWalking.walkUpdate();
+		g_sprites.oldManWalking.walkUpdate(2);
+		g_sprites.maWalking.walkUpdate(3);
 	}
 	else
 	{
@@ -208,6 +209,7 @@ function renderSimulation(ctx) {
 		// (*)
 		
 		g_sprites.oldManWalking.walkRender(ctx, 0, 450);
+		g_sprites.manWalking.walkRender(ctx, 0, 450);
 	}
 	else
 	{	

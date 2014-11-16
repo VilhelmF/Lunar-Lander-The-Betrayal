@@ -124,7 +124,7 @@ Sprite.prototype.cropImageBy = function (ctx, cx, cy, percent) {
 
 
 
-Sprite.prototype.walkUpdate = function () {
+Sprite.prototype.walkUpdate = function (Xstep) {
 	//console.log("update");
 	this.tickCount += 1;
 		
@@ -137,7 +137,7 @@ Sprite.prototype.walkUpdate = function () {
 		{	
 			// Go to the next frame
 			this.frameIndex += 1;
-			this.posX += 2;
+			this.posX += xstep;
 		}
 		else 
 		{
