@@ -129,11 +129,11 @@ collidesWithGround : function(posX, posY, radius)
                                 };
                     }
                 }
-
-              /*  //  y = mx + c  and (x - p)^2 + (y - q)^2 = r^2
+            /*    
+                //  y = mx + c  and (x - p)^2 + (y - q)^2 = r^2
                 //  so (x - p)^2 + (mx + c - q)^2 = r^2
                 //  giving (m^2 + 1)x^2 + 2(mc - mq - p)x + (q^2-r^2+p^2-2cq + c^2) = 0
-
+                // p = posX   q = posY  
                 var A = Math.pow(slope, 2) + 1;
                 var B = 2*((slope * lineC) - (slope * posY) - posX);
                 var C = (Math.pow(posY,2) - Math.pow(radius, 2) + Math.pow(posX, 2) - 2*lineC*posY + Math.pow(lineC,2));
@@ -142,12 +142,27 @@ collidesWithGround : function(posX, posY, radius)
 
                if(Math.pow(B, 2) - 4*A*C > 0)
                {
-                    var aGroundAndSlope = [slope, latterY];
-                    return aGroundAndSlope;
+                    return  {
+                                    slope   :   slope,
+                                    latterX :   latterX,
+                                    latterY :   latterY,
+                                   // lineX   :   lineX,
+                                   // lineY   :   lineY,
+                                    rotation:   groundBit.rotation,
+                                  //  index   :   i,
+                                };
                }
-             } */   
-        }       
+        */        
+        }      
     }
+},
+
+clearAll : function()
+{
+    this._nextSpatialID = 1; // make all valid IDs non-falsey (i.e. don't start at 0)
+    this._nextGroundID = 1;
+    this._entities = [];
+    this._ground   = [];
 },
 
 render: function(ctx) {

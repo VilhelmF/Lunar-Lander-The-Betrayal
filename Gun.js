@@ -53,7 +53,10 @@ Gun.prototype.update = function (du) {
 
     this.firingTime += 0.016 * du;
 
-    
+    if(this._isDeadNow)
+    {
+        return entityManager.KILL_ME_NOW;  
+    }
 
 
     spatialManager.register(this);
@@ -138,15 +141,15 @@ Gun.prototype.render = function (ctx) {
     }	
 	ctx.strokeStyle = "black";
 	
-	ctx.rect(this.cx, this.cy, 2*this.halfWidth, -this.halfHeight);
-	ctx.rect(this.cx - 10, this.cy - 12, 2*this.halfWidth + 20, 2);
-	ctx.rect(this.cx - 7.5, this.cy - 20, 2*this.halfWidth + 15, 2);
-	ctx.rect(this.cx - 5, this.cy - 28, 2*this.halfWidth + 10, 2);
+	ctx.rect(this.cx - this.halfWidth, this.cy, 2*this.halfWidth, -this.halfHeight);
+	ctx.rect(this.cx - 2*this.halfWidth - 5, this.cy - 12, 2*this.halfWidth + 20, 2);
+	ctx.rect(this.cx - 2*this.halfWidth - 2.5, this.cy - 20, 2*this.halfWidth + 15, 2);
+	ctx.rect(this.cx - 2*this.halfWidth, this.cy - 28, 2*this.halfWidth + 10, 2);
 	ctx.stroke();
 	ctx.fill();
 
 	ctx.beginPath();
-	ctx.rect(this.cx - this.halfWidth, this.cy - 4, this.halfWidth * 4, 4);
+	ctx.rect(this.cx - this.halfWidth*2, this.cy - 4, this.halfWidth * 4, 4);
 	ctx.fillStyle = "red";
 	ctx.stroke();
 	ctx.fill();
@@ -158,17 +161,17 @@ Gun.prototype.render = function (ctx) {
 	{
 		blue = 0;
 	}
-	var grd = ctx.createRadialGradient( this.cx + this.halfWidth,
+	var grd = ctx.createRadialGradient( this.cx,
 										this.cy - this.halfHeight - headR,
 										headR/4,
-										this.cx + this.halfWidth,
+										this.cx,
 										this.cy - this.halfHeight - headR,
 										headR);
 	grd.addColorStop(0,"white");
 	grd.addColorStop(blue,"blue");
 	
 	ctx.fillStyle = grd;
-	ctx.arc(this.cx + this.halfWidth, this.cy - this.halfHeight - headR, headR, 0, Math.PI * 2, true);
+	ctx.arc(this.cx, this.cy - this.halfHeight - headR, headR, 0, Math.PI * 2, true);
 	ctx.fill();
 	
 	ctx.restore();
