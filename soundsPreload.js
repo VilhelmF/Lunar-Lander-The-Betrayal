@@ -43,7 +43,7 @@ function soundsPreload(requiredSounds,
         console.log("preloadHandler called with this=", this);
         loadedSounds[this.name] = this;
 
-		this.oncanplaythrough = null;
+		//this.oncanplaythrough = null;
 		this.onerror = null;
 		this.onloadstart = null;
 		

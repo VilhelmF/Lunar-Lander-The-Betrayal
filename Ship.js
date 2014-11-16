@@ -562,7 +562,11 @@ Ship.prototype.landingOnPlank = function(shipsRotation, hitEntity, du)
   ------------------------------------------------------------------------------------------------------*/
 
 Ship.prototype.render = function (ctx) {
-    var origScale = this.sprite.scale;
+	
+	this.fuel.render(ctx, this.cx, this.cy);
+    
+	
+	var origScale = this.sprite.scale;
     // pass my scale into the sprite, for drawing
     this.sprite.scale = this._scale;
     this.sprite.drawWrappedCentredAt(
@@ -595,6 +599,5 @@ Ship.prototype.render = function (ctx) {
     //render fuel
     //util.fillBox(ctx, this.fuel.cx, this.fuel.cy, this.fuel.level, this.fuel.height, this.fuel.color);
 
-	this.fuel.render(ctx, this.cx, this.cy);
 
 };
