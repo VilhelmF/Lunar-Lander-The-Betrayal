@@ -120,6 +120,7 @@ collidesWithGround : function(posX, posY, radius)
                         
                         return  {
                                     slope   :   slope,
+									firstX  : 	firstX,
                                     latterX :   latterX,
                                     latterY :   latterY,
                                     lineX   :   lineX,

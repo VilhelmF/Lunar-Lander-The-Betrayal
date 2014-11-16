@@ -122,7 +122,7 @@ Sprite.prototype.spriteSheetconstruction = function () {
 		
 		this.midPointY = {y1: this.height/3, y2: this.height/1.2}; 
 	
-		//i know every sprite sheet have 10 frames. not cool i know
+		//i know every sprite sheetp have 10 frames. not cool i know
 		this.numberOfFrames = 10;
 		this.walk = false;
 		
@@ -184,7 +184,7 @@ Sprite.prototype.walkUpdate = function (Xstep, direction) {
     }	
 }
 
-Sprite.prototype.walkRender = function (ctx, posX, posY) {
+Sprite.prototype.walkRender = function (ctx, posX, posY, direction) {
 	
 	if(posX == "undefined"){
 		this.posX = 0;
@@ -192,17 +192,36 @@ Sprite.prototype.walkRender = function (ctx, posX, posY) {
 	
 	if(!this.walk)
 	{
-		ctx.drawImage(
-			this.image,
-			this.frameIndex * this.width/this.ticksPerFrame,
-			0,
-			this.width/this.numberOfFrames,
-			this.height,
-			posX,
-			posY, 				// 450 for old man
-			this.width/this.numberOfFrames,
-			this.height
-		);	
+		//RIGHT
+		if(direction)
+		{
+			ctx.drawImage(
+					this.image,
+					this.frameIndex * this.width/this.ticksPerFrame,
+					0,
+					this.width/this.numberOfFrames,
+					this.height/2,
+					posX,
+					posY+this.height/2, 		// 450 for old man
+					this.width/this.numberOfFrames,
+					this.height/2
+				);
+		}
+		//LEFT
+		else
+		{
+			ctx.drawImage(
+				this.image,
+				this.frameIndex * this.width/this.ticksPerFrame,
+				this.height/2,
+				this.width/this.numberOfFrames,
+				this.height,
+				posX,
+				posY+this.height/2, 				// 450 for old man
+				this.width/this.numberOfFrames,
+				this.height
+			);
+		}
 	}
 };
 

@@ -79,8 +79,8 @@ function updateSimulation(du) {
     
 	//Þ: TÍMABUNDIÐ !!
 	if(!g_startGame){
-		g_sprites.oldManWalking.walkUpdate(2, "");
-		g_sprites.manWalking.walkUpdate(3, 1);
+		g_sprites.oldManWalking.walkUpdate(2);
+		g_sprites.manWalking.walkUpdate(3);
 	}
 	else
 	{
