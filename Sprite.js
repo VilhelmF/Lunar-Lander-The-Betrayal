@@ -24,33 +24,7 @@ function Sprite(image, name) {
 	// FOR SPRITES SHEETS
 	if(String(name).indexOf("Walk") > -1)
 	{ 
-		//for walking citizen
-		this.tickCount = 0;
-		this.ticksPerFrame = 10;
-		this.frameIndex = 0;
-		this.posX = 0;
-		this.posY = 0;
-	
-		//i know every sprite sheet have 10 frames.
-		this.numberOfFrames = 10;
-		this.walk = false;
-		
-		var randomInt = util.getRandomInt(0,1);
-		
-		if(randomInt == 1){
-			this.right = true;
-			//this.left  = 
-		}
-		
-		this.left = false;
-		this.right = false;
-		
-		this.walkSteps = [];
-		
-	}
-	else
-	{
-		// ...
+		this.spriteSheetconstruction();
 	}
 }
 
@@ -134,7 +108,31 @@ Sprite.prototype.cropImageBy = function (ctx, cx, cy, percent) {
 
 
 
-//Sprite.prototype.spriteSheetconstruction = function (ctx, sx) {
+Sprite.prototype.spriteSheetconstruction = function () {
+		//for walking citizen
+		this.tickCount = 0;
+		this.ticksPerFrame = 10;
+		this.frameIndex = 0;
+		this.posX = 0;
+		this.posY = 0;
+	
+		//i know every sprite sheet have 10 frames.
+		this.numberOfFrames = 10;
+		this.walk = false;
+		
+		var randomInt = util.getRandomInt(0,1);
+		
+		if(randomInt == 1){
+			this.right = true;
+			this.left  = false; 
+		}
+		else {
+			this.left = true;
+			this.right = false;
+		}
+		
+		this.walkSteps = [];
+};
 
 
 
@@ -143,14 +141,28 @@ Sprite.prototype.cropImageBy = function (ctx, cx, cy, percent) {
 
 
 
-Sprite.prototype.walkUpdate = function (Xstep) {
-	//console.log("update");
+Sprite.prototype.walkUpdate = function (Xstep, direction) {
+	
 	this.tickCount += 1;
-		
+	
+	//LEFT
+	if(direction == 0){
+		//..
+	}
+	
+	//RIGHT
+	else if( direction == 1) {
+		//..
+	}
+	else {
+		console.log("WRONG INPUT INTO 'walkUpdate' ! ");
+	}
+
+	
     if (this.tickCount > this.ticksPerFrame) {
        
 		this.tickCount = 0;
-        	
+        
 		// If the current frame index is in range
 		if (this.frameIndex < this.numberOfFrames - 1)
 		{	
@@ -167,20 +179,12 @@ Sprite.prototype.walkUpdate = function (Xstep) {
 
 Sprite.prototype.walkRender = function (ctx, posX, posY) {
 	
-	/*if(posX == "undefined"){
+	if(posX == "undefined"){
 		this.posX = 0;
 	}
-	else{
-		this.posX = posX;
-	}*/
-	
-	//er ekki viss hvort að þetta þarf: (this.walk)
-	
-	
 	
 	if(!this.walk)
 	{
-		//console.log("render");
 		ctx.drawImage(
 			this.image,
 			this.frameIndex * this.width/this.ticksPerFrame,

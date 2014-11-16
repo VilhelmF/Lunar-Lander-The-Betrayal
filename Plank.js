@@ -35,7 +35,7 @@ Plank.prototype.setSize = function()
 {
     this.halfWidth = this.sprite.width/2;
     this.halfHeight = this.sprite.height/2;
-    this.radius = this.halfHeight;
+    this.radius = this.halfHeight*1.2;
 }
 
 // Initial, inheritable, default values
