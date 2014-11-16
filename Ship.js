@@ -22,8 +22,8 @@ function Ship(descr) {
     
     // Default sprite, if not otherwise specified
     this.sprite = this.sprite || g_sprites.shipZoom;
+    this.arrowSprite = g_sprites.arrow;
 
-	
     // Set normal drawing scale, and warp state off
     this._scale = 0.5;
     this._isWarping = false;
@@ -83,10 +83,6 @@ Ship.prototype.warp = function () {
         this.Citizen.reset();
         this.Citizen = 0;
     }
-	
-    this.velX = 0;
-    this.velY = 0;
-    this.rotation = 0;
 
     this.warpToPlank();
 	
@@ -370,13 +366,17 @@ Ship.prototype.setPos = function(cx, cy) {
 }
 
 Ship.prototype.warpToPlank = function() {
+    this.velX = 0;
+    this.velY = 0;
+    this.rotation = 0;
+
     var pos = entityManager.getPlankPos();
     this.cx = pos.posX;
-    this.cy = pos.posY - this.getRadius() - 15;
+    this.cy = pos.posY - this.getRadius() - 20;
 };
 
 Ship.prototype.isOnScreenWidth = function() {
-    var offset = 1;
+    var offset = 2;
     return !(this.cx - this.getRadius() - offset < 0 ||
              this.cx + this.getRadius() + offset > g_canvas.width);
 };
@@ -572,7 +572,10 @@ Ship.prototype.render = function (ctx) {
 	
     if(!this.isOnScreenHeight()) {
         ctx.save();
-        util.fillBox(ctx, this.cx - 15, 30, 30, 30, "blue");
+//        ctx.translate(this.cx - 15, 30);
+//        ctx.rotate(this.rotation);
+//        util.fillBox(ctx, 0, 0, 30, 30, "blue");
+        this.arrowSprite.drawWrappedCentredAt(ctx, this.cx, 30, this.rotation);
         ctx.fillStyle = "blue";
         ctx.textAlign = "center";
         ctx.font = "bold 11px Arial";

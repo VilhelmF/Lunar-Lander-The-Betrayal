@@ -129,8 +129,13 @@ collidesWithGround : function(posX, posY, radius)
                                 };
                     }
                 }
-            /*    
-                //  y = mx + c  and (x - p)^2 + (y - q)^2 = r^2
+                /*
+                   var dX = latterX - firstX;
+                var dY = latterY - firstY;
+                var fX = firstX - posX;
+                var fY = firstY - posY; */
+
+              /*  //  y = mx + c  and (x - p)^2 + (y - q)^2 = r^2
                 //  so (x - p)^2 + (mx + c - q)^2 = r^2
                 //  giving (m^2 + 1)x^2 + 2(mc - mq - p)x + (q^2-r^2+p^2-2cq + c^2) = 0
                 // p = posX   q = posY  
