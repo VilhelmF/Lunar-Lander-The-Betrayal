@@ -62,6 +62,8 @@ Ship.prototype.rightRotation = 0.01;
 Ship.prototype.leftRotation = 0.01;
 
 Ship.prototype.fuel = new Fuel();
+
+Ship.prototype.cooldown = 150 / NOMINAL_UPDATE_INTERVAL;
    
 
 
@@ -166,6 +168,11 @@ Ship.prototype._moveToASafePlace = function () {
     
 Ship.prototype.update = function (du) {
 
+    if(this.cooldown > 0) {
+        this.cooldown -= du;
+        return;
+    }
+
     // Handle warping
     if (this._isWarping) {
         this._updateWarp(du);
@@ -203,6 +210,7 @@ Ship.prototype.update = function (du) {
     var shipsRotation = this.rotation % (2*Math.PI);
     if(typeof ground !== 'undefined')
     {
+        console.log(ground);
         this.landingOnGround(shipsRotation, ground, du);     
     }
 
@@ -220,7 +228,6 @@ Ship.prototype.update = function (du) {
         }
         else if(Object.getPrototypeOf(hitEntity) === Plank.prototype && !(Math.abs(shipsRotation) > 0.5*Math.PI))
         {
-            console.log("fucking planki");
             this.landingOnPlank(shipsRotation, hitEntity, du);
                 
         }
@@ -366,6 +373,7 @@ Ship.prototype.setPos = function(cx, cy) {
 }
 
 Ship.prototype.warpToPlank = function() {
+    this.cooldown = Ship.prototype.cooldown;
     this.velX = 0;
     this.velY = 0;
     this.rotation = 0;

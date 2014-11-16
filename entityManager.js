@@ -47,8 +47,16 @@ _generateLevel : function() {
  //   this._ground = [];
  //   this._guns = [];
  //   this._citizens = [];
-
-    levelDesign.setUp();
+    if(levelDesign.level === 1) levelDesign.setUp();
+    else if(levelDesign.level > 1)
+    {
+        console.log("hah");
+        this.clearLevel = false;
+        console.log("leveldesign setup");
+        levelDesign.setUp(); 
+        console.log(this._ground.length);   
+    }
+    
 //    var levelArray = levelDesign.getLevel();
 /*
     var i = 0;
@@ -109,6 +117,7 @@ _forEachOf: function(aCategory, fn) {
 // to request the blessed release of death!
 //
 KILL_ME_NOW : -1,
+clearLevel  : false,
 
 // Some things must be deferred until after initial construction
 // i.e. thing which need `this` to be defined.
@@ -266,29 +275,51 @@ haltShips: function() {
 
 update: function(du) {
 
-    for (var c = 0; c < this._categories.length; ++c) {
+  //  var killAll = false;
+    if(this.clearLevel)// killAll = true;
+    {
+        for (var c = 0; c < this._categories.length; ++c) {
 
-        var aCategory = this._categories[c];
-        var i = 0;
-
-        while (i < aCategory.length) {
-
-            var status = aCategory[i].update(du);
-
-            if (status === this.KILL_ME_NOW) {
-                // remove the dead guy, and shuffle the others down to
-                // prevent a confusing gap from appearing in the array
-                
-				//Þ:  delete aCategory[i];
-				//Þ: SÉRÐU NÚNA HELVÍTIÐ ÞITT?!
-				aCategory.splice(i,1);
-            }
-            else {
-                ++i;
+            var aCategory = this._categories[c];
+            console.log(this._categories[c]);
+            
+            while (aCategory.length) 
+            {
+                console.log("delete");
+                aCategory.pop();
             }
         }
+        spatialManager.clearAll();
+        this.init();
     }
+    else
+    {
+        for (var c = 0; c < this._categories.length; ++c) {
 
+            var aCategory = this._categories[c];
+            var i = 0;
+
+            while (i < aCategory.length) {
+
+                var status = aCategory[i].update(du);
+
+                if (status === this.KILL_ME_NOW) {
+                    // remove the dead guy, and shuffle the others down to
+                    // prevent a confusing gap from appearing in the array
+                    
+    				//Þ:  delete aCategory[i];
+    				//Þ: SÉRÐU NÚNA HELVÍTIÐ ÞITT?!
+                    console.log(aCategory[i]);
+    				aCategory.splice(i,1);
+                }
+                else {
+                    ++i;
+                }
+            }
+        
+        }
+    }
+   
 },
 
 render: function(ctx) {
