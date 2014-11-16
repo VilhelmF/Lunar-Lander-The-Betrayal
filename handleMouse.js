@@ -24,7 +24,7 @@ function handleMouse(evt) {
     if (!button) return;
     
 	g_startGame = true;
-    entityManager.yoinkNearestShip(g_mouseX, g_mouseY);
+//    entityManager.yoinkNearestShip(g_mouseX, g_mouseY);
 }
 
 // Handle "down" and "move" events the same way.

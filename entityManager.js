@@ -129,9 +129,9 @@ deferredSetup : function () {
 
 init: function() {
     this._generateLevel();
-    this.generateShip();
 	this._generateBackground();
 	this._generatePackage({cx: 200, cy: -30});
+    this.generateShip();
 },
 
 fireBullet: function(cx, cy, velX, velY, rotation, team) {
@@ -146,7 +146,6 @@ fireBullet: function(cx, cy, velX, velY, rotation, team) {
     }));
 
 },
-
 
 generateShip : function() {
     var ship = new Ship();
