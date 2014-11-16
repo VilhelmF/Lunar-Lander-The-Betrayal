@@ -102,7 +102,9 @@ Plank.prototype.render = function (ctx) {
     //var origScale = this.sprite.scale;
     
     ctx.save();
-	/*
+	
+/*
+
     ctx.beginPath();
     ctx.fillStyle = "grey";
     ctx.strokeStyle = "black";
@@ -111,8 +113,8 @@ Plank.prototype.render = function (ctx) {
     			this.halfWidth * 2,
     			this.halfHeight * 2);
     ctx.fill();
-   	ctx.stroke();*/
-
+   	ctx.stroke();
+*/
    	if(this.returning > 0)
    	{
    		ctx.beginPath();

@@ -239,18 +239,19 @@ Ship.prototype.update = function (du) {
         
         this.warp();
     }
-
+    if(this.velY < 0)
+    {
+        this.landed = false;
+    }
     if(this._isDeadNow)
     {
         return entityManager.KILL_ME_NOW;  
     }
-
     if(!this.landed)
     {
         this.leftRotation = 0;
         this.rightRotation = 0;
     }
-
     if(this.Citizen)
     {
         this.maybePickUpCitizen();
@@ -477,24 +478,28 @@ Ship.prototype.landingOnGround = function(shipsRotation, ground, du)
 
 Ship.prototype.landingOnPlank = function(shipsRotation, hitEntity, du)
 {       
-    if((this.cy + this.getRadius()) > (hitEntity.cy - hitEntity.halfHeight)
-        && (this.cy + this.getRadius()) < (hitEntity.cy + hitEntity.halfHeight))
+    if((this.cy + this.getRadius()) >= (hitEntity.cy - hitEntity.halfHeight)
+        && (this.cy + this.getRadius()) <= (hitEntity.cy + hitEntity.halfHeight))
     {
         if(this.velY > 0) this.velY = 0;
         if(this.velX !== 0) this.velX = 0;
         this.landed = true;
+        this.cy = hitEntity.cy - hitEntity.radius - this.getRadius();   
+        console.log("hata þennan planka");
         this.adjustRotation(du);
-        this.fuel.status = 1;            
+        this.fuel.status = 1;
     }
-    if((this.cy - this.getRadius()) > (hitEntity.cy - hitEntity.halfHeight)
-        && (this.cy - this.getRadius()) < (hitEntity.cy + hitEntity.halfHeight))
+    if((this.cy - this.getRadius()) >= (hitEntity.cy - hitEntity.halfHeight)
+        && (this.cy - this.getRadius()) <= (hitEntity.cy + hitEntity.halfHeight))
     {
         this.velY = 0;
         this.cy = hitEntity.cy + hitEntity.halfHeight + this.getRadius();
+        console.log("dat plank");
     }
     if(hitEntity.cx > this.cx + this.getRadius() || hitEntity.cx < this.cx - this.getRadius())
     {
         this.velX = 0;
+        console.log("fuckin plaaank");
     }                
                 
     spatialManager.register(this);
