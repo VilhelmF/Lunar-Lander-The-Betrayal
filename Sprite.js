@@ -39,7 +39,7 @@ function Sprite(image, name) {
 		
 		if(randomInt == 1){
 			this.right = true;
-			this.left  = 
+			//this.left  = 
 		}
 		
 		this.left = false;
@@ -131,7 +131,7 @@ Sprite.prototype.cropImageBy = function (ctx, cx, cy, percent) {
 
 
 
-Sprite.prototype.spriteSheetconstruction = function (ctx, sx) {
+//Sprite.prototype.spriteSheetconstruction = function (ctx, sx) {
 
 
 
