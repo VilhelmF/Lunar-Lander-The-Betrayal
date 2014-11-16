@@ -79,23 +79,8 @@ function updateSimulation(du) {
     
 	//Þ: TÍMABUNDIÐ !!
 	if(!g_startGame){
-		g_tickCount += 1;
-			
-        if (g_tickCount > g_ticksPerFrame) {
-        
-        	g_tickCount = 0;
-        	
-			 // If the current frame index is in range
-            if (g_frameIndex < g_numberOfFrames - 1) {	
-                // Go to the next frame
-                g_frameIndex += 1;
-                g_posX += 2;
-            } else {
-				g_frameIndex = 0;
-            }
-        }	
-    }
-		
+		g_sprites.oldManWalking.walkUpdate();
+	}
 	else
 	{
 		processDiagnostics();
@@ -117,13 +102,6 @@ var g_renderSpatialDebug = false;
 var g_doZoom = false;
 var g_startGame = false;
 
-// KILL THIS VARIABLE
-var g_tickCount = 0;
-var g_ticksPerFrame = 10;
-var g_frameIndex = 0; 
-var g_numberOfFrames = 10;
-var g_posX = 0;
-        
 
 
 
@@ -229,15 +207,7 @@ function renderSimulation(ctx) {
 		
 		// (*)
 		
-		
-		//tímabundið dóterí, vildi bara sjá kallinn hreyfast
-		var w = g_sprites.oldManWalking.width;
-		var h = g_sprites.oldManWalking.height;
-		
-		
-		ctx.drawImage(g_sprites.oldManWalking.image,
-		g_frameIndex * w/10, 0, w/10, h, g_posX, 450, w/10, h);
-		
+		g_sprites.oldManWalking.walkRender(ctx, 0, 450);
 	}
 	else
 	{	
@@ -291,7 +261,8 @@ function requestPreloads() {
 		oldManWalking	: "sprites/startScreen/oldManWalking-38.png",
 		fuelPackage		: "sprites/package/package-42.png",
 		randomPackage	: "sprites/package/package-41.png",
-		plank        	: "sprites/plank-48.png"
+		plank        	: "sprites/plank-48.png",
+		manWalking		: "sprites/manWalking-45.png"
     };
 
 	preLoadAudio();
@@ -307,7 +278,7 @@ function preloadDone() {
 	
 	
 	for(var image in g_images) {
-		g_sprites[image] = new Sprite(g_images[image]);
+		g_sprites[image] = new Sprite(g_images[image], image);
 	}
 
 	
