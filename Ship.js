@@ -222,6 +222,7 @@ Ship.prototype.update = function (du) {
         }
         else if(Object.getPrototypeOf(hitEntity) === Plank.prototype && !(Math.abs(shipsRotation) > 0.5*Math.PI))
         {
+            console.log("fucking planki");
             this.landingOnPlank(shipsRotation, hitEntity, du);
                 
         }
@@ -521,7 +522,7 @@ Ship.prototype.landingOnPlank = function(shipsRotation, hitEntity, du)
         if(this.velY > 0) this.velY = 0;
         if(this.velX !== 0) this.velX = 0;
         this.landed = true;
-        this.cy = hitEntity.cy - hitEntity.radius - this.getRadius();   
+        this.cy = hitEntity.cy - hitEntity.halfHeight - this.getRadius();   
         console.log("hata þennan planka");
         this.adjustRotation(du);
         this.fuel.status = 1;
