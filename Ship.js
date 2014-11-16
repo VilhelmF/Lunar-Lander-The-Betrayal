@@ -559,7 +559,11 @@ Ship.prototype.render = function (ctx) {
 	
     if(!this.isOnScreenHeight()) {
         ctx.save();
-        util.fillBox(ctx, this.cx - 15, 30, 30, 30, "blue");
+        ctx.translate(this.cx - 15, 30);
+        ctx.rotate(this.rotation);
+        util.fillBox(ctx, 0, 0, 30, 30, "blue");
+        ctx.restore();
+        ctx.save();
         ctx.fillStyle = "blue";
         ctx.textAlign = "center";
         ctx.font = "bold 11px Arial";
