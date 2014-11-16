@@ -131,6 +131,7 @@ Sprite.prototype.spriteSheetconstruction = function () {
 			this.right = false;
 		}
 		
+		//ÓNOTAÐ
 		this.walkSteps = [];
 };
 
