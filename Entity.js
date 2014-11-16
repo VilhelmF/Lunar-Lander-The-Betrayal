@@ -120,7 +120,7 @@ Entity.prototype.computeSubStep = function (du) {
 
     this.applyAccel(accelX, accelY, du);
     
-    this.wrapPosition();
+//    this.wrapPosition();
     
     if (thrust === 0 || g_allowMixedActions) {
         this.updateRotation(du);
@@ -157,17 +157,17 @@ Entity.prototype.applyAccel = function (accelX, accelY, du) {
     // bounce
     if (g_useGravity) {
 
-    var minY = g_sprites.ship.height / 2;
-    var maxY = g_canvas.height - minY;
+        var minY = g_sprites.ship.height / 2;
+        var maxY = g_canvas.height - minY;
 
-    // Ignore the bounce if the ship is already in
-    // the "border zone" (to avoid trapping them there)
-    if (this.cy > maxY || this.cy < minY) {
-        // do nothing
-    } else if (nextY > maxY || nextY < minY) {
-            this.velY = oldVelY * -0.9;
-            intervalVelY = this.velY;
-        }
+        // Ignore the bounce if the ship is already in
+        // the "border zone" (to avoid trapping them there)
+        if (this.cy > maxY || this.cy < minY) {
+            // do nothing
+        } else if (nextY > maxY || nextY < minY) {
+                this.velY = oldVelY * -0.9;
+                intervalVelY = this.velY;
+            } 
     }
     
     // s = s + v_ave * t

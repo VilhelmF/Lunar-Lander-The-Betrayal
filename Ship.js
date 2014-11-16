@@ -56,6 +56,7 @@ Ship.prototype.velX = 0;
 Ship.prototype.velY = 0;
 Ship.prototype.launchVel = 2;
 Ship.prototype.numSubSteps = 1;
+Ship.prototype.minY = -1000;
 
 Ship.prototype.rightRotation = 0.01;
 Ship.prototype.leftRotation = 0.01;
@@ -191,9 +192,10 @@ Ship.prototype.update = function (du) {
             this.velX = 0;
         }
 
-//        if(!this.isOnScreenHeight()) {
-            //this.cy = origY;
-//        }
+        if(this.cy < this.minY) {
+            this.cy = origY;
+            this.velY = 1;
+        }
     }
 
 
@@ -372,13 +374,14 @@ Ship.prototype.warpToPlank = function() {
 };
 
 Ship.prototype.isOnScreenWidth = function() {
-    return !(this.cx - this.getRadius() < 0 ||
-             this.cx + this.getRadius() > g_canvas.width);
+    var offset = 1;
+    return !(this.cx - this.getRadius() - offset < 0 ||
+             this.cx + this.getRadius() + offset > g_canvas.width);
 };
 
 Ship.prototype.isOnScreenHeight = function() {
-    return !(this.cy - this.getRadius() < 0 ||
-             this.cy + this.getRadius() > g_canvas.height);
+    return !(this.cy < 0 ||
+             this.cy > g_canvas.height);
 };
 
 
@@ -549,7 +552,15 @@ Ship.prototype.render = function (ctx) {
     );
     this.sprite.scale = origScale;
 	
-
+    if(!this.isOnScreenHeight()) {
+        ctx.save();
+        util.fillBox(ctx, this.cx - 15, 30, 30, 30, "blue");
+        ctx.fillStyle = "blue";
+        ctx.textAlign = "center";
+        ctx.font = "bold 11px Arial";
+        ctx.fillText(-this.cy.toFixed(0) + " m", this.cx, 70);    
+        ctx.restore();
+    }
 //	console.log(this.fuel.cx);
 	
 /*	this.fuelBar[3].cropImageBy (ctx, this.fuel.cx, this.fuel.cy, this.fuel.status-0.03);
@@ -561,7 +572,7 @@ Ship.prototype.render = function (ctx) {
 */	
 
     //render fuel
-   // util.fillBox(ctx, this.fuel.cx, this.fuel.cy, this.fuel.level, this.fuel.height, this.fuel.color);
+    //util.fillBox(ctx, this.fuel.cx, this.fuel.cy, this.fuel.level, this.fuel.height, this.fuel.color);
 
 	this.fuel.render(ctx, this.cx, this.cy);
 
