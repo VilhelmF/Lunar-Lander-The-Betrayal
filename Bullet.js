@@ -19,7 +19,9 @@ function Bullet(descr) {
     this.setup(descr);
 
     // Make a noise when I am created (i.e. fired)   
-	g_audio.bulletFire.Play(); 
+	//g_audio.bulletFire.Play();
+	console.log("laser audio played");
+	g_audio.laserCannon.Play();
 	
 /*
     // Diagnostics to check inheritance stuff

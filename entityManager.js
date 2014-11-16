@@ -178,8 +178,37 @@ generatePlank : function(cx, cy) {
 
 generateCitizen : function(cx, cy) {
     this._citizens.push(new Citizen({
-        cx : cx,
-        cy : cy,
+        cx   : cx,
+        cy   : cy,
+		
+		typeId: util.getRandomInt(0,1),
+		dirId : util.getRandomInt(0,1),
+		
+		//FIND TYPE OF CITIZEN
+		type : function() {
+			
+			if( this.typeId == 0 ){
+				return g_sprites.manWalking;
+			}
+			else
+			{
+				return g_sprites.oldManWalking2;
+			}
+		},
+		
+		direction : function() {
+			
+			//LEFT DIRECTION
+			if(this.dirId == 0){
+				return { dir: false, velX: -1 };
+			}
+			
+			//RIGHT DIRECTION
+			else
+			{
+				return { dir: true, velX: 1 };;
+			}
+		}
     }));
 },
 

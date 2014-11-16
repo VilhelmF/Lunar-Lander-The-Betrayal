@@ -20,11 +20,20 @@ function Citizen(descr) {
 
     this.rememberResets();
     
-    // Default sprite, if not otherwise specified
-    this.sprite = this.sprite || g_sprites.ship;
-    
+    // oldman walking or man walking
+	this.sprite    = this.type();
+	
+	this.sound = g_audio.rescue;
+	
+	//this.sound.beginTime
+	
+	var dirInfo = this.direction();
+	
+    this.direction = dirInfo.dir;
+	this.velX 	  *= dirInfo.velX;
+	
     // Set normal drawing scale, and warp state off
-    this._scale = 1;
+    this._scale = 0.5;
 };
 
 Citizen.prototype = new Entity();
@@ -53,9 +62,6 @@ Citizen.prototype.isPickedUp = false;
 Citizen.prototype.isDead = false;
 Citizen.prototype.landed = false;
 
-// true  -> right		
-// false -> left
-Citizen.prototype.direction = true;
 
 //tímabundið drasl
 Citizen.prototype.tempFalse = false;
@@ -107,13 +113,11 @@ Citizen.prototype.update = function (du) {
 	    //Is he stationary on the ground?
 	    var aGroundAndSlope = spatialManager.collidesWithGround(this.cx, this.cy, this.getRadius())
 	    
-		//console.log("asdfasdfasdfasdf: " + aGroundAndSlope.slope);
-		
 		
 		if(typeof aGroundAndSlope !== 'undefined' && !this.isPickedUp)
 	    {
 	    	
-			g_sprites.manWalking.walkUpdate(this.numSubSteps);
+			this.sprite.walkUpdate(this.numSubSteps);
 	    	
 			if(this.velY > 2)
 	    	{
@@ -122,23 +126,19 @@ Citizen.prototype.update = function (du) {
 	    	this.landed = true;
 
 	    	if(this.velY > 0) this.velY = 0;
-			
-			//FOR WALKING DIRACTION
-			if(typeof aGroundAndSlope !== 'undefined') {
-			
-					//change direction (from left to right and right to left)
-					if
-					(
-						aGroundAndSlope.slope < 0 						 || 
-						aGroundAndSlope.slope > 0 						 || 
-						aGroundAndSlope.latterX == aGroundAndSlope.lineX ||
-						aGroundAndSlope.firstX  == aGroundAndSlope.lineX
-					) 
-					{ 	
-						this.direction = !this.direction;
-						this.velX *= -1;
-					}
-			}
+		
+			//change direction (from left to right and right to left)
+			if
+				(
+					aGroundAndSlope.slope < 0 						 || 
+					aGroundAndSlope.slope > 0 						 || 
+					aGroundAndSlope.latterX == aGroundAndSlope.lineX ||
+					aGroundAndSlope.firstX  == aGroundAndSlope.lineX
+				) 
+				{ 	
+					this.direction = !this.direction;
+					this.velX *= -1;
+				}
 			
 	    }
     }
@@ -169,6 +169,8 @@ Citizen.prototype.pickedUp = function ()
 {
 	if(!this.isDead)
 	{
+		console.log("rescue audio played");
+		g_audio.rescue.Play();
 		this.isPickedUp = !this.isPickedUp;
 		if(this.isPickedUp) return this;
 		else return 0;	
@@ -189,11 +191,12 @@ Citizen.prototype.render = function (ctx) {
 										// this.cy-this.height);
 		
 		
-		g_sprites.manWalking.walkRender(ctx, 
-					this.cx - g_sprites.manWalking.midPointX,
-					this.cy - g_sprites.manWalking.midPointY.y2,
+		this.sprite.walkRender(ctx, 
+					this.cx - this.sprite.midPointX,
+					this.cy - this.sprite.midPointY.y2,
 					this.direction
 					);
+	
 		
 		
 		/*ctx.save();

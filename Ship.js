@@ -90,7 +90,7 @@ Ship.prototype.warp = function () {
 	
 	//ÞESSI ER EITTHVAÐ AÐ KLIKKA!!
 	// shipWarping death sound played
-	//g_audio.shipWarp.Play();				
+	g_audio.shipWarp.Play();				
 	
 	
     
@@ -221,7 +221,11 @@ Ship.prototype.update = function (du) {
     var hitEntity = this.findHitEntity();
     if (hitEntity) 
     {
-        if(Object.getPrototypeOf(hitEntity) === Citizen.prototype)
+        // console.log("bomb audio played");
+		// g_audio.bomb.Play();
+        
+		
+		if(Object.getPrototypeOf(hitEntity) === Citizen.prototype)
         {
             this.maybePickUpCitizen(hitEntity);
             spatialManager.register(this);
@@ -238,7 +242,9 @@ Ship.prototype.update = function (du) {
         else
         {
             particleManager.explosion(this.cx, this.cy);
-            this.warp();          
+			console.log("mountinSmash audio played");
+			//g_audio.mountainSmash.Play();
+            this.warp();    
         }
         
     }
@@ -322,8 +328,7 @@ Ship.prototype.computeThrustMag = function () {
     
     if (keys[this.KEY_THRUST]) {
         thrust += NOMINAL_THRUST;
-        //this.fuel.level -= 0.8;
-        this.fuel.status -= 0.0005;
+        this.fuel.status -= 0.01;
         particleManager.thrust(this.cx, this.cy, this.rotation, this.getRadius());
         this.landed = false;
     }
@@ -594,15 +599,6 @@ Ship.prototype.render = function (ctx) {
         ctx.fillText(-this.cy.toFixed(0) + " m", this.cx, 70);    
         ctx.restore();
     }
-//	console.log(this.fuel.cx);
-	
-/*	this.fuelBar[3].cropImageBy (ctx, this.fuel.cx, this.fuel.cy, this.fuel.status-0.03);
-	this.fuelBar[2].cropImageBy (ctx, this.fuel.cx, this.fuel.cy, this.fuel.status);
-	this.fuelBar[1].cropImageBy (ctx, this.fuel.cx, this.fuel.cy, this.fuel.status-0.03);
-	
-	this.fuelBar[0].drawAt(ctx, this.fuel.cx, this.fuel.cy);
-	//this.fuelBar[1].drawAt(ctx, this.fuel.cx, this.fuel.cy);
-*/	
 
     //render fuel
     //util.fillBox(ctx, this.fuel.cx, this.fuel.cy, this.fuel.level, this.fuel.height, this.fuel.color);

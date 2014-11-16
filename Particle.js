@@ -16,6 +16,10 @@ Particle.prototype.lifeSpan = 2000 / NOMINAL_UPDATE_INTERVAL;
 Particle.prototype.initExplosion = function(cx, cy) {
 	// console.log(cx + "    " + cy);
 	// console.log(util.getRandomInt(cx - 10, cy + 10));
+	
+	console.log("bomb audio played");
+	//g_audio.bomb.Play();
+	
 	this.cx = util.getRandomInt(cx - 10, cx + 10);
 	this.cy = util.getRandomInt(cy - 10, cy + 10);
 

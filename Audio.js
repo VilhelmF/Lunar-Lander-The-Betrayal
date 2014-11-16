@@ -32,9 +32,11 @@ Sound.prototype.cloneNodes = 0;
 //scale from 0.0 to 1.0
 Sound.prototype.volume    = 1.0;
 
+Sound.prototype.beginTime = 0;
+Sound.prototype.endTime   = 0;
 
 Sound.prototype.soundVolume = function( volume ){
-	
+
 	this.volume = volume;
 };
 
@@ -91,6 +93,8 @@ Sound.prototype.reset = function (){
 
 
 
+
+
 // ==============
 // PRELOAD AUDIO
 // ==============
@@ -100,9 +104,17 @@ Sound.prototype.reset = function (){
 //
 var requiredSounds = {
 	
-	shipWarp	: "sounds/shipWarp.ogg",
-    bulletFire	: "sounds/bulletFire.ogg",
-	zappedSound : "sounds/bulletZapped.ogg"
+	//shipWarp	: "sounds/shipWarp.ogg",
+	shipWarp	: "sounds/warp.mp3",
+    //bulletFire	: "sounds/bulletFire.ogg",
+	zappedSound : "sounds/bulletZapped.ogg",
+	plantOnPlank: "sounds/plantOnPlank.mp3",
+	//mountainSmash: "sounds/mountainSmash.mp3",
+	rescue		: "sounds/rescue.mp3",
+	//rescue		: "sounds/rescue2.mp3",
+	laserCannon : "sounds/laser.mp3",
+	bomb 		: "sounds/Bomb_Exploding-Sound_Explorer-68256487.mp3",
+	//shipwarp 		: "sounds/warp.mp3",
 
 };
 

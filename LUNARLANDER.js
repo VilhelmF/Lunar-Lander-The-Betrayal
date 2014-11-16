@@ -80,7 +80,6 @@ function updateSimulation(du) {
 	//Þ: TÍMABUNDIÐ !!
 	if(!g_startGame){
 		g_sprites.oldManWalking.walkUpdate(2);
-		g_sprites.manWalking.walkUpdate(3);
 	}
 	else
 	{
@@ -174,7 +173,7 @@ function processDiagnostics() {
 function renderSimulation(ctx) {
     
 	if( !g_startGame ){
-		//STARTSCREEN kóði sem hægt er að nota sem endar þarna -> (*)
+		//STARTSCREEN setup
 		g_sprites.st_screenLayer1.drawAt(ctx, 0, 0);
 		g_sprites.st_screenLayer2.drawAt(ctx, 0, 0);
 		
@@ -206,8 +205,7 @@ function renderSimulation(ctx) {
 		
 		// (*)
 		
-		g_sprites.oldManWalking.walkRender(ctx, 0, 450);
-		g_sprites.manWalking.walkRender(ctx, 0, 450);
+		g_sprites.oldManWalking.walkRender(ctx, 0, 450, "right");
 	}
 	else
 	{	
@@ -258,12 +256,15 @@ function requestPreloads() {
 		st_screenLayer3 : "sprites/startScreen/gameStart-44.png",
 		st_screenLayer4 : "sprites/startScreen/gameStart-47.png",
 		st_screenLayer5 : "sprites/startScreen/gameStart-43.png",
-		oldManWalking	: "sprites/startScreen/oldManWalking-38.png",
+		oldManWalking	: "sprites/oldManWalking-56.png",
+		oldManWalking2	: "sprites/oldManWalking-59.png",
 		fuelPackage		: "sprites/package/package-42.png",
 		randomPackage	: "sprites/package/package-41.png",
 		plank        	: "sprites/plank-48.png",
 		manWalking		: "sprites/manWalking-58.png",
-        arrow           : "sprites/arrow-57.png"
+        arrow           : "sprites/arrow-57.png",
+		tower			: "sprites/tower/tower-61.png",
+		diamond	: "sprites/tower/tower-60.png"
     };
 
 	preLoadAudio();
