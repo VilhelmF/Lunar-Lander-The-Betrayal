@@ -49,6 +49,7 @@ Plank.prototype.radius = 20;
 
 //For the level. Temporary?
 Plank.prototype.rescueNumber = 0;
+Plank.prototype.rescueLimit = 1;
 
 Plank.prototype.returning = 0;
 Plank.prototype.returningFull = 1;
@@ -70,9 +71,10 @@ Plank.prototype.update = function (du) {
 
     spatialManager.register(this);
 
-    if(this.rescueNumber > 2)
+    if(this.rescueNumber >= this.rescueLimit)
     {
-    	alert("Sævar, bring me your levelframework!");
+        this.rescueNumber = 0;
+        levelDesign.nextLevel();
     }
 
 };

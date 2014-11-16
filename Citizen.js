@@ -42,7 +42,7 @@ Citizen.prototype.rememberResets = function () {
 Citizen.prototype.rotation = 0;
 Citizen.prototype.cx = 200;
 Citizen.prototype.cy = 200;
-Citizen.prototype.velX = 0;
+Citizen.prototype.velX = 0.1;
 Citizen.prototype.velY = 0;
 Citizen.prototype.numSubSteps = 1;
 
@@ -101,15 +101,18 @@ Citizen.prototype.update = function (du) {
 	    if(typeof aGroundAndSlope !== 'undefined' && !this.isPickedUp)
 	    {
 	    	
-	    	if(this.velY > 2)
+			g_sprites.manWalking.walkUpdate(this.numSubSteps);
+	    	
+			if(this.velY > 2)
 	    	{
 	    		this.isDead = true;
 	    	}
 	    	this.landed = true;
 
 	    	if(this.velY > 0) this.velY = 0;
-	    	if(this.velX !== 0) this.velX = 0;   	
 	    }
+		else {
+		}
     }
     else
     {
@@ -120,7 +123,6 @@ Citizen.prototype.update = function (du) {
     //Citizen moves with the ship that picked him up
     if(this.isPickedUp)
     {
-    	
 	    var postest = entityManager._ships[0].getPos();
    		this.cx = postest.posX;
    		this.cy = postest.posY + entityManager._ships[0].getRadius() - this.halfHeight;
@@ -156,7 +158,16 @@ Citizen.prototype.takeBulletHit = function () {
 Citizen.prototype.render = function (ctx) {
     if(!this.isPickedUp)
     {
-    	ctx.save();
+		//ætti að vera svona (fyrir þorgeir).
+		// g_sprites.manWalking.walkRender(ctx, 
+										// this.cx-(this.width/2),
+										// this.cy-this.height);
+		g_sprites.manWalking.walkRender(ctx, 
+					this.cx - g_sprites.manWalking.midPointX,
+					this.cy - g_sprites.manWalking.midPointY.y2);
+		
+		
+		ctx.save();
     	if(!this.isDead)
     	{
 	    

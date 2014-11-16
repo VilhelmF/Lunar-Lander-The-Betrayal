@@ -210,6 +210,7 @@ Ship.prototype.update = function (du) {
     var shipsRotation = this.rotation % (2*Math.PI);
     if(typeof ground !== 'undefined')
     {
+        console.log(ground);
         this.landingOnGround(shipsRotation, ground, du);     
     }
 
@@ -227,7 +228,6 @@ Ship.prototype.update = function (du) {
         }
         else if(Object.getPrototypeOf(hitEntity) === Plank.prototype && !(Math.abs(shipsRotation) > 0.5*Math.PI))
         {
-            console.log("fucking planki");
             this.landingOnPlank(shipsRotation, hitEntity, du);
                 
         }

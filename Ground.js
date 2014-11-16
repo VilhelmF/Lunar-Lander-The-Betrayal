@@ -83,7 +83,10 @@ Ground.prototype.update = function (du) {
     //Any Update?
     spatialManager.unregisterGround(this);
 
-
+    if(this._isDeadNow)
+    {
+        return entityManager.KILL_ME_NOW;  
+    }
 
 
     spatialManager.registerGround(this);
