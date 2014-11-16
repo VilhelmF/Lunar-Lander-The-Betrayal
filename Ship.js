@@ -56,6 +56,7 @@ Ship.prototype.velX = 0;
 Ship.prototype.velY = 0;
 Ship.prototype.launchVel = 2;
 Ship.prototype.numSubSteps = 1;
+Ship.prototype.minY = -1000;
 
 Ship.prototype.rightRotation = 0.01;
 Ship.prototype.leftRotation = 0.01;
@@ -191,9 +192,10 @@ Ship.prototype.update = function (du) {
             this.velX = 0;
         }
 
-//        if(!this.isOnScreenHeight()) {
-            //this.cy = origY;
-//        }
+        if(this.cy < this.minY) {
+            this.cy = origY;
+            this.velY = 1;
+        }
     }
 
 
@@ -222,6 +224,7 @@ Ship.prototype.update = function (du) {
         }
         else if(Object.getPrototypeOf(hitEntity) === Plank.prototype && !(Math.abs(shipsRotation) > 0.5*Math.PI))
         {
+            console.log("fucking planki");
             this.landingOnPlank(shipsRotation, hitEntity, du);
                 
         }
@@ -373,13 +376,14 @@ Ship.prototype.warpToPlank = function() {
 };
 
 Ship.prototype.isOnScreenWidth = function() {
-    return !(this.cx - this.getRadius() < 0 ||
-             this.cx + this.getRadius() > g_canvas.width);
+    var offset = 1;
+    return !(this.cx - this.getRadius() - offset < 0 ||
+             this.cx + this.getRadius() + offset > g_canvas.width);
 };
 
 Ship.prototype.isOnScreenHeight = function() {
-    return !(this.cy - this.getRadius() < 0 ||
-             this.cy + this.getRadius() > g_canvas.height);
+    return !(this.cy < 0 ||
+             this.cy > g_canvas.height);
 };
 
 
@@ -498,7 +502,7 @@ Ship.prototype.rotationalLanding = function (shipsRotation, groundRotation)
 ----------------------------------------------------------------------------------------*/
 Ship.prototype.landingOnGround = function(shipsRotation, ground, du)
 {
-    if(this.velY > 2 || this.velX > 3 || this.rotationalLanding(shipsRotation, ground.rotation))
+    if(this.velY > 2 || Math.abs(this.velX) > 3 || this.rotationalLanding(shipsRotation, ground.rotation))
     {
         particleManager.explosion(this.cx, this.cy);
         this.warp();
@@ -514,31 +518,43 @@ Ship.prototype.landingOnGround = function(shipsRotation, ground, du)
 };
 
 Ship.prototype.landingOnPlank = function(shipsRotation, hitEntity, du)
-{       
-    if((this.cy + this.getRadius()) >= (hitEntity.cy - hitEntity.halfHeight)
+{    
+    if(Math.abs(this.velY) > 2 ||  Math.abs(this.velX) > 2) 
+    {
+        particleManager.explosion(this.cx, this.cy);
+        this.warp();   
+    }
+    else if((this.cy + this.getRadius()) >= (hitEntity.cy - hitEntity.halfHeight)
         && (this.cy + this.getRadius()) <= (hitEntity.cy + hitEntity.halfHeight))
     {
-        if(this.velY > 0) this.velY = 0;
-        if(this.velX !== 0) this.velX = 0;
-        this.landed = true;
-        this.cy = hitEntity.cy - hitEntity.radius - this.getRadius();   
-        console.log("hata þennan planka");
-        this.adjustRotation(du);
-        this.fuel.status = 1;
+        if(this.cx < hitEntity.cx + hitEntity.radius && this.cx > hitEntity.cx - hitEntity.radius)
+        {
+            if(this.velY > 0) this.velY = 0;
+            if(this.velX !== 0) this.velX = 0;
+            this.landed = true;
+        //  this.cy = hitEntity.cy - hitEntity.halfHeight - this.getRadius();   
+            this.adjustRotation(du);
+            this.fuel.status = 1;
+        
+        }
+        else this.velX = -this.velX;
+
     }
-    if((this.cy - this.getRadius()) >= (hitEntity.cy - hitEntity.halfHeight)
+    else if((this.cy + this.getRadius()) >  (hitEntity.cy - hitEntity.halfHeight))
+    {
+        particleManager.explosion(this.cx, this.cy);
+        this.warp();
+    }
+    /*else if((this.cy - this.getRadius()) >= (hitEntity.cy - hitEntity.halfHeight)
         && (this.cy - this.getRadius()) <= (hitEntity.cy + hitEntity.halfHeight))
     {
-        this.velY = 0;
-        this.cy = hitEntity.cy + hitEntity.halfHeight + this.getRadius();
-        console.log("dat plank");
+        this.velY = -this.velY;
     }
-    if(hitEntity.cx > this.cx + this.getRadius() || hitEntity.cx < this.cx - this.getRadius())
+    else if(hitEntity.cx - hitEntity.radius > this.cx + this.getRadius() || hitEntity.cx + hitEntity.radius < this.cx - this.getRadius())
     {
-        this.velX = 0;
-        console.log("fuckin plaaank");
-    }                
-                
+        this.velX = -this.velX;
+    }               
+      */          
     spatialManager.register(this);
 };
 
@@ -554,7 +570,15 @@ Ship.prototype.render = function (ctx) {
     );
     this.sprite.scale = origScale;
 	
-
+    if(!this.isOnScreenHeight()) {
+        ctx.save();
+        util.fillBox(ctx, this.cx - 15, 30, 30, 30, "blue");
+        ctx.fillStyle = "blue";
+        ctx.textAlign = "center";
+        ctx.font = "bold 11px Arial";
+        ctx.fillText(-this.cy.toFixed(0) + " m", this.cx, 70);    
+        ctx.restore();
+    }
 //	console.log(this.fuel.cx);
 	
 /*	this.fuelBar[3].cropImageBy (ctx, this.fuel.cx, this.fuel.cy, this.fuel.status-0.03);
@@ -566,7 +590,7 @@ Ship.prototype.render = function (ctx) {
 */	
 
     //render fuel
-   // util.fillBox(ctx, this.fuel.cx, this.fuel.cy, this.fuel.level, this.fuel.height, this.fuel.color);
+    //util.fillBox(ctx, this.fuel.cx, this.fuel.cy, this.fuel.level, this.fuel.height, this.fuel.color);
 
 	this.fuel.render(ctx, this.cx, this.cy);
 
