@@ -499,7 +499,7 @@ Ship.prototype.rotationalLanding = function (shipsRotation, groundRotation)
 ----------------------------------------------------------------------------------------*/
 Ship.prototype.landingOnGround = function(shipsRotation, ground, du)
 {
-    if(this.velY > 2 || this.velX > 3 || this.rotationalLanding(shipsRotation, ground.rotation))
+    if(this.velY > 2 || Math.abs(this.velX) > 3 || this.rotationalLanding(shipsRotation, ground.rotation))
     {
         particleManager.explosion(this.cx, this.cy);
         this.warp();
@@ -515,31 +515,43 @@ Ship.prototype.landingOnGround = function(shipsRotation, ground, du)
 };
 
 Ship.prototype.landingOnPlank = function(shipsRotation, hitEntity, du)
-{       
-    if((this.cy + this.getRadius()) >= (hitEntity.cy - hitEntity.halfHeight)
+{    
+    if(Math.abs(this.velY) > 2 ||  Math.abs(this.velX) > 2) 
+    {
+        particleManager.explosion(this.cx, this.cy);
+        this.warp();   
+    }
+    else if((this.cy + this.getRadius()) >= (hitEntity.cy - hitEntity.halfHeight)
         && (this.cy + this.getRadius()) <= (hitEntity.cy + hitEntity.halfHeight))
     {
-        if(this.velY > 0) this.velY = 0;
-        if(this.velX !== 0) this.velX = 0;
-        this.landed = true;
-        this.cy = hitEntity.cy - hitEntity.halfHeight - this.getRadius();   
-        console.log("hata þennan planka");
-        this.adjustRotation(du);
-        this.fuel.status = 1;
+        if(this.cx < hitEntity.cx + hitEntity.radius && this.cx > hitEntity.cx - hitEntity.radius)
+        {
+            if(this.velY > 0) this.velY = 0;
+            if(this.velX !== 0) this.velX = 0;
+            this.landed = true;
+        //  this.cy = hitEntity.cy - hitEntity.halfHeight - this.getRadius();   
+            this.adjustRotation(du);
+            this.fuel.status = 1;
+        
+        }
+        else this.velX = -this.velX;
+
     }
-    if((this.cy - this.getRadius()) >= (hitEntity.cy - hitEntity.halfHeight)
+    else if((this.cy + this.getRadius()) >  (hitEntity.cy - hitEntity.halfHeight))
+    {
+        particleManager.explosion(this.cx, this.cy);
+        this.warp();
+    }
+    /*else if((this.cy - this.getRadius()) >= (hitEntity.cy - hitEntity.halfHeight)
         && (this.cy - this.getRadius()) <= (hitEntity.cy + hitEntity.halfHeight))
     {
-        this.velY = 0;
-        this.cy = hitEntity.cy + hitEntity.halfHeight + this.getRadius();
-        console.log("dat plank");
+        this.velY = -this.velY;
     }
-    if(hitEntity.cx > this.cx + this.getRadius() || hitEntity.cx < this.cx - this.getRadius())
+    else if(hitEntity.cx - hitEntity.radius > this.cx + this.getRadius() || hitEntity.cx + hitEntity.radius < this.cx - this.getRadius())
     {
-        this.velX = 0;
-        console.log("fuckin plaaank");
-    }                
-                
+        this.velX = -this.velX;
+    }               
+      */          
     spatialManager.register(this);
 };
 
