@@ -21,7 +21,7 @@ function Sprite(image, name) {
     this.height = image.height;
     this.scale = 1;
 	
-	
+	// FOR SPRITES SHEETS
 	if(String(name).indexOf("Walk") > -1)
 	{ 
 		//for walking citizen
@@ -34,6 +34,14 @@ function Sprite(image, name) {
 		//i know every sprite sheet have 10 frames.
 		this.numberOfFrames = 10;
 		this.walk = false;
+		
+		var randomInt = util.getRandomInt(0,1);
+		
+		if(randomInt == 1){
+			this.right = true;
+			this.left  = 
+		}
+		
 		this.left = false;
 		this.right = false;
 		
@@ -45,6 +53,8 @@ function Sprite(image, name) {
 		// ...
 	}
 }
+
+
 
 Sprite.prototype.drawAt = function (ctx, x, y) {
     ctx.drawImage(this.image, 
@@ -119,6 +129,12 @@ Sprite.prototype.cropImageBy = function (ctx, cx, cy, percent) {
 
 
 
+
+
+Sprite.prototype.spriteSheetconstruction = function (ctx, sx) {
+
+
+
 //Sprite.prototype.drawCropimage = function (ctx, sx) {
 //	ctx.drawImage( this.image, cx, cy, this.width, this.height, cx, cy, scaleWidth, this.height ); 
 
@@ -137,7 +153,7 @@ Sprite.prototype.walkUpdate = function (Xstep) {
 		{	
 			// Go to the next frame
 			this.frameIndex += 1;
-			this.posX += xstep;
+			this.posX += Xstep;
 		}
 		else 
 		{
@@ -156,6 +172,9 @@ Sprite.prototype.walkRender = function (ctx, posX, posY) {
 	}*/
 	
 	//er ekki viss hvort að þetta þarf: (this.walk)
+	
+	
+	
 	if(!this.walk)
 	{
 		//console.log("render");

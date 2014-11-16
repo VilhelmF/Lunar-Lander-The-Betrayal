@@ -80,7 +80,7 @@ function updateSimulation(du) {
 	//Þ: TÍMABUNDIÐ !!
 	if(!g_startGame){
 		g_sprites.oldManWalking.walkUpdate(2);
-		g_sprites.maWalking.walkUpdate(3);
+		g_sprites.manWalking.walkUpdate(3);
 	}
 	else
 	{
@@ -101,9 +101,7 @@ var g_useGravity = false;
 var g_useAveVel = true;
 var g_renderSpatialDebug = false;
 var g_doZoom = false;
-var g_startGame = true; //FIXME: change this to false
-
-
+var g_startGame = false; //FIXME: change this to false
 
 
 var KEY_MIXED   = keyCode('M');
