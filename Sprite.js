@@ -102,8 +102,11 @@ Sprite.prototype.drawWrappedVerticalCentredAt = function (ctx, cx, cy, rotation)
     this.drawCentredAt(ctx, cx, cy, rotation);
     
     // Top and Bottom wraps
-    this.drawCentredAt(ctx, cx, cy - sh, rotation);
-    this.drawCentredAt(ctx, cx, cy + sh, rotation);
+//    this.drawCentredAt(ctx, cx, cy - sh, rotation);
+//    this.drawCentredAt(ctx, cx, cy + sh, rotation);
+
+    this.drawCentredAt(ctx, cx, cy, rotation);
+    this.drawCentredAt(ctx, cx, cy, rotation);
 };
 
 
