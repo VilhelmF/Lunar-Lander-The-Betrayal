@@ -53,6 +53,14 @@ Citizen.prototype.isPickedUp = false;
 Citizen.prototype.isDead = false;
 Citizen.prototype.landed = false;
 
+// true  -> right		
+// false -> left
+Citizen.prototype.direction = true;
+
+//tímabundið drasl
+Citizen.prototype.tempFalse = false;
+
+
 
 
 
@@ -98,7 +106,11 @@ Citizen.prototype.update = function (du) {
 
 	    //Is he stationary on the ground?
 	    var aGroundAndSlope = spatialManager.collidesWithGround(this.cx, this.cy, this.getRadius())
-	    if(typeof aGroundAndSlope !== 'undefined' && !this.isPickedUp)
+	    
+		//console.log("asdfasdfasdfasdf: " + aGroundAndSlope.slope);
+		
+		
+		if(typeof aGroundAndSlope !== 'undefined' && !this.isPickedUp)
 	    {
 	    	
 			g_sprites.manWalking.walkUpdate(this.numSubSteps);
@@ -110,9 +122,25 @@ Citizen.prototype.update = function (du) {
 	    	this.landed = true;
 
 	    	if(this.velY > 0) this.velY = 0;
+			
+			//FOR WALKING DIRACTION
+			if(typeof aGroundAndSlope !== 'undefined') {
+			
+					//change direction (from left to right and right to left)
+					if
+					(
+						aGroundAndSlope.slope < 0 						 || 
+						aGroundAndSlope.slope > 0 						 || 
+						aGroundAndSlope.latterX == aGroundAndSlope.lineX ||
+						aGroundAndSlope.firstX  == aGroundAndSlope.lineX
+					) 
+					{ 	
+						this.direction = !this.direction;
+						this.velX *= -1;
+					}
+			}
+			
 	    }
-		else {
-		}
     }
     else
     {
@@ -143,16 +171,13 @@ Citizen.prototype.pickedUp = function ()
 	{
 		this.isPickedUp = !this.isPickedUp;
 		if(this.isPickedUp) return this;
-		else return 0;
-		
+		else return 0;	
 	}
 };
 
 Citizen.prototype.takeBulletHit = function () {
     this.isDead = true;
 };
-
-
 
 
 Citizen.prototype.render = function (ctx) {
@@ -162,12 +187,16 @@ Citizen.prototype.render = function (ctx) {
 		// g_sprites.manWalking.walkRender(ctx, 
 										// this.cx-(this.width/2),
 										// this.cy-this.height);
+		
+		
 		g_sprites.manWalking.walkRender(ctx, 
 					this.cx - g_sprites.manWalking.midPointX,
-					this.cy - g_sprites.manWalking.midPointY.y2);
+					this.cy - g_sprites.manWalking.midPointY.y2,
+					this.direction
+					);
 		
 		
-		ctx.save();
+		/*ctx.save();
     	if(!this.isDead)
     	{
 	    
@@ -209,7 +238,7 @@ Citizen.prototype.render = function (ctx) {
 			ctx.fillStyle="red";
 			ctx.fillRect(this.cx - this.halfWidth, this.cy + this.halfHeight,2*this.halfWidth, this.halfHeight);	
 		}
-		ctx.restore();
+		ctx.restore();*/
 
 	}	
 };
