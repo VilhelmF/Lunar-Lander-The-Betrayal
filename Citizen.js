@@ -51,7 +51,7 @@ Citizen.prototype.rememberResets = function () {
 Citizen.prototype.rotation = 0;
 Citizen.prototype.cx = 200;
 Citizen.prototype.cy = 200;
-Citizen.prototype.velX = 0;
+Citizen.prototype.velX = 0.1;
 Citizen.prototype.velY = 0;
 Citizen.prototype.numSubSteps = 1;
 
