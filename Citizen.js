@@ -132,8 +132,7 @@ Citizen.prototype.update = function (du) {
     if(!this.isDead && !this.isPickedUp)
     {
     	spatialManager.register(this);
-    }
-    
+    }  
 };
 
 Citizen.prototype.pickedUp = function () 
@@ -203,4 +202,9 @@ Citizen.prototype.render = function (ctx) {
 
 	}	
 };
+
+
+
+
+
 
