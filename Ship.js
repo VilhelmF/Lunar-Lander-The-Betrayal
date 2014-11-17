@@ -226,7 +226,7 @@ Ship.prototype.update = function (du) {
 
 
     var zoomGround = spatialManager.collidesWithGround(this.zoomEntity.getPos().posX, this.zoomEntity.getPos().posY, this.zoomEntity.getRadius());
-    if(zoomGround){
+    /*if(zoomGround){
         g_doZoom = true;
     }
     else {
@@ -245,7 +245,7 @@ Ship.prototype.update = function (du) {
         else {
             g_doZoom = false;
         }
-    }
+    }*/
 
     /*-------------------------------------------------------------------------------------------
                                     The Ship's hitentity checks

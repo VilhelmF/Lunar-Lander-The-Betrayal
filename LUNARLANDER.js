@@ -77,7 +77,6 @@ function gatherInputs() {
 
 function updateSimulation(du) {
     
-	//Þ: TÍMABUNDIÐ !!
 	if(!g_startGame){
 		g_sprites.oldManWalking.walkUpdate(2);
 	}
@@ -226,8 +225,12 @@ function renderSimulation(ctx) {
 		particleManager.render(ctx);
 
 		if (g_renderSpatialDebug) spatialManager.render(ctx);
-
+		
 		if(g_doZoom) ctx.restore();
+		
+		
+		
+		
 	}
 }
 
@@ -264,8 +267,11 @@ function requestPreloads() {
 		manWalking		: "sprites/manWalking-58.png",
         arrow           : "sprites/arrow-57.png",
 		tower			: "sprites/tower/tower-61.png",
-		diamond	: "sprites/tower/tower-60.png"
-    };
+		diamond			: "sprites/tower/tower-60.png",
+		muteOn			: "sprites/mute-60.png",
+		muteOff			: "sprites/mute-62.png"
+
+	};
 
 	preLoadAudio();
 	preLoadMountain();
@@ -286,6 +292,8 @@ function preloadDone() {
 	
     g_sprites.bullet = new Sprite(g_images.ship);
     g_sprites.bullet.scale = 0.25;
+
+	
 	
 	
     entityManager.init();

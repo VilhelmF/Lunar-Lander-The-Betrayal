@@ -18,10 +18,6 @@ function Gun(descr) {
 	this.tower = g_sprites.tower;
     this.diamond = g_sprites.diamond;
 	
-	g_audio.laserCannon.volume = 0.5;
-	
-	this.fire = g_audio.laserCannon;
-	this.fire.volume = 0.1;
 	
 	this.towerHeight = this.tower.height;// + this.diamond.height;
 	this.towerWidth = this.tower.width;
@@ -72,8 +68,7 @@ Gun.prototype.update = function (du) {
 
     //this.firingTime += 0.016 * du;
     this.cooldown -= du;
-	//console.log("cooldown: " + this.cooldown);
-	//this._scale += 0.0019;
+
 	
     if(this._isDeadNow)
     {
@@ -102,7 +97,6 @@ Gun.prototype.reset = function () {
 
 Gun.prototype.fireBullet = function ()
 {
-	//console.log("laserCannon audio played");
 	
 	var pos = entityManager._ships[0].getPos();
 
@@ -158,11 +152,6 @@ Gun.prototype.render = function (ctx) {
 						this.cy-this.towerHeight+1);
 						
 	
-	
-	if(this.diamond.width-(this.cooldown/3) > 25){
-		//this.fire.playSound();
-		//g_audio.laserCannon.playSound();
-	}
 	
 	ctx.drawImage(
 		this.diamond.image,

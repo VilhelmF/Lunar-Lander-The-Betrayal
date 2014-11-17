@@ -64,6 +64,7 @@ main._iterCore = function (dt) {
         this.gameOver();
         return;
     }
+	
     
     gatherInputs();
     update(dt);

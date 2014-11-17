@@ -128,13 +128,19 @@ Citizen.prototype.update = function (du) {
 	    	if(this.velY > 0) this.velY = 0;
 		
 			//change direction (from left to right and right to left)
-			if
-				(
-					aGroundAndSlope.slope < 0 						 || 
-					aGroundAndSlope.slope > 0 						 || 
-					aGroundAndSlope.latterX == aGroundAndSlope.lineX ||
-					aGroundAndSlope.firstX  == aGroundAndSlope.lineX
-				) 
+			if( (aGroundAndSlope.slope < 0 || aGroundAndSlope.slope > 0 ) 
+					|| aGroundAndSlope.latterX == aGroundAndSlope.lineX
+					|| aGroundAndSlope.firstX  == aGroundAndSlope.lineX
+				)
+			
+			
+			/*
+				((aGroundAndSlope.slope < 0 || aGroundAndSlope.slope > 0 ) 
+				&& aGroundAndSlope.latterX == aGroundAndSlope.lineX)
+				||
+				((aGroundAndSlope.slope < 0 || aGroundAndSlope.slope > 0 ) 
+				&& aGroundAndSlope.firstX  == aGroundAndSlope.lineX)
+				)*/ 
 				{ 	
 					this.direction = !this.direction;
 					this.velX *= -1;
