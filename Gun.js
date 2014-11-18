@@ -14,9 +14,16 @@ function Gun(descr) {
     this.setup(descr);
 
     this.rememberResets();
-    
+	
+	this.tower = g_sprites.tower;
+    this.diamond = g_sprites.diamond;
+	
+	
+	this.towerHeight = this.tower.height;// + this.diamond.height;
+	this.towerWidth = this.tower.width;
+	
     // Set normal drawing scale, and warp state off
-    this._scale = 1;
+    this._scale = 0;
 
     this.cooldown = this.getCooldown();
 };
@@ -51,17 +58,18 @@ Gun.prototype.update = function (du) {
 
     //Any Update?
     spatialManager.unregister(this);
-
+	
     if(this.cooldown <= 0)
     {
     	this.fireBullet();
-
+		//this._scale = 0;
     	this.cooldown = this.getCooldown();
     }
 
     //this.firingTime += 0.016 * du;
     this.cooldown -= du;
 
+	
     if(this._isDeadNow)
     {
         return entityManager.KILL_ME_NOW;  
@@ -89,6 +97,7 @@ Gun.prototype.reset = function () {
 
 Gun.prototype.fireBullet = function ()
 {
+	
 	var pos = entityManager._ships[0].getPos();
 
 	var X = this.cx - pos.posX;
@@ -122,10 +131,6 @@ Gun.prototype.fireBullet = function ()
 		
 	}
 
-    
-
- 
-
 
         entityManager.fireBullet(  this.cx, 
 						           this.cy - this.halfHeight - 8,
@@ -141,7 +146,29 @@ Gun.prototype.fireBullet = function ()
 Gun.prototype.render = function (ctx) {
     //var origScale = this.sprite.scale;
     
-    ctx.save();
+	
+	this.tower.drawAt(	ctx, 
+						this.cx-this.towerWidth/2, 
+						this.cy-this.towerHeight+1);
+						
+	
+	
+	ctx.drawImage(
+		this.diamond.image,
+		0,
+		0,
+		this.diamond.width-(this.cooldown/3),
+		this.diamond.height,
+		
+		this.cx-this.diamond.width/2,
+		this.cy-this.diamond.height,
+		
+		this.diamond.width-(this.cooldown/3),
+		this.diamond.height
+	);
+	
+	
+    /*ctx.save();
 
     ctx.beginPath();
     if(this.cooldown <= 0)
@@ -191,7 +218,7 @@ Gun.prototype.render = function (ctx) {
 	ctx.arc(this.cx, this.cy - this.halfHeight - headR, headR, 0, Math.PI * 2, true);
 	ctx.fill();
 	
-	ctx.restore();
+	ctx.restore();*/
 
 
 };

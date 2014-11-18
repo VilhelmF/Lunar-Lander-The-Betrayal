@@ -115,27 +115,13 @@ Sprite.prototype.spriteSheetconstruction = function () {
 		this.frameIndex = 0;
 		this.posX = 0;
 		this.posY = 0;
-		
-		
+
 		this.midPointX = (this.width/this.ticksPerFrame) / 2;
-		
-		
-		this.midPointY = {y1: this.height/3, y2: this.height/1.2}; 
+		this.midPointY = {y1: this.height/3, y2: this.height/1.19}; 
 	
 		//i know every sprite sheetp have 10 frames. not cool i know
 		this.numberOfFrames = 10;
-		this.walk = false;
-		
-		var randomInt = util.getRandomInt(0,1);
-		
-		if(randomInt == 1){
-			this.right = true;
-			this.left  = false; 
-		}
-		else {
-			this.left = true;
-			this.right = false;
-		}
+		//this.walk = false;
 		
 		//ÓNOTAÐ
 		this.walkSteps = [];
@@ -148,23 +134,10 @@ Sprite.prototype.spriteSheetconstruction = function () {
 
 
 
-Sprite.prototype.walkUpdate = function (Xstep, direction) {
+Sprite.prototype.walkUpdate = function (Xstep) {
 	
 	this.tickCount += 1;
 	
-	//LEFT
-	if(direction == 0){
-		//..
-	}
-	
-	//RIGHT
-	else if( direction == 1) {
-		//..
-	}
-	else {
-		console.log("WRONG INPUT INTO 'walkUpdate' ! ");
-	}
-
 	
     if (this.tickCount > this.ticksPerFrame) {
        
@@ -185,44 +158,73 @@ Sprite.prototype.walkUpdate = function (Xstep, direction) {
 }
 
 Sprite.prototype.walkRender = function (ctx, posX, posY, direction) {
-	
-	if(posX == "undefined"){
+	/*if(posX == "undefined"){
 		this.posX = 0;
+	}*/
+	
+	//	if direction is to right, direction
+	//	get value true otherwise false
+	if(String(direction).indexOf("right") === 0)
+	{
+		direction = true;
+	}
+	else if (String(direction).indexOf("left") === 0)
+	{
+		direction = false;
 	}
 	
-	if(!this.walk)
-	{
-		//RIGHT
-		if(direction)
-		{
-			ctx.drawImage(
+		
+	//FOR THE STARTSCREEN (oldman walking to the right)
+	if(!g_startGame){
+		ctx.drawImage(
 					this.image,
-					this.frameIndex * this.width/this.ticksPerFrame,
+					this.frameIndex * this.width/this.ticksPerFrame	,
 					0,
 					this.width/this.numberOfFrames,
 					this.height/2,
-					posX,
-					posY+this.height/2, 		// 450 for old man
+					this.posX,
+					450, // 450 for right height position on screen
 					this.width/this.numberOfFrames,
 					this.height/2
 				);
-		}
-		//LEFT
-		else
-		{
-			ctx.drawImage(
-				this.image,
-				this.frameIndex * this.width/this.ticksPerFrame,
-				this.height/2,
-				this.width/this.numberOfFrames,
-				this.height,
-				posX,
-				posY+this.height/2, 				// 450 for old man
-				this.width/this.numberOfFrames,
-				this.height
-			);
-		}
+		return;
 	}
+	
+	
+	//RIGHT
+	if(direction)
+	{
+		ctx.drawImage(
+				this.image,
+				this.frameIndex * this.width/this.ticksPerFrame	,
+				0,
+				this.width/this.numberOfFrames,
+				this.height/2,
+				posX,
+				posY+this.height/2, 		// veit ekki með fjóra// 450 for old man
+				this.width/this.numberOfFrames,
+				this.height/2
+			);
+	}
+	
+	//LEFT
+	else
+	{
+	
+		//console.log("ahhllo0");
+		ctx.drawImage(
+			this.image,
+			this.frameIndex * this.width/this.ticksPerFrame,
+			this.height/2,
+			this.width/this.numberOfFrames,
+			this.height/2, 						//fyrir gamla
+			posX,
+			posY+this.height/2, 				// 450 for old man
+			this.width/this.numberOfFrames,
+			this.height/2
+		);
+	}
+	//}
 };
 
 

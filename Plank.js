@@ -81,6 +81,7 @@ Plank.prototype.update = function (du) {
 
 Plank.prototype.returnCitizen = function (du)
 {
+	g_audio.plantOnPlank.Play();
 	this.returning = 0.016 * du;
 	this.rescueNumber += 1;
 }
