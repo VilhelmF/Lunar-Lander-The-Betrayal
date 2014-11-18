@@ -66,16 +66,13 @@ Plank.prototype.update = function (du) {
     	if(this.returning > this.returningFull)
     	{
     		this.returning = 0;
+            if(this.rescueNumber === this.rescueLimit) levelDesign.nextLevel();
     	}
     }
 
     spatialManager.register(this);
 
-    if(this.rescueNumber >= this.rescueLimit)
-    {
-        this.rescueNumber = 0;
-        levelDesign.nextLevel();
-    }
+    
 
 };
 
@@ -83,7 +80,7 @@ Plank.prototype.returnCitizen = function (du)
 {
 	g_audio.plantOnPlank.Play();
 	this.returning = 0.016 * du;
-	this.rescueNumber += 1;
+    entityManager.rescueCitizen();
 }
 
 Plank.prototype.getRadius = function () {

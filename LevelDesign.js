@@ -105,6 +105,7 @@ var levelDesign = {
 
 	setUp : function() {
 		var index = 0;
+        var citizens = 0;
 
     	for(var i = 0; i < this.rows; i++) {
     		for(var j = 0; j < this.columns; j++) {
@@ -122,6 +123,7 @@ var levelDesign = {
                         var cx = j * Ground.prototype.width - Ground.prototype.width/2;
                         var cy = i * (g_canvas.height / this.rows) - Citizen.prototype.getRadius();
                         entityManager.generateCitizen(cx, cy);
+                        citizens++;
                     }
 
                     if(this.items.plank ===this.levels[this.level][index]) {
@@ -151,5 +153,9 @@ var levelDesign = {
         }
 
         entityManager.generateGround(firstX, latterX, firstY, latterY);
+        for(var z = 0; z < entityManager._plank.length; z++)
+        {
+            entityManager._plank[z].rescueLimit = citizens; 
+        }
     },
 }
