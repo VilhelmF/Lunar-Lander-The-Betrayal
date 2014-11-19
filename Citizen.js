@@ -59,7 +59,7 @@ Citizen.prototype.halfHeight = 5;
 Citizen.prototype.halfWidth = 5;
 
 Citizen.prototype.isPickedUp = false;
-Citizen.prototype.isDead = false;
+//Citizen.prototype.isDead = false; FixMe
 Citizen.prototype.landed = false;
 
 
@@ -119,7 +119,7 @@ Citizen.prototype.update = function (du) {
 	    	
 			this.sprite.walkUpdate(this.numSubSteps);
 	    	
-			if(this.velY > 2)
+			if(this.velY > 2)  
 	    	{
 	    		this.isDead = true;
 	    	}
@@ -172,7 +172,7 @@ Citizen.prototype.update = function (du) {
 
 Citizen.prototype.pickedUp = function () 
 {
-	if(!this.isDead)
+	if(!this.isDead) 
 	{
 		console.log("rescue audio played");
 		g_audio.rescue.Play();
@@ -183,7 +183,7 @@ Citizen.prototype.pickedUp = function ()
 };
 
 Citizen.prototype.takeBulletHit = function () {
-    this.isDead = true;
+  this.isDead = true;
 };
 
 
