@@ -22,25 +22,31 @@ Fuel.prototype.render = function(ctx, cx, cy)
 		if(this.status > 0.23)
 		{
 			
-			g_sprites.fuelBarSlide.cropImageBy (ctx, 
+			g_sprites.fuelBarSlide.drawImageCropped(ctx, 
 												this.cx, 
-												this.cy, 
+												this.cy,
+												this.cx, 
+												this.cy -g_offsetY, 
 												this.status);
-			g_sprites.fuelBarFill.cropImageBy  (ctx, 
+			g_sprites.fuelBarFill.drawImageCropped(ctx, 
 												this.cx, 
-												this.cy, 
+												this.cy,
+												this.cx, 
+												this.cy - g_offsetY, 
 												this.status-0.04);
 		}
 		else 
 		{
-			g_sprites.fuelBarFill.cropImageBy  (ctx, 
+			g_sprites.fuelBarFill.drawImageCropped(ctx, 
 												this.cx, 
-												this.cy, 
+												this.cy,
+												this.cx,
+												this.cy - g_offsetY, 
 												this.status);
 		}
 	
 		//fuel bar outline
-		g_sprites.fuelBarOutline.drawAt(ctx, this.cx, this.cy);
+		g_sprites.fuelBarOutline.drawAt(ctx, this.cx, this.cy - g_offsetY);
 		
 		//fuel bar status shown on screen right 
 		//side of sprite fuelBarOutline. 
@@ -49,7 +55,7 @@ Fuel.prototype.render = function(ctx, cx, cy)
 		ctx.font = "bold 12px Courier New";
 		ctx.fillText(Math.floor(this.status * 100) + "%", 
 					 g_sprites.fuelBarOutline.width, 
-					 28);
+					 28 - g_offsetY);
 		ctx.restore();	
 	}
 	else 

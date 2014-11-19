@@ -53,7 +53,7 @@ Ship.prototype.velX = 0;
 Ship.prototype.velY = 0;
 Ship.prototype.launchVel = 2;
 Ship.prototype.numSubSteps = 1;
-Ship.prototype.minY = -1000;
+Ship.prototype.minY = -600;
 
 Ship.prototype.rightRotation = 0.01;
 Ship.prototype.leftRotation = 0.01;
@@ -195,6 +195,23 @@ Ship.prototype.update = function (du) {
             this.velY = 1;
         }
     }
+
+    /*-------------------------------------------------------------------------------------------
+                                    Offset the screen 
+    ---------------------------------------------------------------------------------------------*/
+    if(this.cy <= g_offsetY + 60) {
+        g_offsetY = -this.cy + 60;
+    }
+    else {
+        g_offsetY = 0;
+    }
+
+/*    if(g_offsetY > -this.minY + 60){
+        g_offsetY = 600 + 60;
+    }
+    if(g_offsetY < 0){
+        g_offsetY = 0;
+    } */
 
 
     /*-------------------------------------------------------------------------------------------
@@ -551,7 +568,7 @@ Ship.prototype.render = function (ctx) {
     );
     this.sprite.scale = origScale;
 	
-    if(!this.isOnScreenHeight()) {
+/*    if(!this.isOnScreenHeight()) {
         ctx.save();
 //        ctx.translate(this.cx - 15, 30);
 //        ctx.rotate(this.rotation);
@@ -562,7 +579,7 @@ Ship.prototype.render = function (ctx) {
         ctx.font = "bold 11px Arial";
         ctx.fillText(-this.cy.toFixed(0) + " m", this.cx, 70);    
         ctx.restore();
-    }
+    } */
 
     //render fuel
     //util.fillBox(ctx, this.fuel.cx, this.fuel.cy, this.fuel.level, this.fuel.height, this.fuel.color);
