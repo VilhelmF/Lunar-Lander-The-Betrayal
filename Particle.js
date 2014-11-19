@@ -32,9 +32,9 @@ Particle.prototype.offsetX = 0;
 
 
 Particle.prototype.initTowerExplosion = function(cx, cy, index ) {
-	this.type = "explosion";
+	/*this.type = "explosion";
 	
-	/*var angle = [];
+	var angle = [];
 	var rot = {begin: 2, end: 22};
 	var rotationScale = 178;
 	var rotation = 22;
@@ -49,13 +49,27 @@ Particle.prototype.initTowerExplosion = function(cx, cy, index ) {
 
 			console.log("Particle, testa angle[i]: "  + angle[i]);
 		}
-	};*/
+	};
 
 	//this.rotation = angle[index];
 
+
+
+
+
+	// = util.getRandomInt(,rot.end);
+
+
+
+
+
+
+
+
+
+
 	this.cx = cx;
 	this.cy = cy;
-
 
 	this.rotation = util.getRandomInt(0, 40) / 100;
 
@@ -91,6 +105,9 @@ Particle.prototype.initTowerExplosion = function(cx, cy, index ) {
 		this.xVel = -3
 		this.yVel = -1;
 	}
+
+
+	return {xVel: this.xVel, yVel: this.yVel};
 
 
 /*

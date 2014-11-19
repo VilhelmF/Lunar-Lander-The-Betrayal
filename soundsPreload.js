@@ -15,11 +15,16 @@ var s_ctx = canvas.getContext("2d");
 Audio.prototype.asyncLoad = function(src, asyncCallback) {
 
 	//this.onloadeddata		= asyncCallback;
-	this.oncanplay 			= asyncCallback;
+	/*this.oncanplay 			= asyncCallback;
 	this.canplay 			= asyncCallback;
 	this.oncanplaythrough	= asyncCallback;
 	this.onerror 		 	= asyncCallback;
-	this.onloadstart 	 	= asyncCallback;
+	this.onloadstart 	 	= asyncCallback;*/
+
+
+    this.oncanplaythrough   = asyncCallback;
+    this.onerror            = asyncCallback;
+    this.onloadstart        = asyncCallback;
     
 	console.log("requesting sound src of ", src);
     this.src = src;
@@ -48,12 +53,14 @@ function soundsPreload(requiredSounds,
 
 		
 		//this.onloadeddata		= null;
-		this.oncanplay 			= null;
+		/*this.oncanplay 			= null;
 		this.canplay 			= null;
 		this.oncanplaythrough = null;
 		this.onerror = null;
-		this.onloadstart = null;
-		
+		this.onloadstart = null;*/
+		this.oncanplaythrough = null;
+        this.onerror = null;
+        this.onloadstart = null;
 		
         numSoundsHandled += 1;
 		

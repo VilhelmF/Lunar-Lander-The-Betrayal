@@ -55,8 +55,12 @@ Gun.prototype.halfHeight = 30;
 Gun.prototype.vel = 5;
 Gun.prototype.type = "Destroy";
 
+<<<<<<< HEAD
+Gun.prototype.life = 0;
+=======
 Gun.prototype.life = 1;
 Gun.prototype.dead = false;
+>>>>>>> 20a1a98863c150673793559d8fa0f1262458bcae
 
 Gun.prototype.cooldownRange = {
 	"min" : 4000,
@@ -93,15 +97,11 @@ Gun.prototype.update = function (du) {
 Gun.prototype.takeBulletHit = function () {
 
     this.life -= 1;
-
 	if(this.life === 0)
 	{
 		this.kill();
 		particleManager.tower(this.cx, this.cy-this.towerHeight/2);
 		particleManager.explosion(this.cx, this.cy-this.towerHeight/2, true);
-		
-
-		
 	}
 
 };
