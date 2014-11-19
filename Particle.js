@@ -13,6 +13,11 @@ Particle.prototype.yVel = 0;
 Particle.prototype.rotation = 0;
 Particle.prototype.lifeSpan = 2000 / NOMINAL_UPDATE_INTERVAL;
 
+
+Particle.prototype.initTowerExplosion = function(cx, cy) {
+	//do stuff
+};
+
 Particle.prototype.initExplosion = function(cx, cy) {
 	// console.log(cx + "    " + cy);
 	// console.log(util.getRandomInt(cx - 10, cy + 10));

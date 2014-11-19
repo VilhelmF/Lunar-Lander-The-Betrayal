@@ -21,10 +21,13 @@ function Gun(descr) {
 	//var limitOfImage = 
 	/*var numOfTowerPart= 0;
 	
+	console.log("g_sprites.length: " + g_sprites.length);
 	for(var i=0;i<g_sprites.length;i++){
-		var tempString = 
-		if(g_sprites[].indexOf("tower_p")){
+		//var tempString = 
+		if(g_sprites[0].indexOf("tower_p")){
 			numOfTowerPart++;
+		}
+		console.log("numOfTowerPart: " + numOfTowerPart);
 	}*/
 	
 	for(var i=0; i<8; ++i){
