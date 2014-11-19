@@ -93,16 +93,15 @@ Gun.prototype.update = function (du) {
 Gun.prototype.takeBulletHit = function () {
 
     this.life -= 1;
-	if(this.life === 0){
+
+	if(this.life === 0)
+	{
 		this.kill();
 		particleManager.tower(this.cx, this.cy-this.towerHeight/2);
 		particleManager.explosion(this.cx, this.cy-this.towerHeight/2, true);
-		/*for (var i in this.towerParticles) {
-			this.towerParticles[i].initTowerExplosion(
-					this.cx, this.cy, 
-					i
-				)
-		};*/
+		
+
+		
 	}
 
 };
