@@ -32,12 +32,6 @@ function Bullet(descr) {
 }
 
 Bullet.prototype = new Entity();
-
-// HACKED-IN AUDIO (no preloading)
-// Bullet.prototype.fireSound = new Audio(
-    // "sounds/bulletFire.ogg");
-// Bullet.prototype.zappedSound = new Audio(
-    // "sounds/bulletZapped.ogg");
     
 // Initial, inheritable, default values
 Bullet.prototype.rotation = 0;
@@ -68,8 +62,6 @@ Bullet.prototype.update = function (du) {
     this.rotation = util.wrapRange(this.rotation,
                                    0, consts.FULL_CIRCLE);
 
-
-    this.wrapPosition();
     
     // TODO? NO, ACTUALLY, I JUST DID THIS BIT FOR YOU! :-)
     //

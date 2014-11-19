@@ -95,7 +95,7 @@ var levelDesign = {
 
 	nextLevel : function() {
 		this.level++;
-		if(this.level == 7){
+		if(this.level > 6){
 			consol.log("Player won ...");
 			g_gameWon = true;
 		}
