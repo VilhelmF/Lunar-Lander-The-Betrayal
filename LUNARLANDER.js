@@ -78,8 +78,26 @@ function gatherInputs() {
 function updateSimulation(du) {
     
 	if(!g_startGame){
-		g_sprites.oldManWalking.walkUpdate(2);
-	}
+		
+		if(	(g_sprites.oldManWalking.posX > g_canvas.width))
+		{
+			g_sprites.oldManWalking.posX = 0;
+		}
+		else
+		{
+			g_sprites.oldManWalking.walkUpdate(2);
+		}
+		
+		setTimeout( function() { 
+					g_audio.themeGamePlay.soundVolume( 0.5 );
+					g_audio.themeGamePlay.playSound(); }, 60100);
+					
+		//increase volume
+		/*if(g_audio.startScreen2.volume < 1){
+			g_audio.startScreen2.soundVolume(
+				g_audio.startScreen2.volume+0.1
+			);*/
+	}				
 	else
 	{
 		processDiagnostics();
@@ -171,38 +189,24 @@ function processDiagnostics() {
 
 function renderSimulation(ctx) {
     
+	//STARTSCREEN setup
 	if( !g_startGame ){
-		//STARTSCREEN setup
 		g_sprites.st_screenLayer1.drawAt(ctx, 0, 0);
 		g_sprites.st_screenLayer2.drawAt(ctx, 0, 0);
-		
+
 		//position of sprite:
 		//			st_screenLayer3
 		//			st_screenLayer4
-		var pos = {x: 295, y: 295};
 		
-		var beginXLimit = pos.x;
-		var endXLimit   = pos.x + g_sprites.st_screenLayer3.width;
-		
-		var beginYLimit = pos.y;
-		var endYLimit   = pos.y + g_sprites.st_screenLayer3.height;
-		
-		if
-		( 	
-			util.isBetween( g_mouseX, beginXLimit, endXLimit ) &&
-			util.isBetween( g_mouseY, beginYLimit, endYLimit )
-		)
-		{	
-			g_sprites.st_screenLayer4.drawAt(ctx, pos.x, pos.y);
-		}
-		else 
-		{
-			g_sprites.st_screenLayer3.drawAt(ctx, pos.x, pos.y);
+		var mouse = util.onPlayButton();
+
+		if(mouse.onButton){
+			g_sprites.st_screenLayer4.drawAt(ctx, mouse.x, mouse.y);
+		}else{
+			g_sprites.st_screenLayer3.drawAt(ctx, mouse.x, mouse.y);
 		}
 		
 		g_sprites.st_screenLayer5.drawAt(ctx, 0, 0);
-		
-		// (*)
 		
 		g_sprites.oldManWalking.walkRender(ctx, 0, 450, "right");
 	}
@@ -227,10 +231,6 @@ function renderSimulation(ctx) {
 		if (g_renderSpatialDebug) spatialManager.render(ctx);
 		
 		if(g_doZoom) ctx.restore();
-		
-		
-		
-		
 	}
 }
 
@@ -270,10 +270,15 @@ function requestPreloads() {
 		diamond			: "sprites/tower/tower-60.png",
 		muteOn			: "sprites/mute-60.png",
 		muteOff			: "sprites/mute-62.png"
-
 	};
 
+
+	//
+	//PRELOADS
+	//
+	
 	preLoadAudio();
+	
 	preLoadMountain();
 	preLoadBackground();
     imagesPreload(requiredImages, g_images, preloadDone);
@@ -293,9 +298,7 @@ function preloadDone() {
     g_sprites.bullet = new Sprite(g_images.ship);
     g_sprites.bullet.scale = 0.25;
 
-	
-	
-	
+
     entityManager.init();
 
     main.init();

@@ -58,6 +58,8 @@ var g_isUpdatePaused = false;
 function shouldSkipUpdate() {
     if (eatKey(KEY_PAUSE)) {
         g_isUpdatePaused = !g_isUpdatePaused;
+		console.log("muteTrigger used...");
+		muteTrigger(g_isUpdatePaused);
     }
     return g_isUpdatePaused && !eatKey(KEY_STEP);    
 }

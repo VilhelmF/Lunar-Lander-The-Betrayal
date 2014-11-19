@@ -72,7 +72,7 @@ Background.prototype.render = function(ctx) {
 	{
 		this.message(ctx, "SAVE THE CITIZEN", 300, 100, "bold 40px Courier New");
 		this.message(ctx, "press 'SPACE' to pick them up", 360, 125, "20px Courier New");
-		this.message(ctx, "WATCH OUT FOR THE ENEMY!", 360, 180, "20px Courier New");
+		this.message(ctx, "WATCH OUT FOR THE ENEMY!", 360, 150, "20px Courier New");
 	}
 	
 	if(!this.mute){
@@ -82,12 +82,27 @@ Background.prototype.render = function(ctx) {
 	{
 		g_sprites.muteOff.drawAt(ctx, this.beginX, this.beginY);	
 	}
+	
+	
+	
+	if( g_renderSpatialDebug ) {
+		var beginX = g_canvas.width-30;
+		var beginY = 10;
+		
+		var height	= 25;
+		var width	= 16;
+		
+		ctx.save();
+		ctx.strokeStyle = "red";
+		util.strokeBox(ctx,beginX,beginY, width, height);
+		ctx.restore();
+	}
 };
 
 
 Background.prototype.update = function(){
-	if(g_audio.themeSong.currentTime === 0){
+	/*if(g_audio.themeSong.currentTime === 0){
 		g_audio.themeSong.playSound();
-	}
+	}*/
 	this.mute = g_audio.themeSong.mute;
 };

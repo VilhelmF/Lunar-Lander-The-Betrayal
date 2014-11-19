@@ -173,7 +173,6 @@ Sprite.prototype.walkRender = function (ctx, posX, posY, direction) {
 		direction = false;
 	}
 	
-		
 	//FOR THE STARTSCREEN (oldman walking to the right)
 	if(!g_startGame){
 		ctx.drawImage(

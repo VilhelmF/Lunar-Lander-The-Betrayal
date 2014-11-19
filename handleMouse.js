@@ -22,46 +22,62 @@ function handleMouse(evt) {
     // If no button is being pressed, then bail
     var button = evt.buttons === undefined ? evt.which : evt.buttons;
     if (!button) return;
-    
-	if(!g_startGame){
-		g_audio.themeSong.playOnVolume(0.1);
-	}
+      
 	
-	g_startGame = true;
-	
-	
-	var beginXLimit = g_canvas.width-30;
-	var endXLimit	= g_canvas.width-10;
-	
-	var beginYLimit = 10;
-	var endYLimit	= 30;
+	checkPlayButton();
 
-
-	if
-	( 	
-		util.isBetween( g_mouseX, beginXLimit, endXLimit ) &&
-		util.isBetween( g_mouseY, beginYLimit, endYLimit )
-	)
-	{
-		var mute = g_audio.themeSong.mute;
-		
-		mute = !mute;
-		
-		if(mute){
-			g_audio.themeSong.soundVolume(0);
-		}
-		else
-		{
-			g_audio.themeSong.soundVolume(g_audio.themeSong.lowVolume);
-		}
-		
-		g_audio.themeSong.mute = mute;
-	}
-	
-	//g_audio.themeSong.playSound();
-//    entityManager.yoinkNearestShip(g_mouseX, g_mouseY);
+	//MUTE BUTTON (right top corner)
+	checkMuteButton();
 }
 
+
+function checkPlayButton() {
+	var value = util.onPlayButton(); 
+	if( value.onButton && !g_startGame){
+		g_startGame = true;
+		//g_audio.themeSong.playOnVolume(g_audio.themeSong.lowVolume);
+		//muteAll();
+		//setAllVolume();
+		resetAllAudio();
+		g_audio.themeGamePlay.playOnVolume(g_audio.themeGamePlay.lowVolume);
+		
+	}
+}
+
+function checkMuteButton() {
+
+	var x = g_canvas.width-30;
+	var y = 10;
+	
+	var width = 16;
+	var height = 25;
+	
+	console.log("g_mouseX: " + g_mouseX);
+	console.log("g_mouseY: " + g_mouseY);
+	
+		
+	if(util.isMouseInRec(x, y, width, height))
+	{
+		
+		console.log("hallllllooooostína");
+		
+		var mute = g_audio.themeSong.mute;
+		
+		console.log("mute: " + mute);
+		mute = !mute;
+		
+		
+		muteTrigger(mute);
+		
+		g_audio.themeSong.mute = mute;
+		
+		
+		console.log("mute: " + mute);
+	}
+}
+
+
 // Handle "down" and "move" events the same way.
-window.addEventListener("mousedown", handleMouse);
+//window.addEventListener("mousedown", handleMouse);
+window.addEventListener("onclick", handleMouse);
 window.addEventListener("mousemove", handleMouse);

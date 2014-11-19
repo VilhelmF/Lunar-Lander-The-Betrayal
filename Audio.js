@@ -10,7 +10,7 @@
 //
 //			g_audio.nameOfSound.Play();
 
-
+//var g_mute = false;
 
 // ==============
 // AUDIO OBJECT
@@ -27,16 +27,27 @@ function Sound( audio, name){
 	{ 
 		this.themeSongConstruction(name);
 	}
-	
 }
 
 
+Sound.prototype = new Entity();
+
+/*
+Sound.prototype.update = function( du ){
+	if()
+};
+
+Sound.prototype.render = function( ctx ){
+	//nothing
+};*/
+
+
+	
 Sound.prototype.mute = false;
 
 Sound.prototype.themeSongConstruction = function( name ){
 
 	this.name = name;
-	console.log("asdfjasdksksdæfksdkæjsdfæjkafsdækjsfdaæjkldsfaæjklds");
 	this.mute = false;
 	this.highVolume = 1;
 	this.lowVolume = 0.1;
@@ -48,6 +59,9 @@ Sound.prototype.themeSongConstruction = function( name ){
 //to large number of cloned sounds 
 Sound.prototype.cloneNodes = 0;
 
+Sound.prototype.volume = 1;
+Sound.prototype.storeVolume = 1;
+
 
 
 Sound.prototype.beginTime = 0;
@@ -55,31 +69,36 @@ Sound.prototype.endTime   = 0;
 
 //scale from 0.0 to 1.0
 Sound.prototype.soundVolume = function( volume ){
-	
-	//this.sound.pause();
-	//this.sound.currentTime = 0;
-	
+
+	this.storeVolume = volume;
 	this.sound.volume = volume;
 };
 
+Sound.prototype.muteIt = function( ){
+	this.storeVolume = 0;
+	this.sound.volume = 0;
+};
 
 // Play sound continuously 
 //(play same sound multiple times at the same time)
 //
 Sound.prototype.Play = function (){
-
-	//if this sound is still playing, 
-	//we clone this sound and play it
-		
-	if(this.sound.currentTime > 0 && this.cloneNodes < 4)
-	{
-		this.cloneNodes++;
-		this.sound.cloneNode().play();
-	} 
-	else
-	{
-		this.cloneNodes = 0;
-		this.playSound();
+	
+	//this.sound.volume = this.storeVolume;
+	
+	if( this.storeVolume !== 0 ){
+		//if this sound is still playing, 
+		//we clone this sound and play it
+		if(this.sound.currentTime > 0 && this.cloneNodes < 4)
+		{
+			this.cloneNodes++;
+			this.sound.cloneNode().play();
+		} 
+		else
+		{
+			this.cloneNodes = 0;
+			this.playSound();
+		}
 	}
 };
 
@@ -96,25 +115,19 @@ Sound.prototype.resetPlay = function (){
 	return time;
 };
 
-/*
-Sound.prototype.playAt = function ( time ){
-	
-	this.sound.reset()
-};*/
-
 
 
 
 // Play sound one after a another
 //
 Sound.prototype.playSound = function (){	
-
-	this.sound.play();
+		this.sound.play();
 };
 
 
 Sound.prototype.reset = function (){
 	var time = this.sound.currentTime;
+	console.log("time: " + time);
 	this.sound.currentTime = 0;
 	this.sound.pause();
 	return time;
@@ -128,11 +141,74 @@ Sound.prototype.playOnVolume = function ( volume ){
 	this.soundVolume( volume );
 	
 	this.sound.currentTime = time;
-	
+
 	this.playSound();
 };
 
 
+Sound.prototype.playAt = function ( time, volume ){
+	
+	var temp = this.reset();
+	
+	this.sound.soundVolume( volume );
+	
+	this.sound.currentTime = time;
+	
+	this.sound.playSound();
+	
+};
+
+
+
+//==========================
+//GLOBAL FUNCITONS FOR AUDIO
+//==========================
+
+//All sounds volume get value zero
+function muteAll() {
+	//g_mute = true;
+
+	for(var sound in g_audio) {
+		g_audio[sound].muteIt();
+	}
+	
+};
+
+//Let all sounds get their volume  back
+function setAllVolume() {
+	//g_mute = false;
+	
+	for(var sound in g_audio) {
+		
+		var volume = g_audio[sound].volume;
+		if(g_audio[sound].name === "themeSong") {
+			//console.log("hallo" + g_audio[sound].lowVolume);
+			volume = g_audio[sound].lowVolume;
+		}	
+
+		g_audio[sound].soundVolume( volume );
+	}
+}
+
+function resetAllAudio(){
+
+	for(var sound in g_audio) {
+		g_audio[sound].reset();
+	}
+
+}
+
+
+
+function muteTrigger( bool ){	
+	if(bool){
+		muteAll();
+	}
+	else
+	{
+		setAllVolume();
+	}
+}
 
 
 
@@ -147,26 +223,26 @@ Sound.prototype.playOnVolume = function ( volume ){
 var requiredSounds = {
 	
 	//shipWarp	: "sounds/shipWarp.ogg",
-	shipWarp	: "sounds/warp.mp3",
+	shipWarp	: "sounds/warp.ogg",
     //bulletFire	: "sounds/bulletFire.ogg",
 	zappedSound : "sounds/bulletZapped.ogg",
-	plantOnPlank: "sounds/plantOnPlank.mp3",
+	plantOnPlank: "sounds/plantOnPlank.ogg",
 	//mountainSmash: "sounds/mountainSmash.mp3",
-	rescue		: "sounds/rescue.mp3",
+	rescue		: "sounds/rescue.ogg",
 	//rescue		: "sounds/rescue2.mp3",
-	laserCannon : "sounds/laser.mp3",
-	bomb 		: "sounds/Bomb_Exploding-Sound_Explorer-68256487.mp3",
+	laserCannon : "sounds/laser.ogg",
+	//bomb 		: "sounds/Bomb_Exploding-Sound_Explorer-68256487.mp3",
 	//shipwarp 		: "sounds/warp.mp3",
-	themeSong 	: 	"sounds/themeSong.mp3"
-
+	themeSong 	: 	"sounds/themeSong.ogg",
+	theme2 : 	"sounds/Daft_Punk_-_Contact_Official_Audio_.ogg",
+	themeGamePlay: 	"sounds/second.ogg",
 };
 
 
 var g_sounds = [];
 
 function preLoadAudio() {
-
-	soundsPreload(requiredSounds, g_sounds, audioPreloadDone);
+		soundsPreload(requiredSounds, g_sounds, audioPreloadDone);
 }
 
 
@@ -174,13 +250,13 @@ function preLoadAudio() {
 var g_audio   = [];
 
 function audioPreloadDone() {
-	
-	for(var sound in g_sounds) {
-		g_audio[sound] = new Sound(g_sounds[sound], sound);
-	}
-	
-	g_audio.themeSong.soundVolume( 1 );
-	g_audio.themeSong.playSound();
-	
+
+		console.log("audioPreload ...");
+		for(var sound in g_sounds) {
+			g_audio[sound] = new Sound(g_sounds[sound], sound);
+		}
+		
+		g_audio.theme2.soundVolume( 1 );
+		g_audio.theme2.playSound();
 }
 

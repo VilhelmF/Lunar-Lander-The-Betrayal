@@ -36,6 +36,7 @@ _citizens   : [],
 _background : [],
 _guns	    : [],
 _plank      : [],
+_audio      : [],
 
 
 
@@ -133,6 +134,7 @@ deferredSetup : function () {
                         this._guns, 
                         this._citizens,
                         this._plank,
+						this._audio,
                         ];
 },
 

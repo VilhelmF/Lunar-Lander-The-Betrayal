@@ -80,6 +80,12 @@ Citizen.prototype.reset = function () {
     this.isPickedUp = false;
     this.isDead = false;
 };
+/*
+var firstX  = 0;
+var latterX = 0;
+var lineX   = 0;
+var index   = 0;*/
+
 
     
 Citizen.prototype.update = function (du) {
@@ -117,8 +123,6 @@ Citizen.prototype.update = function (du) {
 		if(typeof aGroundAndSlope !== 'undefined' && !this.isPickedUp)
 	    {
 	    	
-			this.sprite.walkUpdate(this.numSubSteps);
-	    	
 			if(this.velY > 2)
 	    	{
 	    		this.isDead = true;
@@ -126,27 +130,61 @@ Citizen.prototype.update = function (du) {
 	    	this.landed = true;
 
 	    	if(this.velY > 0) this.velY = 0;
-		
-			//change direction (from left to right and right to left)
-			if( (aGroundAndSlope.slope < 0 || aGroundAndSlope.slope > 0 ) 
-					|| aGroundAndSlope.latterX == aGroundAndSlope.lineX
-					|| aGroundAndSlope.firstX  == aGroundAndSlope.lineX
-				)
+	
+			//change direction if ground have a slope 
+			//(from left to right and right to left)
+			var slope = aGroundAndSlope.slope;
 			
+			var firstX  = aGroundAndSlope.firstX;
+			var latterX = aGroundAndSlope.latterX;
+			var lineX = aGroundAndSlope.lineX;
+			var index = aGroundAndSlope.index;
 			
+			if( !(slope === 0) )
+			{ 	
+				this.direction = !this.direction;
+				this.velX *= -1;
+			}			
+			else if(slope === 0 && (lineX == latterX || lineX == firstX+5))
+			{
+				this.direction = !this.direction;
+				this.velX *= -1;
+			}
+			
+			this.sprite.walkUpdate(this.numSubSteps);
 			/*
-				((aGroundAndSlope.slope < 0 || aGroundAndSlope.slope > 0 ) 
-				&& aGroundAndSlope.latterX == aGroundAndSlope.lineX)
-				||
-				((aGroundAndSlope.slope < 0 || aGroundAndSlope.slope > 0 ) 
-				&& aGroundAndSlope.firstX  == aGroundAndSlope.lineX)
-				)*/ 
-				{ 	
-					this.direction = !this.direction;
-					this.velX *= -1;
-				}
+			
+			var i_ = index +1;
+			var _i = index -1;
+			if(this.groundInfo[i_].firstX < latterX ){
+				this.direction = !this.direction;
+				this.velX *= -1;
+			}
+			else if(this.groundInfo[_i].latterX < firstX){
+				this.direction = !this.direction;
+				this.velX *= -1;
+			}*/
 			
 	    }
+		
+		
+		
+		/*else if((typeof aGroundAndSlope == 'undefined' && 
+				(!(lineX > firstX)) || !(lineX < latterX)))
+		{
+			console.log("sdfjkdsfkjædfsækjdsfkjædfjkædsfaæjkladsf");
+			lineX = 1;
+			latterX = 2;
+			firstX = 0;	
+			this.direction = !this.direction;
+			this.velX *= -1;
+		}*/
+		
+			
+		// else if(  !(slope == 0) ){
+			// this.direction = !this.direction;
+			// this.velX *= -1;
+		// }
     }
     else
     {

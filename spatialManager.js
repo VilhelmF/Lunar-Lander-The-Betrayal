@@ -112,12 +112,10 @@ collidesWithGround : function(posX, posY, radius)
                     var x = util.square(lineX - posX);
                     var y = util.square(lineY - posY);
 
-
                     var d = x + y;
                     if(d < util.square(radius))
                     {
-                    
-                        
+           
                         return  {
                                     slope   :   slope,
 									firstX  : 	firstX,
