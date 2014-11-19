@@ -13,6 +13,7 @@ Particle.prototype.yVel = 0;
 Particle.prototype.rotation = 0;
 Particle.prototype.lifeSpan = 2000 / NOMINAL_UPDATE_INTERVAL;
 Particle.prototype.type = "explosion";
+Particle.prototype.offsetX = 0;
 
 Particle.prototype.initExplosion = function(cx, cy) {
 	this.type = "explosion";
@@ -38,7 +39,7 @@ Particle.prototype.initExplosion = function(cx, cy) {
 				 util.getRandomInt(0,1) === 0 ? "yellow" : "gray";
 };
 
-Particle.prototype.initThrust = function(cx, cy, rotation, radius, i) {
+Particle.prototype.initThrust = function(cx, cy, rotation, offsetX, i) {
 	this.type = "thrust";
 
 	this.cx = util.getRandomInt(cx - 10 + i*2, cx + 10 - i*2);
@@ -52,9 +53,11 @@ Particle.prototype.initThrust = function(cx, cy, rotation, radius, i) {
 /*	this.width = util.getRandomInt(1, 5);
 	this.height = this.width; */
 
+	this.offsetX = offsetX;
+
 	this.radius = util.getRandomInt(1, 5);
 
-	this.color = util.getRandomInt(0,1) === 0 ? "red" : "orange";
+	this.color = util.getRandomInt(0, 1) === 0 ? "red" : "orange";
 
 	this.lifeSpan = 1500 / NOMINAL_UPDATE_INTERVAL;
 };
@@ -86,8 +89,11 @@ Particle.prototype.render = function(ctx) {
     ctx.translate(this.cx, this.cy);
     ctx.rotate(this.rotation);
 
+    if(this.color != "yellow" && this.color != "red" && this.color != "orange" && this.color != "gray") {
+    	console.log(this.color);
+    }
 //	util.fillBox(ctx, 0, this.radius, this.width, this.height, this.color);
-	util.fillCircle(ctx, 0, this.radius, this.radius, this.color);
+	util.fillCircle(ctx, 0, this.offsetX, this.radius, this.color);
 
 	ctx.globalAlpha = 1;
 
