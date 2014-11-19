@@ -63,12 +63,7 @@ Background.prototype.render = function(ctx) {
 	// TÍMABUNDIN BREYTA LEVEL1, GLOBAL BREYTA SEM
 	// SEM SEGIR TIL HVAÐA LEVEL ER Í GANGI.
 	
-	
-	// if(g_gameOver){
-		// this.background["gameOver"].drawAt(ctx, 0,0);
-	// }
-	// else
-	// {
+
 	
 		this.background["level1"].drawAt(ctx, 0,0);
 		

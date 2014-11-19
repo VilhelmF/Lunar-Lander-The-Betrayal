@@ -108,11 +108,11 @@ function updateSimulation(du) {
 		// Prevent perpetual firing!
 		eatKey(Ship.prototype.KEY_FIRE);
 	}
-	else if (g_gameOver){
+	/*else if (g_gameOver){
 		//..
-	}
-	else if(g_gameWon){
-		//..
+	}*/
+	else if( g_gameWon && !g_gameOver && !g_startGame ){
+		
 	}
 }
 
@@ -197,7 +197,25 @@ function processDiagnostics() {
 function renderSimulation(ctx) {
     
 	//STARTSCREEN setup
-	if( !g_startGame && !g_gameOver /*&& !g_gameWon*/){
+	
+	if(g_gameWon /*&& !g_gameOver && !g_startGame*/){
+		
+		console.log("You won !!");
+		g_background["gameWon"].drawAt(ctx, 0,0);
+		
+		var mouse = util.onPlayButton(	{x: 295, y: 520 }, 
+										216,
+										33);
+		if(mouse.onButton){
+			g_sprites.playbutton1.drawAt(ctx, 0, 0);
+		}
+		else
+		{
+			g_sprites.playbutton2.drawAt(ctx, 0, 0);
+		}
+	}
+	
+	else if( !g_startGame && !g_gameOver && !g_gameWon /*&& !g_gameWon*/){
 		g_sprites.st_screenLayer1.drawAt(ctx, 0, 0);
 		g_sprites.st_screenLayer2.drawAt(ctx, 0, 0);
 
@@ -255,34 +273,12 @@ function renderSimulation(ctx) {
 		{
 			g_sprites.playbutton2.drawAt(ctx, 0, 0);
 		}
+		
+		g_audio.themeEnd.soundVolume(1);
+		g_audio.themeEnd.playSound();
+		
+		
 	}
-	else if( g_gameWon && !g_gameOver && !g_startGame ){
-		
-		
-		g_background["gameWon"].drawAt(ctx, 0,0);
-		
-		var mouse = util.onPlayButton(	{x: 295, y: 520 }, 
-										216,
-										33);
-		if(mouse.onButton){
-			g_sprites.playbutton1.drawAt(ctx, 0, 0);
-		}
-		else
-		{
-			g_sprites.playbutton2.drawAt(ctx, 0, 0);
-		}
-	}
-	/*else if (g_gameOver){
-	
-		console.log("You lost ...");
-		
-	
-	}
-	else if(g_gameWon){
-	
-		console.log("you Won");
-	
-	}*/
 }
 
 

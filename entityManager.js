@@ -47,15 +47,8 @@ _generateLevel : function() {
  //   this._ground = [];
  //   this._guns = [];
  //   this._citizens = [];
-    if(levelDesign.level === 1) levelDesign.setUp();
-    else if(levelDesign.level > 1)
-    {
-        console.log("hah");
-        this.clearLevel = false;
-        console.log("leveldesign setup");
-        levelDesign.setUp(); 
-        console.log(this._ground.length);   
-    }
+    levelDesign.setUp();
+    this.clearLevel = false;
     
 //    var levelArray = levelDesign.getLevel();
 /*

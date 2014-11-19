@@ -92,6 +92,15 @@ Citizen.prototype.update = function (du) {
 
     spatialManager.unregister(this);
 
+    if(this.isDead)
+    {
+    	
+		console.log("game over !");
+		g_gameOver = true;;
+		g_startGame = false;
+		muteAll();
+		//g_audio.themeEnd
+    }
 
     var hitEntity = this.findHitEntity();
     if (hitEntity) 
@@ -123,14 +132,12 @@ Citizen.prototype.update = function (du) {
 		if(typeof aGroundAndSlope !== 'undefined' && !this.isPickedUp)
 	    {
 	    	
+
+			this.sprite.walkUpdate(this.numSubSteps);
+	
 			if(this.velY > 2)
 	    	{
 	    		this.isDead = true;
-				if(!g_gameOver){
-					console.log("game over !");
-					g_gameOver = true;;
-					g_startGame = false;
-				}
 	    	}
 	    	this.landed = true;
 
@@ -224,7 +231,7 @@ Citizen.prototype.update = function (du) {
 
 Citizen.prototype.pickedUp = function () 
 {
-	if(!this.isDead)
+	if(!this.isDead) 
 	{
 		console.log("rescue audio played");
 		g_audio.rescue.Play();
@@ -235,7 +242,8 @@ Citizen.prototype.pickedUp = function ()
 };
 
 Citizen.prototype.takeBulletHit = function () {
-	this.isDead = true;
+  this.isDead = true;
+
 };
 
 

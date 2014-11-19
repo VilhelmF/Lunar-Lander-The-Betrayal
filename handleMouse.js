@@ -25,11 +25,10 @@ function handleMouse(evt) {
       
 	
 	checkPlayButton();
+	checkPlayAgain();
 
 	//MUTE BUTTON (right top corner)
 	checkMuteButton();
-	
-	checkPlayAgain();
 }
 
 
@@ -37,11 +36,8 @@ function checkPlayButton() {
 	var value = util.onPlayButton(); 
 	if( value.onButton && !g_startGame && !g_gameOver){
 		g_startGame = true;
-		//g_audio.themeSong.playOnVolume(g_audio.themeSong.lowVolume);
-		//muteAll();
-		//setAllVolume();
 		resetAllAudio();
-		g_audio.themeGamePlay.playOnVolume(g_audio.themeGamePlay.lowVolume);
+		g_audio.theme4.playOnVolume(g_audio.themeGamePlay.lowVolume);
 	}
 }
 
@@ -53,27 +49,13 @@ function checkMuteButton() {
 	var width = 16;
 	var height = 25;
 	
-	console.log("g_mouseX: " + g_mouseX);
-	console.log("g_mouseY: " + g_mouseY);
-	
 		
 	if(util.isMouseInRec(x, y, width, height))
 	{
-		
-		console.log("hallllllooooostína");
-		
 		var mute = g_audio.themeSong.mute;
-		
-		console.log("mute: " + mute);
 		mute = !mute;
-		
-		
 		muteTrigger(mute);
-		
 		g_audio.themeSong.mute = mute;
-		
-		
-		console.log("mute: " + mute);
 	}
 }
 
@@ -83,8 +65,12 @@ function checkPlayAgain() {
 										216,
 										33);
 		if(mouse.onButton){
+			g_gameOver = false;
+			g_gameWon = false;
 			g_startGame  = true;
-			levelDesign.level = 1;
+			levelDesign.restartGame();
+			resetAllAudio();
+			g_audio.theme4.playOnVolume(g_audio.themeGamePlay.lowVolume);
 		}
 }
 
