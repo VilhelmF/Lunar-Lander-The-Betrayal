@@ -12,16 +12,13 @@ Particle.prototype.xVel = 0;
 Particle.prototype.yVel = 0;
 Particle.prototype.rotation = 0;
 Particle.prototype.lifeSpan = 2000 / NOMINAL_UPDATE_INTERVAL;
+Particle.prototype.type = "explosion";
 
 Particle.prototype.initExplosion = function(cx, cy) {
-	// console.log(cx + "    " + cy);
-	// console.log(util.getRandomInt(cx - 10, cy + 10));
-
+	this.type = "explosion";
 	
 	this.cx = util.getRandomInt(cx - 10, cx + 10);
 	this.cy = util.getRandomInt(cy - 10, cy + 10);
-
-	// console.log(this.cx);
 
 	this.xVel = util.getRandomInt(0, 10);
 	this.xVel *= util.getRandomInt(0,1) === 0 ? 1 : -1;
@@ -29,18 +26,21 @@ Particle.prototype.initExplosion = function(cx, cy) {
 	this.yVel = util.getRandomInt(0, 10);
 	this.yVel *= util.getRandomInt(0, 1) === 0 ? 1 : -1;
 
-	this.width = util.getRandomInt(1, 30);
-	this.height = this.width;
+/*	this.width = util.getRandomInt(1, 30);
+	this.height = this.width; */
 
 	this.rotation = util.getRandomInt(0, 40) / 100;
 
-	this.radius = 0;
+	this.radius = util.getRandomInt(1, 30);
 
 	this.color = util.getRandomInt(0,1) === 0 ? "red" : 
-				 util.getRandomInt(0,1) === 0 ? "orange" : "yellow";
+				 util.getRandomInt(0,1) === 0 ? "orange" : 
+				 util.getRandomInt(0,1) === 0 ? "yellow" : "gray";
 };
 
 Particle.prototype.initThrust = function(cx, cy, rotation, radius, i) {
+	this.type = "thrust";
+
 	this.cx = util.getRandomInt(cx - 10 + i*2, cx + 10 - i*2);
 	this.cy = util.getRandomInt(cy, cy + 10 + i);
 
@@ -49,10 +49,10 @@ Particle.prototype.initThrust = function(cx, cy, rotation, radius, i) {
 	this.yVel = Math.cos(this.rotation);
 	this.xVel = -Math.sin(this.rotation);
 
-	this.width = util.getRandomInt(1, 5);
-	this.height = this.width;
+/*	this.width = util.getRandomInt(1, 5);
+	this.height = this.width; */
 
-	this.radius = radius;
+	this.radius = util.getRandomInt(1, 5);
 
 	this.color = util.getRandomInt(0,1) === 0 ? "red" : "orange";
 
@@ -64,6 +64,10 @@ Particle.prototype.update = function(du) {
 	this.lifeSpan -= du;
 	if(this.lifeSpan <= 0) {
 		return particleManager.KILL_ME_NOW;
+	}
+
+	if(this.type === "explosion") {
+		this.radius++;
 	}
 
 	this.cx += this.xVel * du;
@@ -83,7 +87,7 @@ Particle.prototype.render = function(ctx) {
     ctx.rotate(this.rotation);
 
 //	util.fillBox(ctx, 0, this.radius, this.width, this.height, this.color);
-	util.fillCircle(ctx, 0, this.radius, this.width, this.color);
+	util.fillCircle(ctx, 0, this.radius, this.radius, this.color);
 
 	ctx.globalAlpha = 1;
 

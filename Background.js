@@ -83,11 +83,11 @@ Background.prototype.render = function(ctx) {
 	//}
 	
 	if(!this.mute){
-		g_sprites.muteOn.drawAt(ctx, this.beginX, this.beginY );
+		g_sprites.muteOn.drawAt(ctx, this.beginX, this.beginY - g_offsetY);
 	}
 	else if(this.mute)
 	{
-		g_sprites.muteOff.drawAt(ctx, this.beginX, this.beginY);	
+		g_sprites.muteOff.drawAt(ctx, this.beginX, this.beginY - g_offsetY);	
 	}
 	
 	
