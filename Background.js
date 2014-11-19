@@ -63,12 +63,13 @@ Background.prototype.render = function(ctx) {
 	// TÍMABUNDIN BREYTA LEVEL1, GLOBAL BREYTA SEM
 	// SEM SEGIR TIL HVAÐA LEVEL ER Í GANGI.
 	
-
-	
-		this.background["level1"].drawAt(ctx, 0,0);
+		posX = 0;
+		posY = g_canvas.height-this.background["level1"].height;
+		
+		this.background["level1"].drawAt(ctx, posX,posY);
 		
 		for(var r in this.mountain){
-			this.mountain[r].drawAt(ctx);
+			this.mountain[r].drawAt(ctx, 0, 0);
 		}
 		
 		if(levelDesign.level == 1)
@@ -80,11 +81,11 @@ Background.prototype.render = function(ctx) {
 	//}
 	
 	if(!this.mute){
-		g_sprites.muteOn.drawAt(ctx, this.beginX, this.beginY );
+		g_sprites.muteOn.drawAt(ctx, this.beginX, this.beginY - g_offsetY);
 	}
 	else if(this.mute)
 	{
-		g_sprites.muteOff.drawAt(ctx, this.beginX, this.beginY);	
+		g_sprites.muteOff.drawAt(ctx, this.beginX, this.beginY - g_offsetY);	
 	}
 	
 	

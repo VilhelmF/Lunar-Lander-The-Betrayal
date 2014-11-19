@@ -118,7 +118,6 @@ var g_startGame = false; //FIXME: change this to false
 var g_gameOver = false;
 var g_gameWon = false;
 
-var g_offsetX = 0;
 var g_offsetY = 0;
 
 var KEY_MIXED   = keyCode('M');
@@ -156,11 +155,11 @@ function processDiagnostics() {
 // GAME-SPECIFIC RENDERING
 
 function renderSimulation(ctx) {
+	ctx.save();
+	ctx.translate(0, g_offsetY);
     
 	//STARTSCREEN setup
-	
 	if(g_gameWon /*&& !g_gameOver && !g_startGame*/){
-		
 		winScreen.render(ctx);
 		return;
 	}
@@ -195,6 +194,8 @@ function renderSimulation(ctx) {
 	if(g_gameOver && !g_startGame && !g_gameWon){
 		gameOverScreen.render(ctx);	
 	}
+
+	ctx.restore();
 }
 
 
@@ -234,7 +235,15 @@ function requestPreloads() {
 		muteOn			: "sprites/mute-60.png",
 		muteOff			: "sprites/mute-62.png",
 		playbutton1		: "sprites/gameover/playAgain-52.png",
-		playbutton2		: "sprites/gameover/playAgain-53.png"
+		playbutton2		: "sprites/gameover/playAgain-53.png",
+		tower_p_0		: "sprites/tower/tower-47.png",
+		tower_p_1		: "sprites/tower/tower-48.png",
+		tower_p_2		: "sprites/tower/tower-49.png",
+		tower_p_3		: "sprites/tower/tower-50.png",
+		tower_p_4		: "sprites/tower/tower-51.png",
+		tower_p_5		: "sprites/tower/tower-52.png",
+		tower_p_6		: "sprites/tower/tower-53.png",
+		tower_p_7		: "sprites/tower/tower-54.png",
 	};
 
 
