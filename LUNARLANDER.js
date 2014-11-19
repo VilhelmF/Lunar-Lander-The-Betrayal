@@ -108,11 +108,11 @@ function updateSimulation(du) {
 		// Prevent perpetual firing!
 		eatKey(Ship.prototype.KEY_FIRE);
 	}
-	else if (g_gameOver){
+	/*else if (g_gameOver){
 		//..
-	}
-	else if(g_gameWon){
-		//..
+	}*/
+	else if( g_gameWon && !g_gameOver && !g_startGame ){
+		
 	}
 }
 
@@ -164,7 +164,25 @@ function processDiagnostics() {
 function renderSimulation(ctx) {
     
 	//STARTSCREEN setup
-	if( !g_startGame && !g_gameOver /*&& !g_gameWon*/){
+	
+	if(g_gameWon /*&& !g_gameOver && !g_startGame*/){
+		
+		console.log("You won !!");
+		g_background["gameWon"].drawAt(ctx, 0,0);
+		
+		var mouse = util.onPlayButton(	{x: 295, y: 520 }, 
+										216,
+										33);
+		if(mouse.onButton){
+			g_sprites.playbutton1.drawAt(ctx, 0, 0);
+		}
+		else
+		{
+			g_sprites.playbutton2.drawAt(ctx, 0, 0);
+		}
+	}
+	
+	else if( !g_startGame && !g_gameOver && !g_gameWon /*&& !g_gameWon*/){
 		g_sprites.st_screenLayer1.drawAt(ctx, 0, 0);
 		g_sprites.st_screenLayer2.drawAt(ctx, 0, 0);
 
@@ -206,7 +224,7 @@ function renderSimulation(ctx) {
 		
 		if(g_doZoom) ctx.restore();
 	}
-	else {
+	else if(g_gameOver && !g_startGame && !g_gameWon){
 		g_background["gameOver"].drawAt(ctx, 0,0);
 		
 		//PLAY BUTTON
@@ -216,25 +234,18 @@ function renderSimulation(ctx) {
 										216,
 										33);
 		if(mouse.onButton){
-			console.log("halllllppppppppppppsfsdsfdfdfs");
 			g_sprites.playbutton1.drawAt(ctx, 0, 0);
 		}
 		else
 		{
 			g_sprites.playbutton2.drawAt(ctx, 0, 0);
 		}
-	}
-	/*else if (g_gameOver){
-	
-		console.log("You lost ...");
 		
-	
+		g_audio.themeEnd.soundVolume(1);
+		g_audio.themeEnd.playSound();
+		
+		
 	}
-	else if(g_gameWon){
-	
-		console.log("you Won");
-	
-	}*/
 }
 
 
@@ -258,7 +269,7 @@ function requestPreloads() {
 		fuelBarSlide    : "sprites/fuelBar/fuelBar-35.png",
         ground          : "sprites/ground-39.png",
 		st_screenLayer1 : "sprites/startScreen/gameStart-40.png",
-		st_screenLayer2 : "sprites/startScreen/gameStart-42.png",
+		st_screenLayer2 : "sprites/startScreen/gameStart-54.png",
 		st_screenLayer3 : "sprites/startScreen/gameStart-44.png",
 		st_screenLayer4 : "sprites/startScreen/gameStart-47.png",
 		st_screenLayer5 : "sprites/startScreen/gameStart-43.png",

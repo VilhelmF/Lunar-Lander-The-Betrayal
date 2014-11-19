@@ -79,11 +79,10 @@ Citizen.prototype.update = function (du) {
     //Game is lost when a citizen dies
     if(this.isDead)
     {
-    	if(!g_gameOver)
-    	{
-			g_gameOver = true;;
-			g_startGame = false;
-		}
+		console.log("game over !");
+		g_gameOver = true;;
+		g_startGame = false;
+		muteAll();
     }
 
     var hitEntity = this.findHitEntity();
@@ -91,9 +90,16 @@ Citizen.prototype.update = function (du) {
     {
 		if(Object.getPrototypeOf(hitEntity) === Plank.prototype  && this.isPickedUp === false)
 		{
+			if(this.velY > 3)
+	    	{
+	    		this.isDead = true;
+	    	}
+	    	else
+	    	{
+	    		hitEntity.returnCitizen(du);
+				return entityManager.KILL_ME_NOW;
+	    	}
 			
-			hitEntity.returnCitizen(du);
-			return entityManager.KILL_ME_NOW;
 		}          
     }
 
