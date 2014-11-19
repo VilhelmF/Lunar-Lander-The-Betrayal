@@ -56,7 +56,7 @@ Gun.prototype.cy = 200;
 Gun.prototype.halfWidth = 5;
 Gun.prototype.halfHeight = 30;
 Gun.prototype.vel = 5;
-Gun.prototype.type = "Confuse";
+Gun.prototype.type = "Destroy";
 
 Gun.prototype.life = 2;
 
