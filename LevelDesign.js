@@ -96,7 +96,6 @@ var levelDesign = {
 	nextLevel : function() {
 		this.level++;
 		if(this.level > 6){
-			console.log("Player won ...");
 			g_gameStart = false;
 			g_gameOver = false;
 			g_gameWon = true;
@@ -105,7 +104,6 @@ var levelDesign = {
 		else
 		{
 			entityManager.clearLevel = true;
-			console.log(this.level);
 		}
 	},
 

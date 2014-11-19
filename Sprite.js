@@ -73,10 +73,6 @@ Sprite.prototype.drawWrappedVerticalCentredAt = function (ctx, cx, cy, rotation)
     // Draw primary instance
     this.drawCentredAt(ctx, cx, cy, rotation);
     
-    // Top and Bottom wraps
-//    this.drawCentredAt(ctx, cx, cy - sh, rotation);
-//    this.drawCentredAt(ctx, cx, cy + sh, rotation);
-
     this.drawCentredAt(ctx, cx, cy, rotation);
     this.drawCentredAt(ctx, cx, cy, rotation);
 };
@@ -117,19 +113,9 @@ Sprite.prototype.spriteSheetconstruction = function () {
 		this.midPointX = (this.width/this.ticksPerFrame) / 2;
 		this.midPointY = {y1: this.height/3, y2: this.height/1.19}; 
 	
-		//i know every sprite sheetp have 10 frames. not cool i know
 		this.numberOfFrames = 10;
-		//this.walk = false;
-		
-		//ÓNOTAÐ
-		this.walkSteps = [];
+
 };
-
-
-
-//Sprite.prototype.drawCropimage = function (ctx, sx) {
-//	ctx.drawImage( this.image, cx, cy, this.width, this.height, cx, cy, scaleWidth, this.height ); 	
-
 
 
 Sprite.prototype.walkUpdate = function (Xstep) {
@@ -156,10 +142,6 @@ Sprite.prototype.walkUpdate = function (Xstep) {
 }
 
 Sprite.prototype.walkRender = function (ctx, posX, posY, direction) {
-	/*if(posX == "undefined"){
-		this.posX = 0;
-	}*/
-	
 	//	if direction is to right, direction
 	//	get value true otherwise false
 	if(String(direction).indexOf("right") === 0)
@@ -187,7 +169,6 @@ Sprite.prototype.walkRender = function (ctx, posX, posY, direction) {
 		return;
 	}
 	
-	
 	//RIGHT
 	if(direction)
 	{
@@ -198,7 +179,7 @@ Sprite.prototype.walkRender = function (ctx, posX, posY, direction) {
 				this.width/this.numberOfFrames,
 				this.height/2,
 				posX,
-				posY+this.height/2, 		// veit ekki með fjóra// 450 for old man
+				posY+this.height/2,
 				this.width/this.numberOfFrames,
 				this.height/2
 			);
@@ -207,8 +188,6 @@ Sprite.prototype.walkRender = function (ctx, posX, posY, direction) {
 	//LEFT
 	else
 	{
-	
-		//console.log("ahhllo0");
 		ctx.drawImage(
 			this.image,
 			this.frameIndex * this.width/this.ticksPerFrame,
@@ -221,7 +200,6 @@ Sprite.prototype.walkRender = function (ctx, posX, posY, direction) {
 			this.height/2
 		);
 	}
-	//}
 };
 
 

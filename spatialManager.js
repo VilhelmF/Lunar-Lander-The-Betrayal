@@ -11,10 +11,7 @@ e.g. general collision detection.
 
 /* jshint browser: true, devel: true, globalstrict: true */
 
-/*
-0        1         2         3         4         5         6         7         8
-12345678901234567890123456789012345678901234567890123456789012345678901234567890
-*/
+
 
 var spatialManager = {
 
@@ -100,10 +97,7 @@ collidesWithGround : function(posX, posY, radius)
         if((firstX <= posX && latterX > posX) ||
            (firstX <= posX + groundLength && latterX > posX + groundLength) ||
            (firstX <= posX - groundLength && latterX > posX - groundLength ))
-        {
-            //if(firstY < (posY + radius)  || latterY < (posY + radius))
-            //{
-               
+        { 
                 for(var i = 0; i < groundLength; i++)
                 {
                     var lineX = firstX + i;
