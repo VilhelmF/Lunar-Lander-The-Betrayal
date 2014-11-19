@@ -2,7 +2,7 @@
 var levelDesign = {
 	columns : 17,
 	rows    : 12,
-	level   : 3,
+	level   : 6,
 	grid    : [],
  
     items : {
@@ -95,7 +95,7 @@ var levelDesign = {
 
 	nextLevel : function() {
 		this.level++;
-		if(this.level == 7){
+		if(this.level == this.levels.length+1){
 			consol.log("Player won ...");
 			g_gameWon = true;
 		}

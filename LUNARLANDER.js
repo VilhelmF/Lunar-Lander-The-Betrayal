@@ -124,7 +124,7 @@ var g_useAveVel = true;
 var g_renderSpatialDebug = false;
 var g_doZoom = false;
 var g_startGame = false; //FIXME: change this to false
-var g_gameOver = true;
+var g_gameOver = false;
 var g_gameWon = false;
 
 var KEY_MIXED   = keyCode('M');
@@ -239,7 +239,7 @@ function renderSimulation(ctx) {
 		
 		if(g_doZoom) ctx.restore();
 	}
-	else {
+	else if(g_gameOver && !g_startGame && !g_gameWon){
 		g_background["gameOver"].drawAt(ctx, 0,0);
 		
 		//PLAY BUTTON
@@ -249,7 +249,22 @@ function renderSimulation(ctx) {
 										216,
 										33);
 		if(mouse.onButton){
-			console.log("halllllppppppppppppsfsdsfdfdfs");
+			g_sprites.playbutton1.drawAt(ctx, 0, 0);
+		}
+		else
+		{
+			g_sprites.playbutton2.drawAt(ctx, 0, 0);
+		}
+	}
+	else if( g_gameWon && !g_gameOver && !g_startGame ){
+		
+		
+		g_background["gameWon"].drawAt(ctx, 0,0);
+		
+		var mouse = util.onPlayButton(	{x: 295, y: 520 }, 
+										216,
+										33);
+		if(mouse.onButton){
 			g_sprites.playbutton1.drawAt(ctx, 0, 0);
 		}
 		else
@@ -291,7 +306,7 @@ function requestPreloads() {
 		fuelBarSlide    : "sprites/fuelBar/fuelBar-35.png",
         ground          : "sprites/ground-39.png",
 		st_screenLayer1 : "sprites/startScreen/gameStart-40.png",
-		st_screenLayer2 : "sprites/startScreen/gameStart-42.png",
+		st_screenLayer2 : "sprites/startScreen/gameStart-54.png",
 		st_screenLayer3 : "sprites/startScreen/gameStart-44.png",
 		st_screenLayer4 : "sprites/startScreen/gameStart-47.png",
 		st_screenLayer5 : "sprites/startScreen/gameStart-43.png",
