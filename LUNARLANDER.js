@@ -79,14 +79,7 @@ function updateSimulation(du) {
     
 	if( !g_startGame && !g_gameOver && !g_gameWon){
 		
-		if(	(g_sprites.oldManWalking.posX > g_canvas.width))
-		{
-			g_sprites.oldManWalking.posX = 0;
-		}
-		else
-		{
-			g_sprites.oldManWalking.walkUpdate(2);
-		}
+		startScreen.update(du);
 		
 		/*setTimeout( function() { 
 					g_audio.themeGamePlay.soundVolume( 0.5 );

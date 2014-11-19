@@ -1,4 +1,15 @@
 var startScreen = {
+	update : function(du) {
+		if(	(g_sprites.oldManWalking.posX > g_canvas.width))
+		{
+			g_sprites.oldManWalking.posX = 0;
+		}
+		else
+		{
+			g_sprites.oldManWalking.walkUpdate(2);
+		}
+	},
+
 	render : function(ctx) {
 		g_sprites.st_screenLayer1.drawAt(ctx, 0, 0);
 		g_sprites.st_screenLayer2.drawAt(ctx, 0, 0);
