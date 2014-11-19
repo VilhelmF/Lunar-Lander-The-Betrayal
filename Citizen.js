@@ -99,7 +99,7 @@ Citizen.prototype.update = function (du) {
 		if(Object.getPrototypeOf(hitEntity) === Plank.prototype  && this.isPickedUp === false)
 		{
 			
-			entityManager._plank[0].returnCitizen(du);
+			hitEntity.returnCitizen(du);
 			return entityManager.KILL_ME_NOW;
 
 		}          
@@ -130,10 +130,19 @@ Citizen.prototype.update = function (du) {
 	    	this.landed = true;
 
 	    	if(this.velY > 0) this.velY = 0;
+
 	
 			//change direction if ground have a slope 
 			//(from left to right and right to left)
 			var slope = aGroundAndSlope.slope;
+
+		/*
+			//change direction (from left to right and right to left)
+			if( (aGroundAndSlope.slope < 0 || aGroundAndSlope.slope > 0 ) 
+					|| aGroundAndSlope.latterX === aGroundAndSlope.lineX
+					|| aGroundAndSlope.firstX  === aGroundAndSlope.lineX
+				)*/
+
 			
 			var firstX  = aGroundAndSlope.firstX;
 			var latterX = aGroundAndSlope.latterX;
@@ -201,7 +210,6 @@ Citizen.prototype.update = function (du) {
    		this.velY = 0;
     }
    
-
 
     if(!this.isDead && !this.isPickedUp)
     {

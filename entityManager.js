@@ -36,7 +36,6 @@ _citizens   : [],
 _background : [],
 _guns	    : [],
 _plank      : [],
-_audio      : [],
 
 
 
@@ -134,7 +133,6 @@ deferredSetup : function () {
                         this._guns, 
                         this._citizens,
                         this._plank,
-						this._audio,
                         ];
 },
 
@@ -303,6 +301,21 @@ resetShips: function() {
 haltShips: function() {
     this._forEachOf(this._ships, Ship.prototype.halt);
 },	
+
+rescueCitizen: function() 
+{
+    console.log("rescued");
+     for(var z = 0; z < entityManager._plank.length; z++)
+    {
+        entityManager._plank[z].rescueNumber += 1; 
+    }
+
+  /*  var plank1 = entityManager._plank[0]; 
+    if(plank1.rescueNumber >= plank1.rescueLimit)
+    {
+        levelDesign.nextLevel();
+    }*/
+},
 
 update: function(du) {
 
