@@ -2,7 +2,7 @@
 var levelDesign = {
 	columns : 17,
 	rows    : 12,
-	level   : 3,
+	level   : 1,
 	grid    : [],
  
     items : {
@@ -106,6 +106,11 @@ var levelDesign = {
 	getLevel : function() {
 		return this.grid;
 	},
+
+    restartGame : function() {
+        this.level = 1;
+        entityManager.clearLevel = true;
+    },
 
 	setUp : function() {
 		var index = 0;

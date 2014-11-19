@@ -59,9 +59,6 @@ function checkMuteButton() {
 		
 	if(util.isMouseInRec(x, y, width, height))
 	{
-		
-		console.log("hallllllooooostína");
-		
 		var mute = g_audio.themeSong.mute;
 		
 		console.log("mute: " + mute);
@@ -83,8 +80,10 @@ function checkPlayAgain() {
 										216,
 										33);
 		if(mouse.onButton){
+			g_gameOver = false;
 			g_startGame  = true;
-			levelDesign.level = 1;
+
+			levelDesign.restartGame();
 		}
 }
 

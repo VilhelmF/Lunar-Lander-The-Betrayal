@@ -124,7 +124,7 @@ var g_useAveVel = true;
 var g_renderSpatialDebug = false;
 var g_doZoom = false;
 var g_startGame = false; //FIXME: change this to false
-var g_gameOver = true;
+var g_gameOver = false;
 var g_gameWon = false;
 
 var KEY_MIXED   = keyCode('M');

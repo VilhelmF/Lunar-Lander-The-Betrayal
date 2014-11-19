@@ -59,7 +59,7 @@ Citizen.prototype.halfHeight = 5;
 Citizen.prototype.halfWidth = 5;
 
 Citizen.prototype.isPickedUp = false;
-//Citizen.prototype.isDead = false; FixMe
+Citizen.prototype.isDead = false;
 Citizen.prototype.landed = false;
 
 
@@ -92,6 +92,15 @@ Citizen.prototype.update = function (du) {
 
     spatialManager.unregister(this);
 
+    if(this.isDead)
+    {
+    	if(!g_gameOver)
+    	{
+			console.log("game over !");
+			g_gameOver = true;;
+			g_startGame = false;
+		}
+    }
 
     var hitEntity = this.findHitEntity();
     if (hitEntity) 
@@ -129,11 +138,6 @@ Citizen.prototype.update = function (du) {
 			if(this.velY > 2)
 	    	{
 	    		this.isDead = true;
-				if(!g_gameOver){
-					console.log("game over !");
-					g_gameOver = true;;
-					g_startGame = false;
-				}
 	    	}
 	    	this.landed = true;
 
