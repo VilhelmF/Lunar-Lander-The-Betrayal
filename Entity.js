@@ -1,16 +1,7 @@
 // ======
 // ENTITY
 // ======
-/*
 
-Provides a set of common functions which can be "inherited" by all other
-game Entities.
-
-JavaScript's prototype-based inheritance system is unusual, and requires 
-some care in use. In particular, this "base" should only provide shared
-functions... shared data properties are potentially quite confusing.
-
-*/
 
 "use strict";
 
@@ -98,7 +89,6 @@ Entity.prototype.wrapPosition = function () {
 var NOMINAL_GRAVITY = 0.02;
 
 Entity.prototype.computeGravity = function () {
-//    return g_useGravity ? NOMINAL_GRAVITY : 0;
     if(!this.landed) return NOMINAL_GRAVITY;
     else return 0;
 };
@@ -119,8 +109,6 @@ Entity.prototype.computeSubStep = function (du) {
     accelY += this.computeGravity();
 
     this.applyAccel(accelX, accelY, du);
-    
-//    this.wrapPosition();
     
     if (thrust === 0 || g_allowMixedActions) {
         this.updateRotation(du);

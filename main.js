@@ -133,7 +133,7 @@ main.init = function () {
     // We'll be working on a black background here,
     // so let's use a fillStyle which works against that...
     //
-    g_ctx.fillStyle = "red";
+    g_ctx.fillStyle = "white";
 
     this._requestNextIteration();
 };

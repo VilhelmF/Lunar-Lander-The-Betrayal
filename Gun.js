@@ -22,10 +22,7 @@ function Gun(descr) {
 	var numOfTowerPart= 0;
 	
 	
-	for(var i=0; i<8; ++i){
-		this.towerParticles[i] = g_sprites["tower_p_" + i];
-		this.towerParticles[i] = new Particle();
-	}
+	
 	
 	
 	this.tower = g_sprites.tower;
@@ -58,7 +55,12 @@ Gun.prototype.halfHeight = 30;
 Gun.prototype.vel = 5;
 Gun.prototype.type = "Destroy";
 
+<<<<<<< HEAD
 Gun.prototype.life = 0;
+=======
+Gun.prototype.life = 1;
+Gun.prototype.dead = false;
+>>>>>>> 20a1a98863c150673793559d8fa0f1262458bcae
 
 Gun.prototype.cooldownRange = {
 	"min" : 4000,
@@ -95,14 +97,11 @@ Gun.prototype.update = function (du) {
 Gun.prototype.takeBulletHit = function () {
 
     this.life -= 1;
-	if(this.life <= 0){
-
-		
-		for (var i in this.towerParticles) {
-			this.towerParticles[i].initTowerExplosion(
-					this.cx, this.cy, i);
-			console.log("for-loop: " + i);
-		};
+	if(this.life === 0)
+	{
+		this.kill();
+		particleManager.tower(this.cx, this.cy-this.towerHeight/2);
+		particleManager.explosion(this.cx, this.cy-this.towerHeight/2, true);
 	}
 
 };
@@ -171,10 +170,12 @@ Gun.prototype.getRadius = function()
 Gun.prototype.render = function (ctx) {
 	ctx.save();
 	
-	this.tower.drawAt(	ctx, 
+	if(!this.dead)
+	{
+		this.tower.drawAt(	ctx, 
 						this.cx-this.towerWidth/2, 
 						this.cy-this.towerHeight+1);
-	ctx.drawImage(
+		ctx.drawImage(
 		this.diamond.image,
 		0,
 		0,
@@ -186,7 +187,11 @@ Gun.prototype.render = function (ctx) {
 		
 		this.diamond.width-(this.cooldown/3),
 		this.diamond.height
-	);
+		);
+	
+	}
+
+
 	
 	ctx.restore();
 };

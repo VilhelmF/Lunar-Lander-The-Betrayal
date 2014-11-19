@@ -245,11 +245,20 @@ Ship.prototype.update = function (du) {
             this.maybePickUpCitizen(hitEntity);
             spatialManager.register(this);
         }
-        else if(Object.getPrototypeOf(hitEntity) === Plank.prototype && !(Math.abs(this.rotation % (2*Math.PI)) > 0.5*Math.PI))
+        else if(Object.getPrototypeOf(hitEntity) === Plank.prototype)
         {
-            this.landingOnPlank(this.rotation % (2*Math.PI), hitEntity, du);
+            if(((this.rotation % (2*Math.PI) > -0.5*Math.PI)
+                &&(this.rotation % (2*Math.PI) < 0.5*Math.PI )))
+            {
+                this.landingOnPlank(this.rotation % (2*Math.PI), hitEntity, du);
                 
-        }
+            }
+            else
+            {
+                particleManager.explosion(this.cx, this.cy);
+                this.warp(); 
+            }
+        } 
         else if(Object.getPrototypeOf(hitEntity) === Package.prototype)
         {
             hitEntity.getPackage(this);
@@ -260,10 +269,9 @@ Ship.prototype.update = function (du) {
             this.warp();    
         }
     }
-    else
-    {
+    
         spatialManager.register(this);
-    }
+    
 
    
    /*--------------------------------------------------------------------------------------------
@@ -557,6 +565,7 @@ Ship.prototype.landingOnGround = function(shipsRotation, ground, du)
     if(this.velY > 2 || Math.abs(this.velX) > 3 || this.rotationalLanding(shipsRotation, ground.rotation))
     {
         particleManager.explosion(this.cx, this.cy);
+        entityManager.shakeGround(this.velX, this.velY);
         this.warp();
     }
     else
@@ -598,6 +607,7 @@ Ship.prototype.landingOnPlank = function(shipsRotation, hitEntity, du)
         particleManager.explosion(this.cx, this.cy);
         this.warp();
     }
+
     /*else if((this.cy - this.getRadius()) >= (hitEntity.cy - hitEntity.halfHeight)
         && (this.cy - this.getRadius()) <= (hitEntity.cy + hitEntity.halfHeight))
     {
