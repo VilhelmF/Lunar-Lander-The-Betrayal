@@ -40,6 +40,7 @@ Bullet.prototype.cy = 200;
 Bullet.prototype.velX = 1;
 Bullet.prototype.velY = 1;
 Bullet.prototype.team = 1;
+Bullet.prototype.type = "Confusion";
 
 // Convert times from milliseconds to "nominal" time units.
 Bullet.prototype.lifeSpan = 3000 / NOMINAL_UPDATE_INTERVAL;
@@ -58,7 +59,7 @@ Bullet.prototype.update = function (du) {
     this.cx += this.velX * du;
     this.cy += this.velY * du;
 
-    this.rotation += 1 * du;
+
     this.rotation = util.wrapRange(this.rotation,
                                    0, consts.FULL_CIRCLE);
 
@@ -68,7 +69,8 @@ Bullet.prototype.update = function (du) {
     //
     var hitEntity = this.findHitEntity();
     if (hitEntity) {
-        var canTakeHit = hitEntity.takeBulletHit;
+
+        var canTakeHit = hitEntity.takeBulletHit(this.type);
         if (canTakeHit) canTakeHit.call(hitEntity); 
         return entityManager.KILL_ME_NOW;
     }
@@ -84,11 +86,11 @@ Bullet.prototype.getRadius = function () {
     return 4;
 };
 
-Bullet.prototype.takeBulletHit = function () {
+Bullet.prototype.takeBulletHit = function (attackType) {
     this.kill();
     
     // Make a noise when I am zapped by another bullet
-    g_audio.zappedSound.Play();
+    //g_audio.zappedSound.Play();
 };
 
 Bullet.prototype.render = function (ctx) {
@@ -109,9 +111,19 @@ Bullet.prototype.render = function (ctx) {
     }
     else if(this.team === 2)
     {
-        var radius = 4;
-        util.fillBox(ctx, this.cx, this.cy, radius, radius, "blue");
-        ctx.fill();
+        if(this.type === "Destroy")
+        {
+            var radius = 4;
+            util.fillBox(ctx, this.cx, this.cy, radius, radius, "blue");
+            ctx.fill();
+        }
+        else if(this.type === "Confuse")
+        {
+            var radius = 4;
+            util.fillBox(ctx, this.cx, this.cy, radius, radius, "red");
+            ctx.fill();
+        }
+        
     }
     ctx.restore();
     

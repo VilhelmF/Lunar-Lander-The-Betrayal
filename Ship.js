@@ -36,6 +36,11 @@ Ship.prototype.rememberResets = function () {
     this.reset_cx = this.cx;
     this.reset_cy = this.cy;
     this.reset_rotation = this.rotation;
+
+    this.reset_KEY_THRUST = this.KEY_THRUST;
+    this.reset_KEY_RETRO = this.KEY_RETRO;
+    this.reset_KEY_LEFT = this.KEY_LEFT;
+    this.reset_KEY_RIGHT = this.KEY_RIGHT;
 };
 
 Ship.prototype.KEY_THRUST = 'W'.charCodeAt(0);
@@ -43,7 +48,10 @@ Ship.prototype.KEY_RETRO  = 'S'.charCodeAt(0);
 Ship.prototype.KEY_LEFT   = 'A'.charCodeAt(0);
 Ship.prototype.KEY_RIGHT  = 'D'.charCodeAt(0);
 
-Ship.prototype.USE   = ' '.charCodeAt(0);
+
+
+Ship.prototype.USE      = ' '.charCodeAt(0);
+Ship.prototype.KEY_FIRE = 'E'.charCodeAt(0);
 
 // Initial, inheritable, default values
 Ship.prototype.rotation = 0;
@@ -51,7 +59,7 @@ Ship.prototype.cx = 200;
 Ship.prototype.cy = 200;
 Ship.prototype.velX = 0;
 Ship.prototype.velY = 0;
-Ship.prototype.launchVel = 2;
+Ship.prototype.launchVel = 0;
 Ship.prototype.numSubSteps = 1;
 Ship.prototype.minY = -540;
 
@@ -59,6 +67,7 @@ Ship.prototype.rightRotation = 0.01;
 Ship.prototype.leftRotation = 0.01;
 
 Ship.prototype.fuel = new Fuel();
+Ship.prototype.shield = 3;
 
 Ship.prototype.cooldown = 200 / NOMINAL_UPDATE_INTERVAL;
 
@@ -81,6 +90,7 @@ Ship.prototype.warp = function () {
         this.Citizen = 0;
     }
 
+    this.keyReset();
     this.warpToPlank();
 	
 	//ÞESSI ER EITTHVAÐ AÐ KLIKKA!!
@@ -244,11 +254,11 @@ Ship.prototype.update = function (du) {
         {
             hitEntity.getPackage(this);
         }
-        else
-        {
-            particleManager.explosion(this.cx, this.cy);
-			console.log("mountinSmash audio played");
-            this.warp();    
+        else if(Object.getPrototypeOf(hitEntity) !== Bullet.prototype)
+        {   
+                particleManager.explosion(this.cx, this.cy);
+                console.log(hitEntity);
+                this.warp();    
         }
     }
     else
@@ -260,6 +270,8 @@ Ship.prototype.update = function (du) {
    /*--------------------------------------------------------------------------------------------
                                     Required shipstatus checks
     ---------------------------------------------------------------------------------------------*/                      
+    this.maybeFireBullet();
+
     if(this.fuel.status <= 0) 
     {
         particleManager.explosion(this.cx, this.cy);
@@ -306,7 +318,7 @@ Ship.prototype.computeThrustMag = function () {
     
     if (keys[this.KEY_THRUST]) {
         thrust += NOMINAL_THRUST;
-        this.fuel.status -= 0.01;
+        this.fuel.status -= 0.0001;
         particleManager.thrust(this.cx, this.cy, this.rotation, this.getRadius());
         this.landed = false;
     }
@@ -316,10 +328,6 @@ Ship.prototype.computeThrustMag = function () {
 /*-----------------------------------------------------------------------------
   ----------------------------------------------------------------------------*/
 
-
-
-
-
 Ship.prototype.giveFuel = function (fuel)
 {
     this.fuel.status += fuel;
@@ -327,23 +335,75 @@ Ship.prototype.giveFuel = function (fuel)
     {
         this.fuel.status = 1;
     }
-}
+};
+
+Ship.prototype.addShield = function(shield)
+{
+    this.shield += shield;
+    if(this.shield > 3)
+    {
+        this.shield = 3;
+    }
+};
 
 Ship.prototype.getRadius = function () {
 	return ((this.sprite.width / 2) * 0.9)/2;
 };
 
-Ship.prototype.takeBulletHit = function () {
-    particleManager.explosion(this.cx, this.cy);
-    this.warp();
+Ship.prototype.takeBulletHit = function (attackType) {
+        if(attackType = "Ship") this.shield -= 1;
+        else if (this.shield > 0) this.shield -= 1;
+        else if(attackType === "Confuse")
+        {
+            this.KEY_THRUST = this.reset_KEY_RETRO;
+            this.KEY_RETRO = this.reset_KEY_THRUST;
+            this.KEY_LEFT = this.reset_KEY_RIGHT;
+            this.KEY_RIGHT = this.reset_KEY_LEFT;
+        }
+        else if(attackType === "Destroy")
+        {
+            particleManager.explosion(this.cx, this.cy);
+            this.warp();
+        }   
+};
+
+Ship.prototype.maybeFireBullet = function () {
+
+    if (eatKey(this.KEY_FIRE)) {
+    
+        var dX = +Math.sin(this.rotation);
+        var dY = -Math.cos(this.rotation);
+        var launchDist = this.getRadius() * 1.2;
+        
+        var relVel = this.launchVel;
+        var relVelX = dX * relVel;
+        var relVelY = 1;
+
+        entityManager.fireBullet(
+           this.cx + dX * launchDist, this.cy + launchDist,
+           this.velX + relVelX, relVelY,
+           this.rotation,
+           1,
+           "Ship");
+           
+    }    
 };
 
 Ship.prototype.reset = function () {
     this.setPos(this.reset_cx, this.reset_cy);
     this.rotation = this.reset_rotation;
-    
+    console.log("Used it");
+    this.keyReset();
     this.halt();
 };
+
+Ship.prototype.keyReset = function () {
+    this.KEY_THRUST = this.reset_KEY_THRUST;
+    this.KEY_RETRO = this.reset_KEY_RETRO;
+    this.KEY_LEFT = this.reset_KEY_LEFT;
+    this.KEY_RIGHT = this.reset_KEY_RIGHT;
+}
+
 
 Ship.prototype.halt = function () {
     this.velX = 0;
@@ -526,6 +586,7 @@ Ship.prototype.landingOnPlank = function(shipsRotation, hitEntity, du)
         //  this.cy = hitEntity.cy - hitEntity.halfHeight - this.getRadius();   
             this.adjustRotation(du);
             this.fuel.status = 1;
+            this.keyReset();
         
         }
         else this.velX = -this.velX;
@@ -555,6 +616,19 @@ Ship.prototype.landingOnPlank = function(shipsRotation, hitEntity, du)
 Ship.prototype.render = function (ctx) {
 	
 	this.fuel.render(ctx, this.cx, this.cy);
+    if(this.shield > 0)
+    {
+        ctx.beginPath();
+        ctx.arc(this.cx, this.cy, this.getRadius() + 3, 0, 2*Math.PI);
+        if(this.shield === 3) ctx.strokeStyle = "green";
+        else if(this.shield === 2) ctx.strokeStyle = "orange";
+        else if(this.shield === 1) ctx.strokeStyle = "red";
+
+        ctx.lineWidth = 3;
+        ctx.stroke();
+    }
+    
+
     
 	
 	var origScale = this.sprite.scale;

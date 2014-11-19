@@ -19,13 +19,8 @@ function Gun(descr) {
 	this.towerParticles = [];
 	
 	//var limitOfImage = 
-	/*var numOfTowerPart= 0;
+	var numOfTowerPart= 0;
 	
-	for(var i=0;i<g_sprites.length;i++){
-		var tempString = 
-		if(g_sprites[].indexOf("tower_p")){
-			numOfTowerPart++;
-	}*/
 	
 	for(var i=0; i<8; ++i){
 		this.towerParticles[i] = g_sprites["tower_p_" + i];
@@ -61,6 +56,7 @@ Gun.prototype.cy = 200;
 Gun.prototype.halfWidth = 5;
 Gun.prototype.halfHeight = 30;
 Gun.prototype.vel = 5;
+Gun.prototype.type = "Confuse";
 
 Gun.prototype.life = 2;
 
@@ -97,10 +93,17 @@ Gun.prototype.update = function (du) {
 
 
 Gun.prototype.takeBulletHit = function () {
+
     this.life -= 1;
 	if(this.life === 0){
-		//explosion
+		/*for (var i in this.towerParticles) {
+			this.towerParticles[i].initTowerExplosion(
+					this.cx, this.cy, 
+					i
+				)
+		};*/
 	}
+
 };
 
 Gun.prototype.getCooldown = function() {
@@ -152,9 +155,15 @@ Gun.prototype.fireBullet = function ()
 						     velX, 
 						     velY,
 						   	 0,
-						     2);
+						     2,
+						     this.type);
            
     
+}
+
+Gun.prototype.getRadius = function()
+{
+	return this.towerWidth/2;
 }
 
 

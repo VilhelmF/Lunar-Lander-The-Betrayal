@@ -24,6 +24,40 @@ Particle.prototype.types = {
 Particle.prototype.type = "explosion";
 Particle.prototype.offsetX = 0;
 
+/*
+Particle.prototype.initTowerExplosion = function(cx, cy, index ) {
+	this.type = "explosion";
+	
+	var angle = [];
+
+	for (var i = 0; i <8; ++i) {
+		if(index == i){
+			angle[i] = util.getRandomInt(2,24);
+		}
+	};
+
+	if(index === 0){ 
+		angle = util.getRandomInt(2,24);
+		angle = util.getRandomInt(2,24);
+	}
+	else if(index === 1){
+		angle = util.getRandomInt(2,24);
+	}
+	else if(index === 2){}
+	else if(index === 3){}
+	else if(index === 4){}
+	else if(index === 5){}
+	else if(index === 6){}
+	else if(index === 7){}
+
+	this.xVel = util.getRandomInt(0, 10);
+	this.xVel *= util.getRandomInt(0,1) === 0 ? 1 : -1;
+
+	this.yVel = util.getRandomInt(0, 10);
+	this.yVel *= util.getRandomInt(0, 1) === 0 ? 1 : -1;*/
+
+//};
+
 Particle.prototype.initExplosion = function(cx, cy) {
 	this.type = "explosion";
 
