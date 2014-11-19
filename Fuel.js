@@ -54,9 +54,6 @@ Fuel.prototype.render = function(ctx, cx, cy)
 	}
 	else 
 	{
-		// zoom mode, 
-		// Þorgeir þarf að tala við sævar um þetta
-			
 		ctx.save();
 			
 		var y = cy+25;

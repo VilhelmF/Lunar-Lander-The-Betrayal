@@ -164,7 +164,6 @@ function processDiagnostics() {
 function renderSimulation(ctx) {
     
 	//STARTSCREEN setup
-	
 	if(g_gameWon /*&& !g_gameOver && !g_startGame*/){
 		
 		console.log("You won !!");
@@ -180,6 +179,9 @@ function renderSimulation(ctx) {
 		{
 			g_sprites.playbutton2.drawAt(ctx, 0, 0);
 		}
+		
+		g_audio.themeWon.soundVolume(1);
+		g_audio.themeWon.playSound();
 	}
 	
 	else if( !g_startGame && !g_gameOver && !g_gameWon /*&& !g_gameWon*/){
@@ -197,6 +199,9 @@ function renderSimulation(ctx) {
 		}else{
 			g_sprites.st_screenLayer3.drawAt(ctx, mouse.x, mouse.y);
 		}
+		
+
+		
 		
 		g_sprites.st_screenLayer5.drawAt(ctx, 0, 0);
 		
@@ -285,7 +290,15 @@ function requestPreloads() {
 		muteOn			: "sprites/mute-60.png",
 		muteOff			: "sprites/mute-62.png",
 		playbutton1		: "sprites/gameover/playAgain-52.png",
-		playbutton2		: "sprites/gameover/playAgain-53.png"
+		playbutton2		: "sprites/gameover/playAgain-53.png",
+		tower_p_0		: "sprites/tower/tower-47.png",
+		tower_p_1		: "sprites/tower/tower-48.png",
+		tower_p_2		: "sprites/tower/tower-49.png",
+		tower_p_3		: "sprites/tower/tower-50.png",
+		tower_p_4		: "sprites/tower/tower-51.png",
+		tower_p_5		: "sprites/tower/tower-52.png",
+		tower_p_6		: "sprites/tower/tower-53.png",
+		tower_p_7		: "sprites/tower/tower-54.png",
 	};
 
 

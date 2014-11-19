@@ -63,6 +63,7 @@ var requiredMountains = {
 var requiredBackgrounds = {
 	
 	level1   : "sprites/background_color/mistyBrown-06.png",
+	//level1	 : "sprites/background_color/gameStart3-55.png",
 	gameOver : "sprites/backgroundcolor/gameOver-50.png", 
 	gameWon	 : "sprites/backgroundcolor/gameStart-42.png"
 };
