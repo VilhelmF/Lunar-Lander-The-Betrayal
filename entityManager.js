@@ -136,12 +136,13 @@ init: function() {
     this.generateShip();
 },
 
-fireBullet: function(cx, cy, velX, velY, rotation, team) {
+fireBullet: function(cx, cy, velX, velY, rotation, team, type) {
     this._bullets.push(new Bullet({
         cx   : cx,
         cy   : cy,
         velX : velX,
         velY : velY,
+        type : type,
 
         rotation : rotation,
         team    : team,

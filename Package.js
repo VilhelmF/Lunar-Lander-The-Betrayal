@@ -59,11 +59,12 @@ Package.prototype .createGroundarrayInfo = function(index1, index2){
 
 
 
-
 Package.prototype.update = function(du) { 
 	
 	//if( !this.boxStill ) {
 		spatialManager.unregister(this);
+
+		if(this._isDeadNow) return entityManager.KILL_ME_NOW;
 		
 		var groundHit = spatialManager.collidesWithGround(
 													this.cx, 
@@ -82,11 +83,6 @@ Package.prototype.update = function(du) {
 			this.velY += 0.01;
 			this.cy += this.velY * du;
 		}
-
-		if(this.destroy)
-		{
-			 return entityManager.KILL_ME_NOW;  
-		}
 		
 		spatialManager.register(this);
 	//}
@@ -94,11 +90,16 @@ Package.prototype.update = function(du) {
 
 Package.prototype.getPackage = function(Player)
 {
-	this.destroy = true;
-	//Random powerups?
+	this.kill();
+	
 
 	Player.giveFuel(0.25);
+	Player.addShield(3);
+}
 
+Package.prototype.takeBulletHit = function(attackType)
+{
+	this.kill();
 }
 
 
@@ -155,12 +156,6 @@ Package.prototype.findPlaceOnLand = function(randomX){
 		console.log("fail to find a flat land !");
 	}
 };	
-
-
-
-
-
-
 
 
 Package.prototype.render = function(ctx) { 
