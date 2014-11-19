@@ -53,14 +53,14 @@ Ship.prototype.velX = 0;
 Ship.prototype.velY = 0;
 Ship.prototype.launchVel = 2;
 Ship.prototype.numSubSteps = 1;
-Ship.prototype.minY = -600;
+Ship.prototype.minY = -540;
 
 Ship.prototype.rightRotation = 0.01;
 Ship.prototype.leftRotation = 0.01;
 
 Ship.prototype.fuel = new Fuel();
 
-Ship.prototype.cooldown = 150 / NOMINAL_UPDATE_INTERVAL;
+Ship.prototype.cooldown = 200 / NOMINAL_UPDATE_INTERVAL;
 
 //Mission variables?
 Ship.prototype.landed = false;
@@ -190,9 +190,9 @@ Ship.prototype.update = function (du) {
             this.velX = 0;
         }
 
-        if(this.cy < this.minY) {
-            this.cy = origY;
-            this.velY = 1;
+        if(this.cy < this.minY + this.getRadius()) {
+            this.cy = this.minY + this.getRadius();
+            this.velY = 0;
         }
     }
 
@@ -206,12 +206,9 @@ Ship.prototype.update = function (du) {
         g_offsetY = 0;
     }
 
-/*    if(g_offsetY > -this.minY + 60){
-        g_offsetY = 600 + 60;
+    if(g_offsetY > -this.minY){
+        g_offsetY = -this.minY;
     }
-    if(g_offsetY < 0){
-        g_offsetY = 0;
-    } */
 
 
     /*-------------------------------------------------------------------------------------------
@@ -219,11 +216,11 @@ Ship.prototype.update = function (du) {
     ---------------------------------------------------------------------------------------------*/
     
     var ground = spatialManager.collidesWithGround(this.cx, this.cy, this.getRadius());
-    var shipsRotation = this.rotation % (2*Math.PI);
+
     if(typeof ground !== 'undefined')
     {
         console.log(ground);
-        this.landingOnGround(shipsRotation, ground, du);
+        this.landingOnGround(this.rotation % (2*Math.PI), ground, du);
     }
 
     /*-------------------------------------------------------------------------------------------
@@ -238,9 +235,9 @@ Ship.prototype.update = function (du) {
             this.maybePickUpCitizen(hitEntity);
             spatialManager.register(this);
         }
-        else if(Object.getPrototypeOf(hitEntity) === Plank.prototype && !(Math.abs(shipsRotation) > 0.5*Math.PI))
+        else if(Object.getPrototypeOf(hitEntity) === Plank.prototype && !(Math.abs(this.rotation % (2*Math.PI)) > 0.5*Math.PI))
         {
-            this.landingOnPlank(shipsRotation, hitEntity, du);
+            this.landingOnPlank(this.rotation % (2*Math.PI), hitEntity, du);
                 
         }
         else if(Object.getPrototypeOf(hitEntity) === Package.prototype)
@@ -360,9 +357,9 @@ Ship.prototype.setPos = function(cx, cy) {
 
 Ship.prototype.warpToPlank = function() {
     this.cooldown = Ship.prototype.cooldown;
+    this.rotation = 0;
     this.velX = 0;
     this.velY = 0;
-    this.rotation = 0;
 
     var pos = entityManager.getPlankPos();
     this.cx = pos.posX;
