@@ -77,10 +77,28 @@ function gatherInputs() {
 
 function updateSimulation(du) {
     
-	if(!g_startGame){
-		g_sprites.oldManWalking.walkUpdate(2);
-	}
-	else
+	if( !g_startGame && !g_gameOver && !g_gameWon){
+		
+		if(	(g_sprites.oldManWalking.posX > g_canvas.width))
+		{
+			g_sprites.oldManWalking.posX = 0;
+		}
+		else
+		{
+			g_sprites.oldManWalking.walkUpdate(2);
+		}
+		
+		/*setTimeout( function() { 
+					g_audio.themeGamePlay.soundVolume( 0.5 );
+					g_audio.themeGamePlay.playSound(); }, 60100);*/
+					
+		//increase volume
+		/*if(g_audio.startScreen2.volume < 1){
+			g_audio.startScreen2.soundVolume(
+				g_audio.startScreen2.volume+0.1
+			);*/
+	}				
+	else if(g_startGame && !g_gameOver && !g_gameWon)
 	{
 		processDiagnostics();
     
@@ -89,6 +107,12 @@ function updateSimulation(du) {
 
 		// Prevent perpetual firing!
 		eatKey(Ship.prototype.KEY_FIRE);
+	}
+	else if (g_gameOver){
+		//..
+	}
+	else if(g_gameWon){
+		//..
 	}
 }
 
@@ -100,7 +124,8 @@ var g_useAveVel = true;
 var g_renderSpatialDebug = false;
 var g_doZoom = false;
 var g_startGame = false; //FIXME: change this to false
-
+var g_gameOver = true;
+var g_gameWon = false;
 
 var KEY_MIXED   = keyCode('M');
 var KEY_GRAVITY = keyCode('G');
@@ -171,42 +196,28 @@ function processDiagnostics() {
 
 function renderSimulation(ctx) {
     
-	if( !g_startGame ){
-		//STARTSCREEN setup
+	//STARTSCREEN setup
+	if( !g_startGame && !g_gameOver /*&& !g_gameWon*/){
 		g_sprites.st_screenLayer1.drawAt(ctx, 0, 0);
 		g_sprites.st_screenLayer2.drawAt(ctx, 0, 0);
-		
+
 		//position of sprite:
 		//			st_screenLayer3
 		//			st_screenLayer4
-		var pos = {x: 295, y: 295};
 		
-		var beginXLimit = pos.x;
-		var endXLimit   = pos.x + g_sprites.st_screenLayer3.width;
-		
-		var beginYLimit = pos.y;
-		var endYLimit   = pos.y + g_sprites.st_screenLayer3.height;
-		
-		if
-		( 	
-			util.isBetween( g_mouseX, beginXLimit, endXLimit ) &&
-			util.isBetween( g_mouseY, beginYLimit, endYLimit )
-		)
-		{	
-			g_sprites.st_screenLayer4.drawAt(ctx, pos.x, pos.y);
-		}
-		else 
-		{
-			g_sprites.st_screenLayer3.drawAt(ctx, pos.x, pos.y);
+		var mouse = util.onPlayButton();
+
+		if(mouse.onButton){
+			g_sprites.st_screenLayer4.drawAt(ctx, mouse.x, mouse.y);
+		}else{
+			g_sprites.st_screenLayer3.drawAt(ctx, mouse.x, mouse.y);
 		}
 		
 		g_sprites.st_screenLayer5.drawAt(ctx, 0, 0);
 		
-		// (*)
-		
 		g_sprites.oldManWalking.walkRender(ctx, 0, 450, "right");
 	}
-	else
+	else if(g_startGame /*&& !g_gameOver && !g_gameWon*/)
 	{	
 		
 		if(g_doZoom) {
@@ -227,11 +238,36 @@ function renderSimulation(ctx) {
 		if (g_renderSpatialDebug) spatialManager.render(ctx);
 		
 		if(g_doZoom) ctx.restore();
-		
-		
-		
-		
 	}
+	else {
+		g_background["gameOver"].drawAt(ctx, 0,0);
+		
+		//PLAY BUTTON
+		//setTimeout(
+			//function () {
+		var mouse = util.onPlayButton(	{x: 295, y: 520 }, 
+										216,
+										33);
+		if(mouse.onButton){
+			console.log("halllllppppppppppppsfsdsfdfdfs");
+			g_sprites.playbutton1.drawAt(ctx, 0, 0);
+		}
+		else
+		{
+			g_sprites.playbutton2.drawAt(ctx, 0, 0);
+		}
+	}
+	/*else if (g_gameOver){
+	
+		console.log("You lost ...");
+		
+	
+	}
+	else if(g_gameWon){
+	
+		console.log("you Won");
+	
+	}*/
 }
 
 
@@ -269,11 +305,18 @@ function requestPreloads() {
 		tower			: "sprites/tower/tower-61.png",
 		diamond			: "sprites/tower/tower-60.png",
 		muteOn			: "sprites/mute-60.png",
-		muteOff			: "sprites/mute-62.png"
-
+		muteOff			: "sprites/mute-62.png",
+		playbutton1		: "sprites/gameover/playAgain-52.png",
+		playbutton2		: "sprites/gameover/playAgain-53.png"
 	};
 
+
+	//
+	//PRELOADS
+	//
+	
 	preLoadAudio();
+	
 	preLoadMountain();
 	preLoadBackground();
     imagesPreload(requiredImages, g_images, preloadDone);
@@ -293,9 +336,7 @@ function preloadDone() {
     g_sprites.bullet = new Sprite(g_images.ship);
     g_sprites.bullet.scale = 0.25;
 
-	
-	
-	
+
     entityManager.init();
 
     main.init();

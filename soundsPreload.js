@@ -13,7 +13,10 @@ var s_ctx = canvas.getContext("2d");
 */
 
 Audio.prototype.asyncLoad = function(src, asyncCallback) {
-	
+
+	//this.onloadeddata		= asyncCallback;
+	this.oncanplay 			= asyncCallback;
+	this.canplay 			= asyncCallback;
 	this.oncanplaythrough	= asyncCallback;
 	this.onerror 		 	= asyncCallback;
 	this.onloadstart 	 	= asyncCallback;
@@ -43,6 +46,10 @@ function soundsPreload(requiredSounds,
         console.log("preloadHandler called with this=", this);
         loadedSounds[this.name] = this;
 
+		
+		//this.onloadeddata		= null;
+		this.oncanplay 			= null;
+		this.canplay 			= null;
 		this.oncanplaythrough = null;
 		this.onerror = null;
 		this.onloadstart = null;

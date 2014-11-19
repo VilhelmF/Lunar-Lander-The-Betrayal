@@ -48,9 +48,64 @@ wrapRange: function(value, lowBound, highBound) {
 },
 
 isBetween: function(value, lowBound, highBound) {
-    if (value < lowBound) { return false; }
+	if (value < lowBound) { return false; }
     if (value > highBound) { return false; }
     return true;
+},
+
+
+isMouseInRec: function (x, y, width, height) {
+	var rec = { x: x, 
+				y: y, 
+				width:  width, 
+				height: height };
+
+	if(this.inRec(g_mouseX, g_mouseY, rec)){
+		return true;
+	} else { 
+		return false; 
+	}
+},
+
+inRec: function(posX, posY, rec){
+	
+	if(
+		this.isBetween( posX, rec.x, rec.x+rec.width ) &&
+		this.isBetween( posY, rec.y, rec.y+rec.height ))
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+},
+
+onPlayButton: function	(pos, width, height){
+	//position of sprite:
+	//			st_screenLayer3
+	//			st_screenLayer4
+	if(typeof pos === 'undefined'){
+		pos = {x: 295, y: 295};
+	}
+	if(typeof width === 'undefined' || typeof height === 'undefined')
+	{
+		width   = g_sprites.st_screenLayer3.width;
+		height   = g_sprites.st_screenLayer3.height;
+	}
+	
+	var boolValue;
+	
+	if( this.isMouseInRec(pos.x, pos.y, width, height) )
+	{
+		boolValue = true;
+	}
+	else
+	{
+		boolValue = false;
+	}
+
+	return { x: pos.x, y: pos.y, onButton: boolValue };
 },
 
 

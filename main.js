@@ -74,8 +74,12 @@ main._iterCore = function (dt) {
 main._isGameOver = false;
 
 main.gameOver = function () {
+	
     this._isGameOver = true;
     console.log("gameOver: quitting...");
+    console.log("audio: quitting ...");
+	muteAll();
+	
 };
 
 // Simple voluntary quit mechanism

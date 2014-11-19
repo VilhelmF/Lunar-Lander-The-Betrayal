@@ -2,7 +2,7 @@
 var levelDesign = {
 	columns : 17,
 	rows    : 12,
-	level   : 1,
+	level   : 3,
 	grid    : [],
  
     items : {
@@ -95,6 +95,10 @@ var levelDesign = {
 
 	nextLevel : function() {
 		this.level++;
+		if(this.level == 7){
+			consol.log("Player won ...");
+			g_gameWon = true;
+		}
         entityManager.clearLevel = true;
         console.log(this.level);
 	},
