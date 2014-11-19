@@ -10,10 +10,10 @@ towerExplosion : function(cx, cy) {
 
 
 
-explosion : function(cx, cy) {
+explosion : function(cx, cy, tower) {
 	for(var i = 0; i < 30; i++) {
 		var particle = new Particle();
-		particle.initExplosion(cx, cy);
+		particle.initExplosion(cx, cy, tower);
 		this._particles.push(particle); 
 	}
 },
@@ -23,6 +23,20 @@ thrust : function(cx, cy, rotation, radius) {
 		var particle = new Particle();
 		particle.initThrust(cx, cy, rotation, radius-i*2, i);
 		this._particles.push(particle);
+	}
+},
+
+tower : function(cx, cy){
+	var velX, velY;
+	var corner = -88;
+	for(var i=0; i<8; ++i){
+		var particle = new Particle();
+		velX = 5 * +Math.sin(corner * (Math.PI/180));
+		velY = 5 * -Math.cos(corner * (Math.PI/180));
+		particle.initTower(cx, cy, velX, velY, g_sprites["tower_p_" + i]);
+		this._particles.push(particle);
+
+		corner += 22;
 	}
 },
 

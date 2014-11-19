@@ -6,6 +6,8 @@ function Particle(descr) {
     }    
 };
 
+Particle.prototype.sprite = "";
+Particle.prototype.towerExp = false;
 Particle.prototype.cx = 0;
 Particle.prototype.cy = 0;
 Particle.prototype.xVel = 0;
@@ -17,6 +19,10 @@ Particle.prototype.types = {
 	},
 
 	"explosion" : {
+		"lifeSpan" : 2000 / NOMINAL_UPDATE_INTERVAL,
+	},
+
+	"tower" : {
 		"lifeSpan" : 2000 / NOMINAL_UPDATE_INTERVAL,
 	}
 },
@@ -58,7 +64,7 @@ Particle.prototype.initTowerExplosion = function(cx, cy, index ) {
 
 //};
 
-Particle.prototype.initExplosion = function(cx, cy) {
+Particle.prototype.initExplosion = function(cx, cy, tower) {
 	this.type = "explosion";
 
 	this.lifeSpan = Particle.prototype.types.explosion.lifeSpan;
@@ -76,8 +82,16 @@ Particle.prototype.initExplosion = function(cx, cy) {
 	this.height = this.width; */
 
 	this.rotation = util.getRandomInt(0, 40) / 100;
-
-	this.radius = util.getRandomInt(1, 30);
+	if(tower)
+	{
+		this.towerExp = true;
+		this.radius = util.getRandomInt(5,15);
+	}
+	else
+	{
+		this.radius = util.getRandomInt(1, 30);
+	}
+	
 
 	this.color = util.getRandomInt(0,1) === 0 ? "red" : 
 				 util.getRandomInt(0,1) === 0 ? "orange" : 
@@ -108,6 +122,26 @@ Particle.prototype.initThrust = function(cx, cy, rotation, offsetX, i) {
 	this.color = util.getRandomInt(0, 1) === 0 ? "red" : "orange";
 };
 
+Particle.prototype.initTower = function(cx, cy, xVel, yVel, sprite) {
+	this.type = "tower";
+
+	this.cx = cx;
+	this.cy = cy;
+	this.xVel = xVel;
+	this.yVel = yVel;
+
+	this.lifeSpan = Particle.prototype.types.explosion.lifeSpan;
+
+	this.sprite = sprite;
+
+//	this.yVel = Math.cos(this.rotation);
+//	this.xVel = -Math.sin(this.rotation);
+
+
+
+	
+};
+
 Particle.prototype.update = function(du) {
 
 	this.lifeSpan -= du;
@@ -116,7 +150,7 @@ Particle.prototype.update = function(du) {
 		return particleManager.KILL_ME_NOW;
 	}
 
-	if(this.type === "explosion") {
+	if(this.type === "explosion" && !this.towerExp) {
 		this.radius++;
 	}
 
@@ -135,23 +169,38 @@ Particle.prototype.render = function(ctx) {
 			break;
 		case "explosion" :
 			fadeThresh = Particle.prototype.types.explosion.lifeSpan;
-			break; 
+			break;
+		case "tower" :
+			fadeThresh = Particle.prototype.types.tower.lifeSpan;
+			break;
 	}
-
+	
     if (this.lifeSpan < fadeThresh) {
         ctx.globalAlpha = this.lifeSpan / fadeThresh;
     }
+   
+    if(this.sprite)
+    {
+    	console.log("cant render sprite");
+    	this.sprite.drawWrappedCentredAt(
+    	ctx, this.cx, this.cy, this.rotation
+    	);
+    } 
+    else
+    {
+    	ctx.translate(this.cx, this.cy);
+	    ctx.rotate(this.rotation);
 
-    ctx.translate(this.cx, this.cy);
-    ctx.rotate(this.rotation);
+	/*    if(this.color != "yellow" && this.color != "red" && this.color != "orange" && this.color != "gray") {
+	    	console.log(this.color);
+	    }*/
+	//	util.fillBox(ctx, 0, this.radius, this.width, this.height, this.color);
+		util.fillCircle(ctx, 0, this.offsetX, this.radius, this.color);
 
-/*    if(this.color != "yellow" && this.color != "red" && this.color != "orange" && this.color != "gray") {
-    	console.log(this.color);
-    }*/
-//	util.fillBox(ctx, 0, this.radius, this.width, this.height, this.color);
-	util.fillCircle(ctx, 0, this.offsetX, this.radius, this.color);
-
-	ctx.globalAlpha = 1;
+		
+    }
+    ctx.globalAlpha = 1;
 
 	ctx.restore();
+    
 };
