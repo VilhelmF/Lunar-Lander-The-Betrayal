@@ -46,9 +46,6 @@ Ground.prototype.prepareSprite = function ()
 
     var pick = Math.floor((Math.random() * (aSprites.length - 1)) + 1);
     this.spritePick = aSprites[pick];
-
-    console.log(pick);
-
     this.getSpriteLength();
 }
 

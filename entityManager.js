@@ -213,40 +213,7 @@ generateGround : function(x1, x2, y1, y2) {
         latterY  : y2,
 		cx		 : x1,
 		cy		 : y1,
-    }));
-
-/*     this._citizens.push(new Citizen({
-        cx   : x1,
-        cy   : (y1 - 2*Citizen.prototype.halfHeight),
-    }));
-
-   /* var firstX = 0;
-    var firstY = levelArray[0];
-    var latterX = 10;
-    var latterY = levelArray[1];
-
-     firstX = 0;
-     firstY = 500;
-     latterX = 10;
-     latterY = 500;
-    for(var i = 0; i < levelArray.length; i++)
-    {
-        this._ground.push(new Ground({
-        firstX   : firstX,
-        firstY   : firstY,
-        latterX  : latterX,
-        latterX  : latterX,
-    }));
-
-        
-
-    firstX = latterX;
-    latterX = firstX + 10;
-  /*  firstY = latterY;
-    //latterY = levelArray[i + 1];
-
-    }*/
-    
+    }));  
 },
 
 getPlankPos : function() {
@@ -273,13 +240,6 @@ killNearestShip : function(xPos, yPos) {
     }
 },
 
-yoinkNearestShip : function(xPos, yPos) {
-    var theShip = this._findNearestShip(xPos, yPos).theShip;
-    if (theShip) {
-        theShip.setPos(xPos, yPos);
-    }
-},
-
 getShipPos : function() {
     var theShip = this._findNearestShip(1, 1).theShip;
     if(theShip) {
@@ -290,10 +250,7 @@ getShipPos : function() {
 resetShips: function() {
     this._forEachOf(this._ships, Ship.prototype.reset);
 },
-
-haltShips: function() {
-    this._forEachOf(this._ships, Ship.prototype.halt);
-},	
+	
 
 rescueCitizen: function() 
 {
@@ -302,18 +259,11 @@ rescueCitizen: function()
     {
         entityManager._plank[z].rescueNumber += 1; 
     }
-
-  /*  var plank1 = entityManager._plank[0]; 
-    if(plank1.rescueNumber >= plank1.rescueLimit)
-    {
-        levelDesign.nextLevel();
-    }*/
 },
 
 update: function(du) {
 
-  //  var killAll = false;
-    if(this.clearLevel)// killAll = true;
+    if(this.clearLevel)
     {
         for (var c = 0; c < this._categories.length; ++c) {
 

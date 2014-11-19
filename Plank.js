@@ -6,7 +6,6 @@
 
 /* jshint browser: true, devel: true, globalstrict: true */
 
-
 // A generic contructor which accepts an arbitrary descriptor object
 function Plank(descr) {
 
@@ -46,8 +45,7 @@ Plank.prototype.halfWidth = 30;
 Plank.prototype.halfHeight = 5;
 Plank.prototype.radius = 20;
 
-
-//For the level. Temporary?
+//For the level.
 Plank.prototype.rescueNumber = 0;
 Plank.prototype.rescueLimit = 1;
 
@@ -55,10 +53,10 @@ Plank.prototype.returning = 0;
 Plank.prototype.returningFull = 1;
 
 Plank.prototype.update = function (du) {
-
-    //Any Update?
     spatialManager.unregister(this);
 
+    //A little animation for warping citizens
+    //Calls nextLevel() after the animation.
     if(this.returning > 0)
     {
     	this.returning += 0.016 * du;
@@ -71,9 +69,6 @@ Plank.prototype.update = function (du) {
     }
 
     spatialManager.register(this);
-
-    
-
 };
 
 Plank.prototype.returnCitizen = function (du)
@@ -99,22 +94,8 @@ Plank.prototype.reset = function () {
 
 
 Plank.prototype.render = function (ctx) {
-    //var origScale = this.sprite.scale;
-    
-    ctx.save();
-	
-/*
+   ctx.save();
 
-    ctx.beginPath();
-    ctx.fillStyle = "grey";
-    ctx.strokeStyle = "black";
-    ctx.rect(this.cx - this.halfWidth,
-    			this.cy - this.halfHeight,
-    			this.halfWidth * 2,
-    			this.halfHeight * 2);
-    ctx.fill();
-   	ctx.stroke();
-*/
    	if(this.returning > 0)
    	{
    		ctx.beginPath();
@@ -135,6 +116,4 @@ Plank.prototype.render = function (ctx) {
     this.sprite.drawAt(ctx, (this.cx - this.halfWidth), (this.cy - this.halfHeight));
     
 	ctx.restore();
-
-
 };

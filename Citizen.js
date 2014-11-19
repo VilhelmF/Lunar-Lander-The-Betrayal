@@ -21,12 +21,11 @@ function Citizen(descr) {
     this.rememberResets();
     
     // oldman walking or man walking
-	this.sprite    = this.type();
+	this.sprite = this.type();
 	
 	this.sound = g_audio.rescue;
 	
 	//this.sound.beginTime
-	
 	var dirInfo = this.direction();
 	
     this.direction = dirInfo.dir;
@@ -58,18 +57,10 @@ Citizen.prototype.numSubSteps = 1;
 Citizen.prototype.halfHeight = 5;
 Citizen.prototype.halfWidth = 5;
 
+//Mission variables
 Citizen.prototype.isPickedUp = false;
 Citizen.prototype.isDead = false;
 Citizen.prototype.landed = false;
-
-
-//tímabundið drasl
-Citizen.prototype.tempFalse = false;
-
-
-
-
-
 
 Citizen.prototype.getRadius = function() {
 	return 2*this.halfWidth;
@@ -80,26 +71,18 @@ Citizen.prototype.reset = function () {
     this.isPickedUp = false;
     this.isDead = false;
 };
-/*
-var firstX  = 0;
-var latterX = 0;
-var lineX   = 0;
-var index   = 0;*/
-
-
     
 Citizen.prototype.update = function (du) {
 
     spatialManager.unregister(this);
 
+    //Game is lost when a citizen dies
     if(this.isDead)
     {
-    	
 		console.log("game over !");
 		g_gameOver = true;;
 		g_startGame = false;
 		muteAll();
-		//g_audio.themeEnd
     }
 
     var hitEntity = this.findHitEntity();
@@ -107,10 +90,16 @@ Citizen.prototype.update = function (du) {
     {
 		if(Object.getPrototypeOf(hitEntity) === Plank.prototype  && this.isPickedUp === false)
 		{
+			if(this.velY > 3)
+	    	{
+	    		this.isDead = true;
+	    	}
+	    	else
+	    	{
+	    		hitEntity.returnCitizen(du);
+				return entityManager.KILL_ME_NOW;
+	    	}
 			
-			hitEntity.returnCitizen(du);
-			return entityManager.KILL_ME_NOW;
-
 		}          
     }
 
@@ -124,15 +113,11 @@ Citizen.prototype.update = function (du) {
 		    this.computeSubStep(dStep);
 	   	}
 
-
-	    //Is he stationary on the ground?
+	    //Is he on the ground?
 	    var aGroundAndSlope = spatialManager.collidesWithGround(this.cx, this.cy, this.getRadius())
-	    
-		
+	    		
 		if(typeof aGroundAndSlope !== 'undefined' && !this.isPickedUp)
 	    {
-	    	
-
 			this.sprite.walkUpdate(this.numSubSteps);
 	
 			if(this.velY > 2)
@@ -143,19 +128,9 @@ Citizen.prototype.update = function (du) {
 
 	    	if(this.velY > 0) this.velY = 0;
 
-	
 			//change direction if ground have a slope 
 			//(from left to right and right to left)
-			var slope = aGroundAndSlope.slope;
-
-		/*
-			//change direction (from left to right and right to left)
-			if( (aGroundAndSlope.slope < 0 || aGroundAndSlope.slope > 0 ) 
-					|| aGroundAndSlope.latterX === aGroundAndSlope.lineX
-					|| aGroundAndSlope.firstX  === aGroundAndSlope.lineX
-				)*/
-
-			
+			var slope = aGroundAndSlope.slope;			
 			var firstX  = aGroundAndSlope.firstX;
 			var latterX = aGroundAndSlope.latterX;
 			var lineX = aGroundAndSlope.lineX;
@@ -166,52 +141,19 @@ Citizen.prototype.update = function (du) {
 				this.direction = !this.direction;
 				this.velX *= -1;
 			}			
-			else if(slope === 0 && (lineX == latterX || lineX == firstX+5))
+			else if(slope === 0 && (lineX == latterX || lineX == firstX+2))
 			{
 				this.direction = !this.direction;
 				this.velX *= -1;
 			}
 			
-			this.sprite.walkUpdate(this.numSubSteps);
-			/*
-			
-			var i_ = index +1;
-			var _i = index -1;
-			if(this.groundInfo[i_].firstX < latterX ){
-				this.direction = !this.direction;
-				this.velX *= -1;
-			}
-			else if(this.groundInfo[_i].latterX < firstX){
-				this.direction = !this.direction;
-				this.velX *= -1;
-			}*/
-			
+			this.sprite.walkUpdate(this.numSubSteps);			
 	    }
-		
-		
-		
-		/*else if((typeof aGroundAndSlope == 'undefined' && 
-				(!(lineX > firstX)) || !(lineX < latterX)))
-		{
-			console.log("sdfjkdsfkjædfsækjdsfkjædfjkædsfaæjkladsf");
-			lineX = 1;
-			latterX = 2;
-			firstX = 0;	
-			this.direction = !this.direction;
-			this.velX *= -1;
-		}*/
-		
-			
-		// else if(  !(slope == 0) ){
-			// this.direction = !this.direction;
-			// this.velX *= -1;
-		// }
     }
     else
     {
     	this.landed = false;
     }
-
 
     //Citizen moves with the ship that picked him up
     if(this.isPickedUp)
@@ -233,7 +175,6 @@ Citizen.prototype.pickedUp = function ()
 {
 	if(!this.isDead) 
 	{
-		console.log("rescue audio played");
 		g_audio.rescue.Play();
 		this.isPickedUp = !this.isPickedUp;
 		if(this.isPickedUp) return this;
@@ -249,65 +190,12 @@ Citizen.prototype.takeBulletHit = function () {
 
 Citizen.prototype.render = function (ctx) {
     if(!this.isPickedUp)
-    {
-		//ætti að vera svona (fyrir þorgeir).
-		// g_sprites.manWalking.walkRender(ctx, 
-										// this.cx-(this.width/2),
-										// this.cy-this.height);
-		
-		
+    {	
 		this.sprite.walkRender(ctx, 
 					this.cx - this.sprite.midPointX,
 					this.cy - this.sprite.midPointY.y2,
 					this.direction
 					);
-	
-		
-		
-		/*ctx.save();
-    	if(!this.isDead)
-    	{
-	    
-		
-		ctx.fillStyle = "red";
-	    ctx.beginPath();
-	    var headR = 3;
-		ctx.arc(this.cx, this.cy - this.halfHeight, headR, 0, Math.PI * 2, true);
-		ctx.fill();
-
-		
-		//Body	
-		ctx.strokeStyle = "red";
-		ctx.beginPath();
-		ctx.moveTo(this.cx, this.cy -this.halfHeight + headR);
-		ctx.lineTo(this.cx, this.cy + 2*this.halfHeight-headR);
-		ctx.stroke();
-
-		//Both arms
-		ctx.strokeStyle = "red";
-		ctx.beginPath();
-		ctx.moveTo(this.cx, this.cy);
-		ctx.lineTo(this.cx - this.halfWidth	, this.cy + headR);
-		ctx.moveTo(this.cx, this.cy);
-		ctx.lineTo(this.cx + this.halfWidth, this.cy + headR);
-		ctx.stroke();
-
-		//Both legs
-		ctx.strokeStyle = "red";
-		ctx.beginPath();
-		ctx.moveTo(this.cx, this.cy + this.halfHeight);
-		ctx.lineTo(this.cx - 0.75*this.halfWidth, this.cy + 2*this.halfHeight);
-		ctx.moveTo(this.cx, this.cy + this.halfHeight);
-		ctx.lineTo(this.cx + 0.75*this.halfWidth, this.cy + 2*this.halfHeight);
-		ctx.stroke();
-		}
-		else
-		{
-			ctx.fillStyle="red";
-			ctx.fillRect(this.cx - this.halfWidth, this.cy + this.halfHeight,2*this.halfWidth, this.halfHeight);	
-		}
-		ctx.restore();*/
-
 	}	
 };
 
