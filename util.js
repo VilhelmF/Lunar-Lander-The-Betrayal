@@ -81,14 +81,18 @@ inRec: function(posX, posY, rec){
 	}
 },
 
-onPlayButton: function	(){
+onPlayButton: function	(pos, width, height){
 	//position of sprite:
 	//			st_screenLayer3
 	//			st_screenLayer4
-	var pos = {x: 295, y: 295};
-	
-	var width   = g_sprites.st_screenLayer3.width;
-	var height   = g_sprites.st_screenLayer3.height;
+	if(typeof pos === 'undefined'){
+		pos = {x: 295, y: 295};
+	}
+	if(typeof width === 'undefined' || typeof height === 'undefined')
+	{
+		width   = g_sprites.st_screenLayer3.width;
+		height   = g_sprites.st_screenLayer3.height;
+	}
 	
 	var boolValue;
 	

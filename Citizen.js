@@ -52,7 +52,7 @@ Citizen.prototype.rotation = 0;
 Citizen.prototype.cx = 200;
 Citizen.prototype.cy = 200;
 Citizen.prototype.velX = 0.1;
-Citizen.prototype.velY = 0;
+Citizen.prototype.velY = 0;					
 Citizen.prototype.numSubSteps = 1;
 
 Citizen.prototype.halfHeight = 5;
@@ -126,6 +126,11 @@ Citizen.prototype.update = function (du) {
 			if(this.velY > 2)
 	    	{
 	    		this.isDead = true;
+				if(!g_gameOver){
+					console.log("game over !");
+					g_gameOver = true;;
+					g_startGame = false;
+				}
 	    	}
 	    	this.landed = true;
 
@@ -225,12 +230,12 @@ Citizen.prototype.pickedUp = function ()
 		g_audio.rescue.Play();
 		this.isPickedUp = !this.isPickedUp;
 		if(this.isPickedUp) return this;
-		else return 0;	
+		else return 0;
 	}
 };
 
 Citizen.prototype.takeBulletHit = function () {
-    this.isDead = true;
+	this.isDead = true;
 };
 
 

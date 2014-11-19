@@ -28,19 +28,20 @@ function handleMouse(evt) {
 
 	//MUTE BUTTON (right top corner)
 	checkMuteButton();
+	
+	checkPlayAgain();
 }
 
 
 function checkPlayButton() {
 	var value = util.onPlayButton(); 
-	if( value.onButton && !g_startGame){
+	if( value.onButton && !g_startGame && !g_gameOver){
 		g_startGame = true;
 		//g_audio.themeSong.playOnVolume(g_audio.themeSong.lowVolume);
 		//muteAll();
 		//setAllVolume();
 		resetAllAudio();
 		g_audio.themeGamePlay.playOnVolume(g_audio.themeGamePlay.lowVolume);
-		
 	}
 }
 
@@ -76,8 +77,19 @@ function checkMuteButton() {
 	}
 }
 
+function checkPlayAgain() {
+
+		var mouse = util.onPlayButton(	{x: 295, y: 520 }, 
+										216,
+										33);
+		if(mouse.onButton){
+			g_startGame  = true;
+			levelDesign.level = 1;
+		}
+}
+
 
 // Handle "down" and "move" events the same way.
-//window.addEventListener("mousedown", handleMouse);
+window.addEventListener("mousedown", handleMouse);
 window.addEventListener("onclick", handleMouse);
 window.addEventListener("mousemove", handleMouse);

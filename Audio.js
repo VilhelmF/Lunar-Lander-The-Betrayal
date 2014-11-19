@@ -30,7 +30,7 @@ function Sound( audio, name){
 }
 
 
-Sound.prototype = new Entity();
+//Sound.prototype = new Entity();
 
 /*
 Sound.prototype.update = function( du ){
