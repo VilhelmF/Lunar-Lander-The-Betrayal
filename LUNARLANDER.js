@@ -167,40 +167,10 @@ function renderSimulation(ctx) {
 	
 	if(g_gameWon /*&& !g_gameOver && !g_startGame*/){
 		
-		console.log("You won !!");
-		g_background["gameWon"].drawAt(ctx, 0,0);
-		
-		var mouse = util.onPlayButton(	{x: 295, y: 520 }, 
-										216,
-										33);
-		if(mouse.onButton){
-			g_sprites.playbutton1.drawAt(ctx, 0, 0);
-		}
-		else
-		{
-			g_sprites.playbutton2.drawAt(ctx, 0, 0);
-		}
+		winScreen.render(ctx);
 	}
-	
 	else if( !g_startGame && !g_gameOver && !g_gameWon /*&& !g_gameWon*/){
-		g_sprites.st_screenLayer1.drawAt(ctx, 0, 0);
-		g_sprites.st_screenLayer2.drawAt(ctx, 0, 0);
-
-		//position of sprite:
-		//			st_screenLayer3
-		//			st_screenLayer4
-		
-		var mouse = util.onPlayButton();
-
-		if(mouse.onButton){
-			g_sprites.st_screenLayer4.drawAt(ctx, mouse.x, mouse.y);
-		}else{
-			g_sprites.st_screenLayer3.drawAt(ctx, mouse.x, mouse.y);
-		}
-		
-		g_sprites.st_screenLayer5.drawAt(ctx, 0, 0);
-		
-		g_sprites.oldManWalking.walkRender(ctx, 0, 450, "right");
+		startScreen.render(ctx);
 	}
 	else if(g_startGame /*&& !g_gameOver && !g_gameWon*/)
 	{	
@@ -225,26 +195,7 @@ function renderSimulation(ctx) {
 		if(g_doZoom) ctx.restore();
 	}
 	else if(g_gameOver && !g_startGame && !g_gameWon){
-		g_background["gameOver"].drawAt(ctx, 0,0);
-		
-		//PLAY BUTTON
-		//setTimeout(
-			//function () {
-		var mouse = util.onPlayButton(	{x: 295, y: 520 }, 
-										216,
-										33);
-		if(mouse.onButton){
-			g_sprites.playbutton1.drawAt(ctx, 0, 0);
-		}
-		else
-		{
-			g_sprites.playbutton2.drawAt(ctx, 0, 0);
-		}
-		
-		g_audio.themeEnd.soundVolume(1);
-		g_audio.themeEnd.playSound();
-		
-		
+		gameOverScreen.render(ctx);	
 	}
 }
 
