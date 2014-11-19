@@ -222,20 +222,22 @@ function muteTrigger( bool ){
 //
 var requiredSounds = {
 	
-	//shipWarp	: "sounds/shipWarp.ogg",
-	shipWarp	: "sounds/warp.ogg",
+	//shipWarp	 : "sounds/shipWarp.ogg",
+	shipWarp	 : "sounds/warp.ogg",
     //bulletFire	: "sounds/bulletFire.ogg",
-	zappedSound : "sounds/bulletZapped.ogg",
-	plantOnPlank: "sounds/plantOnPlank.ogg",
-	//mountainSmash: "sounds/mountainSmash.mp3",
-	rescue		: "sounds/rescue.ogg",
+	zappedSound  : "sounds/bulletZapped.ogg",
+	plantOnPlank : "sounds/plantOnPlank.ogg",
+	rescue		 : "sounds/rescue.ogg",
 	//rescue		: "sounds/rescue2.mp3",
-	laserCannon : "sounds/laser.ogg",
-	//bomb 		: "sounds/Bomb_Exploding-Sound_Explorer-68256487.mp3",
+	laserCannon  : "sounds/laser.ogg",
+	//bomb 		 : "sounds/Bomb_Exploding-Sound_Explorer-68256487.mp3",
 	//shipwarp 		: "sounds/warp.mp3",
-	themeSong 	: 	"sounds/themeSong.ogg",
-	theme2 : 	"sounds/Daft_Punk_-_Contact_Official_Audio_.ogg",
-	themeGamePlay: 	"sounds/second.ogg",
+	themeSong 	 : 	"sounds/themeSong.ogg",
+	theme2 		 : 	"sounds/Daft_Punk_-_Contact_Official_Audio_.ogg",
+	themeGamePlay: 	"sounds/themeGame.ogg",
+	theme4		 :  "sounds/themeGame.ogg",
+	//themestart
+	themeEnd	: "sounds/Walking_Into_A_Trap.ogg",
 };
 
 

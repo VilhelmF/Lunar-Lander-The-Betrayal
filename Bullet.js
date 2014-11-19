@@ -63,7 +63,6 @@ Bullet.prototype.update = function (du) {
                                    0, consts.FULL_CIRCLE);
 
     
-    // TODO? NO, ACTUALLY, I JUST DID THIS BIT FOR YOU! :-)
     //
     // Handle collisions
     //
@@ -78,7 +77,6 @@ Bullet.prototype.update = function (du) {
         return entityManager.KILL_ME_NOW;
     }
     
-    // TODO: YOUR STUFF HERE! --- (Re-)Register
     spatialManager.register(this);
 };
 
@@ -111,10 +109,8 @@ Bullet.prototype.render = function (ctx) {
     }
     else if(this.team === 2)
     {
-        ctx.fillStyle = "blue";
         var radius = 4;
-        ctx.fillRect(this.cx, this.cy, radius, radius);
-        //ctx.arc(this.cx - radius, this.cy - radius, radius, 0, Math.PI * 2, true);
+        util.fillBox(ctx, this.cx, this.cy, radius, radius, "blue");
         ctx.fill();
     }
     ctx.restore();

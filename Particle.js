@@ -38,7 +38,6 @@ Particle.prototype.initExplosion = function(cx, cy) {
 
 	this.color = util.getRandomInt(0,1) === 0 ? "red" : 
 				 util.getRandomInt(0,1) === 0 ? "orange" : "yellow";
-//	this.color = '#' + Math.floor(Math.random() * 16777215).toString(16);
 };
 
 Particle.prototype.initThrust = function(cx, cy, rotation, radius, i) {

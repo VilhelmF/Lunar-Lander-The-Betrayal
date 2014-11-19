@@ -79,11 +79,10 @@ Citizen.prototype.update = function (du) {
     //Game is lost when a citizen dies
     if(this.isDead)
     {
-    	if(!g_gameOver)
-    	{
-			g_gameOver = true;;
-			g_startGame = false;
-		}
+		console.log("game over !");
+		g_gameOver = true;;
+		g_startGame = false;
+		muteAll();
     }
 
     var hitEntity = this.findHitEntity();
