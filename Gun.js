@@ -19,13 +19,14 @@ function Gun(descr) {
 	this.towerParticles = [];
 	
 	//var limitOfImage = 
-	/*var numOfTrue = 0;
+	/*var numOfTowerPart= 0;
+	
 	for(var i=0;i<g_sprites.length;i++){
 		var tempString = 
-		if(g_sprites[].indexOf("true")){
-			numOftowerPa++;
-	}
-	*/
+		if(g_sprites[].indexOf("tower_p")){
+			numOfTowerPart++;
+	}*/
+	
 	for(var i=0; i<8; ++i){
 		this.towerParticles[i] = g_sprites["tower_p_" + i];
 		this.towerParticles[i] = new Particle();

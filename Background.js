@@ -63,12 +63,10 @@ Background.prototype.render = function(ctx) {
 	// TÍMABUNDIN BREYTA LEVEL1, GLOBAL BREYTA SEM
 	// SEM SEGIR TIL HVAÐA LEVEL ER Í GANGI.
 	
-		/*posX = 0;
-		posY = this.background.height-g_canvas.height;
+		posX = 0;
+		posY = g_canvas.height-this.background["level1"].height;
 		
-		console.log("posY: " , this.background.);*/
-		//console.log(this.background[1000]);
-		this.background["level1"].drawAt(ctx, 0,0);
+		this.background["level1"].drawAt(ctx, posX,posY);
 		
 		for(var r in this.mountain){
 			this.mountain[r].drawAt(ctx);
