@@ -8,8 +8,6 @@ towerExplosion : function(cx, cy) {
 	// do big stuff
 }; */
 
-
-
 explosion : function(cx, cy) {
 	for(var i = 0; i < 30; i++) {
 		var particle = new Particle();

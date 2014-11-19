@@ -234,6 +234,18 @@ _generatePackage: function(descr) {
 	this._package.push(new Package(descr));
 },
 
+shakeGround: function(velX, velY) {
+    var speed = (velX + velY) / 2;
+    console.log(speed);
+    var dirX = util.getRandomInt(0, 1) === 0 ? -1 : 1;
+    var dirY = util.getRandomInt(0, 1) === 0 ? -1 : 1;
+    var offsetX = util.getRandomInt(6, 12) * dirX * speed;
+    var offsetY = util.getRandomInt(3, 7) * dirY * speed;
+    for(var i = 0; i < this._ground.length; i++) {
+        this._ground[i].shake(offsetX, offsetY);
+    }
+},
+
 killNearestShip : function(xPos, yPos) {
     var theShip = this._findNearestShip(xPos, yPos).theShip;
     if (theShip) {
