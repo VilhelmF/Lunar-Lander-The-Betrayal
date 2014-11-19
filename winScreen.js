@@ -2,6 +2,8 @@ var winScreen = {
 	render : function(ctx) {
 		console.log("You won !!");
 		g_background["gameWon"].drawAt(ctx, 0,0);
+
+		g_offsetY = 0;
 		
 		var mouse = util.onPlayButton(	{x: 295, y: 520 }, 
 										216,
