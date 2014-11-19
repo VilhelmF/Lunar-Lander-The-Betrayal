@@ -28,8 +28,6 @@ function Sprite(image, name) {
 	}
 }
 
-
-
 Sprite.prototype.drawAt = function (ctx, x, y) {
     ctx.drawImage(this.image, 
                   x, y);
@@ -93,14 +91,14 @@ Sprite.prototype.drawWrappedVerticalCentredAt = function (ctx, cx, cy, rotation)
 //		^
 // 		scaleWidth
 //		
-Sprite.prototype.cropImageBy = function (ctx, cx, cy, percent) {
+Sprite.prototype.drawImageCropped = function (ctx, cx1, cy1, cx2, cy2, percent) {
 	var scaleWidth = this.width * percent;
 	
 	if(this.image == g_sprites.fuelBarSlide.image) {
-		ctx.drawImage( this.image, cx, cy, this.width, this.height, cx, cy, scaleWidth, this.height ); 
+		ctx.drawImage( this.image, cx1, cy1, this.width, this.height, cx2, cy2, scaleWidth, this.height); 
 	}
 	else{
-		ctx.drawImage( this.image, cx, cy, scaleWidth, this.height, cx, cy, scaleWidth, this.height);
+		ctx.drawImage( this.image, cx1, cy1, scaleWidth, this.height, cx2, cy2, scaleWidth, this.height);
 	}
 };
 
@@ -130,7 +128,7 @@ Sprite.prototype.spriteSheetconstruction = function () {
 
 
 //Sprite.prototype.drawCropimage = function (ctx, sx) {
-//	ctx.drawImage( this.image, cx, cy, this.width, this.height, cx, cy, scaleWidth, this.height ); 
+//	ctx.drawImage( this.image, cx, cy, this.width, this.height, cx, cy, scaleWidth, this.height ); 	
 
 
 

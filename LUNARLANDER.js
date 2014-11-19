@@ -118,7 +118,6 @@ var g_startGame = false; //FIXME: change this to false
 var g_gameOver = false;
 var g_gameWon = false;
 
-var g_offsetX = 0;
 var g_offsetY = 0;
 
 var KEY_MIXED   = keyCode('M');
@@ -156,6 +155,8 @@ function processDiagnostics() {
 // GAME-SPECIFIC RENDERING
 
 function renderSimulation(ctx) {
+	ctx.save();
+	ctx.translate(0, g_offsetY);
     
 	//STARTSCREEN setup
 	
@@ -195,6 +196,8 @@ function renderSimulation(ctx) {
 	if(g_gameOver && !g_startGame && !g_gameWon){
 		gameOverScreen.render(ctx);	
 	}
+
+	ctx.restore();
 }
 
 
