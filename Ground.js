@@ -23,6 +23,20 @@ function Ground(descr) {
 
 Ground.prototype = new Entity();
 
+// Initial, inheritable, default values
+Ground.prototype.firstX = 0;
+Ground.prototype.firstY = 570;
+Ground.prototype.latterX = 800;
+Ground.prototype.latterY = 500;
+
+Ground.prototype.offsetX = 0;
+Ground.prototype.offsetY = 0;
+
+Ground.prototype.spritePick = 0;
+Ground.prototype.spriteLength = 0;
+Ground.prototype.rotation = 0;
+Ground.prototype.width = g_canvas.width / 16;
+
 Ground.prototype.rememberResets = function () {
     // Remember my reset positions
     this.reset_firstX = this.firstX;
@@ -62,29 +76,33 @@ Ground.prototype.getSpriteLength = function ()
     this.rotation = Math.atan(y/x);
 }
 
-// Initial, inheritable, default values
-Ground.prototype.firstX = 0;
-Ground.prototype.firstY = 570;
-Ground.prototype.latterX = 800;
-Ground.prototype.latterY = 500;
-
-Ground.prototype.spritePick = 0;
-Ground.prototype.spriteLength = 0;
-Ground.prototype.rotation = 0;
-Ground.prototype.width = g_canvas.width / 16;
-
-
+Ground.prototype.shake = function(offsetX, offsetY) {
+    this.offsetX = offsetX;
+    this.offsetY = offsetY;
+};
 
 Ground.prototype.update = function (du) {
 
     //Any Update?
     spatialManager.unregisterGround(this);
 
-    if(this._isDeadNow)
-    {
-        return entityManager.KILL_ME_NOW;  
+    var pos = entityManager.getShipPos();
+    if(Math.round(this.offsetX) != 0) {
+        var dir = Math.sin(this.offsetX) < 0 ? 1 : -1;
+        var sign = this.offsetX < 0 ? -1 : 1;
+        this.offsetX = (this.offsetX - sign ) * dir;
     }
 
+    if(Math.round(this.offsetY) != 0) {
+        var dir = Math.sin(this.offsetY) < 0 ? 1 : -1;
+        var sign = this.offsetY < 0 ? -1 : 1;
+        this.offsetY = (this.offsetY - sign) * dir;
+    }
+
+    if(this._isDeadNow)
+    {
+        return entityManager.KILL_ME_NOW;
+    }
 
     spatialManager.registerGround(this);
 
@@ -107,13 +125,14 @@ Ground.prototype.getSlope = function () {
     var y = this.latterY - this.firstY;
     var slope = y/x;
     return slope;
-}
+};
 
 
 Ground.prototype.render = function (ctx) {
     //var origScale = this.sprite.scale;
     
     ctx.save();
+    ctx.translate(this.offsetX, this.offsetY);
 
     ctx.strokeStyle = "black";
     ctx.fillStyle = "black";

@@ -12,8 +12,6 @@ towerExplosion : function(cx, cy, i, ) {
 	}
 },*/
 
-
-
 explosion : function(cx, cy, tower) {
 	for(var i = 0; i < 30; i++) {
 		var particle = new Particle();

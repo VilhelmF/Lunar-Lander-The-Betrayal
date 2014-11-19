@@ -565,6 +565,7 @@ Ship.prototype.landingOnGround = function(shipsRotation, ground, du)
     if(this.velY > 2 || Math.abs(this.velX) > 3 || this.rotationalLanding(shipsRotation, ground.rotation))
     {
         particleManager.explosion(this.cx, this.cy);
+        entityManager.shakeGround(this.velX, this.velY);
         this.warp();
     }
     else
