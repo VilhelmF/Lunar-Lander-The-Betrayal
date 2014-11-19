@@ -3,10 +3,10 @@ var particleManager = {
 
 _particles : [],
 KILL_ME_NOW : -1,
-
+/*
 towerExplosion : function(cx, cy) {
 	// do big stuff
-}; 
+}; */
 
 
 

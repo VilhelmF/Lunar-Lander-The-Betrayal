@@ -38,26 +38,26 @@ Mountain.prototype.drawAt = function(ctx) {
 var requiredMountains = {
 
 	//small mountains
-	mount_1_1 : "sprites/Mountains/Mountain-29.png",
-	mount_1_2 : "sprites/Mountains/Mountain-30.png",
-	mount_1_3 : "sprites/Mountains/Mountain-31.png",
-	mount_1_4 : "sprites/Mountains/Mountain-32.png",
+	mount_1_1 : "sprites/Mountains/Mountain_13.png",
+	//mount_1_2 : "sprites/Mountains/Mountain_14.png",
+	mount_1_3 : "sprites/Mountains/Mountain_15.png",
+	mount_1_4 : "sprites/Mountains/Mountain_16.png",
 	
-	mount_2_1 : "sprites/Mountains/Mountain-25.png",
-	mount_2_2 : "sprites/Mountains/Mountain-26.png",
-	mount_2_3 : "sprites/Mountains/Mountain-27.png",
-	mount_2_4 : "sprites/Mountains/Mountain-28.png",
+	mount_2_1 : "sprites/Mountains/Mountain_9.png",
+	mount_2_2 : "sprites/Mountains/Mountain_10.png",
+	mount_2_3 : "sprites/Mountains/Mountain_11.png",
+	mount_2_4 : "sprites/Mountains/Mountain_12.png",
 	
-	mount_3_1 : "sprites/Mountains/Mountain-21.png",
-	mount_3_2 : "sprites/Mountains/Mountain-22.png",
-	mount_3_3 : "sprites/Mountains/Mountain-23.png",
-	mount_3_4 : "sprites/Mountains/Mountain-24.png",
+	mount_3_1 : "sprites/Mountains/Mountain_5.png",
+	mount_3_2 : "sprites/Mountains/Mountain_6.png",
+	mount_3_3 : "sprites/Mountains/Mountain_7.png",
+	mount_3_4 : "sprites/Mountains/Mountain_8.png",
 	
 	//big mountains
-	mount_4_1 : "sprites/Mountains/Mountain-17.png",
-	mount_4_2 : "sprites/Mountains/Mountain-18.png",
-	mount_4_3 : "sprites/Mountains/Mountain-19.png",
-	mount_4_4 : "sprites/Mountains/Mountain-20.png"
+	mount_4_1 : "sprites/Mountains/Mountain_1.png",
+	mount_4_2 : "sprites/Mountains/Mountain_2.png",
+	mount_4_3 : "sprites/Mountains/Mountain_3.png",
+	mount_4_4 : "sprites/Mountains/Mountain_4.png"
 }; 
 
 var requiredBackgrounds = {

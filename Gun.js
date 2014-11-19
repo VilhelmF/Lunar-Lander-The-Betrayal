@@ -19,16 +19,8 @@ function Gun(descr) {
 	this.towerParticles = [];
 	
 	//var limitOfImage = 
-	/*var numOfTowerPart= 0;
+	var numOfTowerPart= 0;
 	
-	console.log("g_sprites.length: " + g_sprites.length);
-	for(var i=0;i<g_sprites.length;i++){
-		//var tempString = 
-		if(g_sprites[0].indexOf("tower_p")){
-			numOfTowerPart++;
-		}
-		console.log("numOfTowerPart: " + numOfTowerPart);
-	}*/
 	
 	for(var i=0; i<8; ++i){
 		this.towerParticles[i] = g_sprites["tower_p_" + i];
@@ -102,7 +94,12 @@ Gun.prototype.update = function (du) {
 Gun.prototype.takeBulletHit = function () {
     this.life -= 1;
 	if(this.life === 0){
-		//explosion
+		/*for (var i in this.towerParticles) {
+			this.towerParticles[i].initTowerExplosion(
+					this.cx, this.cy, 
+					i
+				)
+		};*/
 	}
 };
 
