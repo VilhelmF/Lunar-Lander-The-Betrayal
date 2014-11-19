@@ -91,9 +91,16 @@ Citizen.prototype.update = function (du) {
     {
 		if(Object.getPrototypeOf(hitEntity) === Plank.prototype  && this.isPickedUp === false)
 		{
+			if(this.velY > 3)
+	    	{
+	    		this.isDead = true;
+	    	}
+	    	else
+	    	{
+	    		hitEntity.returnCitizen(du);
+				return entityManager.KILL_ME_NOW;
+	    	}
 			
-			hitEntity.returnCitizen(du);
-			return entityManager.KILL_ME_NOW;
 		}          
     }
 

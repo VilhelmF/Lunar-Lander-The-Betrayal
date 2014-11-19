@@ -1,10 +1,33 @@
+/*
+
+entityManager.js
+
+A module which handles arbitrary entity-management for "Asteroids"
+
+
+We create this module as a single global object, and initialise it
+with suitable 'data' and 'methods'.
+
+"Private" properties are denoted by an underscore prefix convention.
+
+*/
+
+
 "use strict";
 
+
+// Tell jslint not to complain about my use of underscore prefixes (nomen),
+// my flattening of some indentation (white), or my use of incr/decr ops 
+// (plusplus).
+//
 /*jslint nomen: true, white: true, plusplus: true*/
 
 
 var entityManager = {
+
 // "PRIVATE" DATA
+
+
 _bullets    : [],
 _ships      : [],
 _ground     : [],
@@ -15,10 +38,71 @@ _guns	    : [],
 _plank      : [],
 
 
+
 // "PRIVATE" METHODS
+
+
 _generateLevel : function() {
-    levelDesign.setUp();
-    this.clearLevel = false;
+ //   this._bullets = [];
+ //   this._ground = [];
+ //   this._guns = [];
+ //   this._citizens = [];
+    if(levelDesign.level === 1) levelDesign.setUp();
+    else if(levelDesign.level > 1)
+    {
+        console.log("hah");
+        this.clearLevel = false;
+        console.log("leveldesign setup");
+        levelDesign.setUp(); 
+        console.log(this._ground.length);   
+    }
+    
+//    var levelArray = levelDesign.getLevel();
+/*
+    var i = 0;
+    var firstX = 0;
+    var firstY = levelArray[i];
+    var latterX = Ground.prototype.plankWidth;
+    var latterY = levelArray[i+1];
+    while(i < levelArray.length-1)
+    {
+        this.generateGround(firstX, latterX, firstY, latterY);
+        i++;
+        firstX = latterX;
+        firstY = latterY;
+        latterX += Ground.prototype.plankWidth;
+        latterY = levelArray[i]; 
+    }
+
+    this.generateGround(firstX, latterX, firstY, latterY); */
+
+},
+
+
+_findNearestShip : function(posX, posY) {
+    var closestShip = null,
+        closestIndex = -1,
+        closestSq = 1000 * 1000;
+
+    for (var i = 0; i < this._ships.length; ++i) {
+
+        var thisShip = this._ships[i];
+        var shipPos = thisShip.getPos();
+        var distSq = util.wrappedDistSq(
+            shipPos.posX, shipPos.posY, 
+            posX, posY,
+            g_canvas.width, g_canvas.height);
+
+        if (distSq < closestSq) {
+            closestShip = thisShip;
+            closestIndex = i;
+            closestSq = distSq;
+        }
+    }
+    return {
+        theShip : closestShip,
+        theIndex: closestIndex
+    };
 },
 
 _forEachOf: function(aCategory, fn) {
@@ -137,6 +221,39 @@ generateGround : function(x1, x2, y1, y2) {
 		cx		 : x1,
 		cy		 : y1,
     }));
+
+/*     this._citizens.push(new Citizen({
+        cx   : x1,
+        cy   : (y1 - 2*Citizen.prototype.halfHeight),
+    }));
+
+   /* var firstX = 0;
+    var firstY = levelArray[0];
+    var latterX = 10;
+    var latterY = levelArray[1];
+
+     firstX = 0;
+     firstY = 500;
+     latterX = 10;
+     latterY = 500;
+    for(var i = 0; i < levelArray.length; i++)
+    {
+        this._ground.push(new Ground({
+        firstX   : firstX,
+        firstY   : firstY,
+        latterX  : latterX,
+        latterX  : latterX,
+    }));
+
+        
+
+    firstX = latterX;
+    latterX = firstX + 10;
+  /*  firstY = latterY;
+    //latterY = levelArray[i + 1];
+
+    }*/
+    
 },
 
 getPlankPos : function() {
@@ -156,6 +273,34 @@ _generatePackage: function(descr) {
 	this._package.push(new Package(descr));
 },
 
+killNearestShip : function(xPos, yPos) {
+    var theShip = this._findNearestShip(xPos, yPos).theShip;
+    if (theShip) {
+        theShip.kill();
+    }
+},
+
+yoinkNearestShip : function(xPos, yPos) {
+    var theShip = this._findNearestShip(xPos, yPos).theShip;
+    if (theShip) {
+        theShip.setPos(xPos, yPos);
+    }
+},
+
+getShipPos : function() {
+    var theShip = this._findNearestShip(1, 1).theShip;
+    if(theShip) {
+        return theShip.getPos();
+    }
+},
+
+resetShips: function() {
+    this._forEachOf(this._ships, Ship.prototype.reset);
+},
+
+haltShips: function() {
+    this._forEachOf(this._ships, Ship.prototype.halt);
+},	
 
 rescueCitizen: function() 
 {
@@ -165,17 +310,26 @@ rescueCitizen: function()
         entityManager._plank[z].rescueNumber += 1; 
     }
 
+  /*  var plank1 = entityManager._plank[0]; 
+    if(plank1.rescueNumber >= plank1.rescueLimit)
+    {
+        levelDesign.nextLevel();
+    }*/
 },
 
 update: function(du) {
 
-    if(this.clearLevel)
+  //  var killAll = false;
+    if(this.clearLevel)// killAll = true;
     {
         for (var c = 0; c < this._categories.length; ++c) {
 
             var aCategory = this._categories[c];
+            console.log(this._categories[c]);
+            
             while (aCategory.length) 
             {
+                console.log("delete");
                 aCategory.pop();
             }
         }
@@ -196,6 +350,10 @@ update: function(du) {
                 if (status === this.KILL_ME_NOW) {
                     // remove the dead guy, and shuffle the others down to
                     // prevent a confusing gap from appearing in the array
+                    
+    				//Þ:  delete aCategory[i];
+    				//Þ: SÉRÐU NÚNA HELVÍTIÐ ÞITT?!
+                    console.log(aCategory[i]);
     				aCategory.splice(i,1);
                 }
                 else {
