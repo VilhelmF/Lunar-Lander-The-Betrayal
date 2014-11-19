@@ -245,26 +245,33 @@ Ship.prototype.update = function (du) {
             this.maybePickUpCitizen(hitEntity);
             spatialManager.register(this);
         }
-        else if(Object.getPrototypeOf(hitEntity) === Plank.prototype && !(Math.abs(this.rotation % (2*Math.PI)) > 0.5*Math.PI))
+        else if(Object.getPrototypeOf(hitEntity) === Plank.prototype)
         {
-            this.landingOnPlank(this.rotation % (2*Math.PI), hitEntity, du);
+            if(((this.rotation % (2*Math.PI) > -0.5*Math.PI)
+                &&(this.rotation % (2*Math.PI) < 0.5*Math.PI )))
+            {
+                this.landingOnPlank(this.rotation % (2*Math.PI), hitEntity, du);
                 
-        }
+            }
+            else
+            {
+                particleManager.explosion(this.cx, this.cy);
+                this.warp(); 
+            }
+        } 
         else if(Object.getPrototypeOf(hitEntity) === Package.prototype)
         {
             hitEntity.getPackage(this);
         }
-        else if(Object.getPrototypeOf(hitEntity) !== Bullet.prototype)
+        else if(Object.getPrototypeOf(hitEntity) === Gun.prototype)
         {   
-                particleManager.explosion(this.cx, this.cy);
-                console.log(hitEntity);
-                this.warp();    
+            particleManager.explosion(this.cx, this.cy);
+            this.warp();    
         }
     }
-    else
-    {
+    
         spatialManager.register(this);
-    }
+    
 
    
    /*--------------------------------------------------------------------------------------------
@@ -351,20 +358,22 @@ Ship.prototype.getRadius = function () {
 };
 
 Ship.prototype.takeBulletHit = function (attackType) {
-        if(attackType = "Ship") this.shield -= 1;
-        else if (this.shield > 0) this.shield -= 1;
-        else if(attackType === "Confuse")
-        {
-            this.KEY_THRUST = this.reset_KEY_RETRO;
-            this.KEY_RETRO = this.reset_KEY_THRUST;
-            this.KEY_LEFT = this.reset_KEY_RIGHT;
-            this.KEY_RIGHT = this.reset_KEY_LEFT;
-        }
-        else if(attackType === "Destroy")
-        {
-            particleManager.explosion(this.cx, this.cy);
-            this.warp();
-        }   
+    
+    if(attackType === "Ship") this.shield -= 1;
+    else if (this.shield > 0) this.shield -= 1;
+    else if(attackType === "Confuse")
+    {
+           
+        this.KEY_THRUST = this.reset_KEY_RETRO;
+        this.KEY_RETRO = this.reset_KEY_THRUST;
+        this.KEY_LEFT = this.reset_KEY_RIGHT;
+        this.KEY_RIGHT = this.reset_KEY_LEFT;
+    }
+    else if(attackType === "Destroy")
+    {   
+        particleManager.explosion(this.cx, this.cy);
+        this.warp();
+    }   
 };
 
 Ship.prototype.maybeFireBullet = function () {
@@ -598,6 +607,7 @@ Ship.prototype.landingOnPlank = function(shipsRotation, hitEntity, du)
         particleManager.explosion(this.cx, this.cy);
         this.warp();
     }
+
     /*else if((this.cy - this.getRadius()) >= (hitEntity.cy - hitEntity.halfHeight)
         && (this.cy - this.getRadius()) <= (hitEntity.cy + hitEntity.halfHeight))
     {
