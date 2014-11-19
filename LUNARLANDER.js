@@ -77,7 +77,7 @@ function gatherInputs() {
 
 function updateSimulation(du) {
     
-	if( !g_startGame && !g_gameOver && !g_gameWon){
+	if( startScreen.isVisible() && !g_gameOver && !g_gameWon){
 		
 		startScreen.update(du);
 		
@@ -91,15 +91,13 @@ function updateSimulation(du) {
 				g_audio.startScreen2.volume+0.1
 			);*/
 	}				
-	else if(g_startGame && !g_gameOver && !g_gameWon)
+	
+	if(g_startGame && !g_gameOver && !g_gameWon)
 	{
 		processDiagnostics();
     
 		entityManager.update(du);
 		particleManager.update(du);
-
-		// Prevent perpetual firing!
-		eatKey(Ship.prototype.KEY_FIRE);
 	}
 	/*else if (g_gameOver){
 		//..
@@ -119,6 +117,9 @@ var g_doZoom = false;
 var g_startGame = false; //FIXME: change this to false
 var g_gameOver = false;
 var g_gameWon = false;
+
+var g_offsetX = 0;
+var g_offsetY = 0;
 
 var KEY_MIXED   = keyCode('M');
 var KEY_GRAVITY = keyCode('G');
@@ -161,11 +162,10 @@ function renderSimulation(ctx) {
 	if(g_gameWon /*&& !g_gameOver && !g_startGame*/){
 		
 		winScreen.render(ctx);
+		return;
 	}
-	else if( !g_startGame && !g_gameOver && !g_gameWon /*&& !g_gameWon*/){
-		startScreen.render(ctx);
-	}
-	else if(g_startGame /*&& !g_gameOver && !g_gameWon*/)
+	
+	if(g_startGame /*&& !g_gameOver && !g_gameWon*/)
 	{	
 		
 		if(g_doZoom) {
@@ -187,7 +187,12 @@ function renderSimulation(ctx) {
 		
 		if(g_doZoom) ctx.restore();
 	}
-	else if(g_gameOver && !g_startGame && !g_gameWon){
+	
+	if( startScreen.isVisible() && !g_gameOver && !g_gameWon /*&& !g_gameWon*/){
+		startScreen.render(ctx);
+	}
+
+	if(g_gameOver && !g_startGame && !g_gameWon){
 		gameOverScreen.render(ctx);	
 	}
 }
