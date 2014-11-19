@@ -3,10 +3,14 @@ var particleManager = {
 
 _particles : [],
 KILL_ME_NOW : -1,
+
 /*
-towerExplosion : function(cx, cy) {
-	// do big stuff
-}; */
+towerExplosion : function(cx, cy, i, ) {
+	for(var i = 0; i < 8; i++) {
+		initToxerExplosion(cx, cy, i);
+		this._particles.push(particle);
+	}
+},*/
 
 
 

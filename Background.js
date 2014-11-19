@@ -69,7 +69,7 @@ Background.prototype.render = function(ctx) {
 		this.background["level1"].drawAt(ctx, posX,posY);
 		
 		for(var r in this.mountain){
-			this.mountain[r].drawAt(ctx, 0, 0);
+			this.mountain[r].drawAt(ctx);
 		}
 		
 		if(levelDesign.level == 1)

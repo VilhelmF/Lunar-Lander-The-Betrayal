@@ -93,13 +93,12 @@ Gun.prototype.update = function (du) {
 
 Gun.prototype.takeBulletHit = function () {
     this.life -= 1;
-	if(this.life === 0){
-		/*for (var i in this.towerParticles) {
+	if(this.life <== 0){
+		for (var i in this.towerParticles) {
 			this.towerParticles[i].initTowerExplosion(
-					this.cx, this.cy, 
-					i
-				)
-		};*/
+					this.cx, this.cy, i);
+			console.log("for-loop: " + i);
+		};
 	}
 };
 
