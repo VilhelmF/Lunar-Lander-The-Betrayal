@@ -91,8 +91,8 @@ Ground.prototype.update = function (du) {
 };
 
 
-Ground.prototype.takeBulletHit = function () {
-    // Destructible ground?
+Ground.prototype.takeBulletHit = function (attackType) {
+    //console.log(attackType);
 };
 
 Ground.prototype.reset = function () {

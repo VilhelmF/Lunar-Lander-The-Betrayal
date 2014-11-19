@@ -56,6 +56,7 @@ Gun.prototype.cy = 200;
 Gun.prototype.halfWidth = 5;
 Gun.prototype.halfHeight = 30;
 Gun.prototype.vel = 5;
+Gun.prototype.type = "Destroy";
 
 Gun.prototype.life = 2;
 
@@ -92,6 +93,7 @@ Gun.prototype.update = function (du) {
 
 
 Gun.prototype.takeBulletHit = function () {
+
     this.life -= 1;
 	if(this.life <== 0){
 		for (var i in this.towerParticles) {
@@ -100,6 +102,7 @@ Gun.prototype.takeBulletHit = function () {
 			console.log("for-loop: " + i);
 		};
 	}
+
 };
 
 Gun.prototype.getCooldown = function() {
@@ -151,9 +154,15 @@ Gun.prototype.fireBullet = function ()
 						     velX, 
 						     velY,
 						   	 0,
-						     2);
+						     2,
+						     this.type);
            
     
+}
+
+Gun.prototype.getRadius = function()
+{
+	return this.towerWidth/2;
 }
 
 
