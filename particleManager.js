@@ -21,7 +21,7 @@ explosion : function(cx, cy) {
 thrust : function(cx, cy, rotation, radius) {
 	for(var i = 0; i < 6; i++) {
 		var particle = new Particle();
-		particle.initThrust(cx, cy, rotation, radius-i, i);
+		particle.initThrust(cx, cy, rotation, radius-i*2, i);
 		this._particles.push(particle);
 	}
 },
@@ -29,8 +29,7 @@ thrust : function(cx, cy, rotation, radius) {
 update : function(du) {
 	for(var i = 0; i < this._particles.length; i++) {
 		if(this._particles[i].update(du) === this.KILL_ME_NOW) {
-			this._particles.splice(i, 1);
-			i--;
+			this._particles.splice(i--, 1);
 		}
 	}
 },

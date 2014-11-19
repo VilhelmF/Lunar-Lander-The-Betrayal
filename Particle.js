@@ -11,7 +11,16 @@ Particle.prototype.cy = 0;
 Particle.prototype.xVel = 0;
 Particle.prototype.yVel = 0;
 Particle.prototype.rotation = 0;
-Particle.prototype.lifeSpan = 2000 / NOMINAL_UPDATE_INTERVAL;
+Particle.prototype.types = {
+	"thrust" : {
+		"lifeSpan" : 1500 / NOMINAL_UPDATE_INTERVAL,
+	},
+
+	"explosion" : {
+		"lifeSpan" : 2000 / NOMINAL_UPDATE_INTERVAL,
+	}
+},
+
 Particle.prototype.type = "explosion";
 Particle.prototype.offsetX = 0;
 
@@ -51,6 +60,8 @@ Particle.prototype.initTowerExplosion = function(cx, cy, index ) {
 
 Particle.prototype.initExplosion = function(cx, cy) {
 	this.type = "explosion";
+
+	this.lifeSpan = Particle.prototype.types.explosion.lifeSpan;
 	
 	this.cx = util.getRandomInt(cx - 10, cx + 10);
 	this.cy = util.getRandomInt(cy - 10, cy + 10);
@@ -71,10 +82,13 @@ Particle.prototype.initExplosion = function(cx, cy) {
 	this.color = util.getRandomInt(0,1) === 0 ? "red" : 
 				 util.getRandomInt(0,1) === 0 ? "orange" : 
 				 util.getRandomInt(0,1) === 0 ? "yellow" : "gray";
+
 };
 
 Particle.prototype.initThrust = function(cx, cy, rotation, offsetX, i) {
 	this.type = "thrust";
+
+	this.lifeSpan = Particle.prototype.types.thrust.lifeSpan;
 
 	this.cx = util.getRandomInt(cx - 10 + i*2, cx + 10 - i*2);
 	this.cy = util.getRandomInt(cy, cy + 10 + i);
@@ -92,13 +106,12 @@ Particle.prototype.initThrust = function(cx, cy, rotation, offsetX, i) {
 	this.radius = util.getRandomInt(1, 5);
 
 	this.color = util.getRandomInt(0, 1) === 0 ? "red" : "orange";
-
-	this.lifeSpan = 1500 / NOMINAL_UPDATE_INTERVAL;
 };
 
 Particle.prototype.update = function(du) {
 
 	this.lifeSpan -= du;
+
 	if(this.lifeSpan <= 0) {
 		return particleManager.KILL_ME_NOW;
 	}
@@ -114,7 +127,16 @@ Particle.prototype.update = function(du) {
 Particle.prototype.render = function(ctx) {
 	ctx.save();
 
-	var fadeThresh = Particle.prototype.lifeSpan;
+	var fadeThresh;
+
+	switch(this.type) {
+		case "thrust" : 
+			fadeThresh = Particle.prototype.types.thrust.lifeSpan;
+			break;
+		case "explosion" :
+			fadeThresh = Particle.prototype.types.explosion.lifeSpan;
+			break; 
+	}
 
     if (this.lifeSpan < fadeThresh) {
         ctx.globalAlpha = this.lifeSpan / fadeThresh;
@@ -123,9 +145,9 @@ Particle.prototype.render = function(ctx) {
     ctx.translate(this.cx, this.cy);
     ctx.rotate(this.rotation);
 
-    if(this.color != "yellow" && this.color != "red" && this.color != "orange" && this.color != "gray") {
+/*    if(this.color != "yellow" && this.color != "red" && this.color != "orange" && this.color != "gray") {
     	console.log(this.color);
-    }
+    }*/
 //	util.fillBox(ctx, 0, this.radius, this.width, this.height, this.color);
 	util.fillCircle(ctx, 0, this.offsetX, this.radius, this.color);
 
