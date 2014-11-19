@@ -29,19 +29,6 @@ function Sound( audio, name){
 	}
 }
 
-
-//Sound.prototype = new Entity();
-
-/*
-Sound.prototype.update = function( du ){
-	if()
-};
-
-Sound.prototype.render = function( ctx ){
-	//nothing
-};*/
-
-
 	
 Sound.prototype.mute = false;
 
@@ -234,10 +221,11 @@ var requiredSounds = {
 	//shipwarp 		: "sounds/warp.mp3",
 	themeSong 	 : 	"sounds/themeSong.ogg",
 	theme2 		 : 	"sounds/Daft_Punk_-_Contact_Official_Audio_.ogg",
-	themeGamePlay: 	"sounds/themeGame.ogg",
+	//themeGamePlay: 	"sounds/themeGame.ogg",
 	theme4		 :  "sounds/themeGame.ogg",
 	//themestart
 	themeEnd	: "sounds/Walking_Into_A_Trap.ogg",
+	themeWon	: "sounds/gameWon.ogg",
 };
 
 

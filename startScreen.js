@@ -31,9 +31,6 @@ var startScreen = {
 		g_sprites.st_screenLayer1.drawAt(ctx, 0, 0);
 		g_sprites.st_screenLayer2.drawAt(ctx, 0, 0);
 
-		//position of sprite:
-		//			st_screenLayer3
-		//			st_screenLayer4
 		
 		var mouse = util.onPlayButton();
 

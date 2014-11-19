@@ -37,7 +37,10 @@ function checkPlayButton() {
 	if( value.onButton && !g_startGame && !g_gameOver){
 		g_startGame = true;
 		resetAllAudio();
-		g_audio.theme4.playOnVolume(g_audio.themeGamePlay.lowVolume);
+		g_audio.theme4.soundVolume(0.1);
+		g_audio.theme4.playSound(0.1);
+		/*g_audio.theme4.(g_audio.themeGamePlay.lowVolume);
+		g_audio.theme4.playOnVolume(g_audio.themeGamePlay.lowVolume);*/
 	}
 }
 

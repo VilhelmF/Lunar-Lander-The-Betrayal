@@ -15,6 +15,23 @@ function Gun(descr) {
 
     this.rememberResets();
 	
+	// put gun particle in array for explosion
+	this.towerParticles = [];
+	
+	//var limitOfImage = 
+	/*var numOfTrue = 0;
+	for(var i=0;i<g_sprites.length;i++){
+		var tempString = 
+		if(g_sprites[].indexOf("true")){
+			numOftowerPa++;
+	}
+	*/
+	for(var i=0; i<8; ++i){
+		this.towerParticles[i] = g_sprites["tower_p_" + i];
+		this.towerParticles[i] = new Particle();
+	}
+	
+	
 	this.tower = g_sprites.tower;
     this.diamond = g_sprites.diamond;
 	
@@ -43,6 +60,8 @@ Gun.prototype.cy = 200;
 Gun.prototype.halfWidth = 5;
 Gun.prototype.halfHeight = 30;
 Gun.prototype.vel = 5;
+
+Gun.prototype.life = 2;
 
 Gun.prototype.cooldownRange = {
 	"min" : 4000,
@@ -77,7 +96,10 @@ Gun.prototype.update = function (du) {
 
 
 Gun.prototype.takeBulletHit = function () {
-    // Destructible Gun?
+    this.life -= 1;
+	if(this.life === 0){
+		//explosion
+	}
 };
 
 Gun.prototype.getCooldown = function() {

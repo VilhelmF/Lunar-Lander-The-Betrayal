@@ -159,9 +159,7 @@ function renderSimulation(ctx) {
 	ctx.translate(0, g_offsetY);
     
 	//STARTSCREEN setup
-	
 	if(g_gameWon /*&& !g_gameOver && !g_startGame*/){
-		
 		winScreen.render(ctx);
 		return;
 	}
@@ -237,7 +235,15 @@ function requestPreloads() {
 		muteOn			: "sprites/mute-60.png",
 		muteOff			: "sprites/mute-62.png",
 		playbutton1		: "sprites/gameover/playAgain-52.png",
-		playbutton2		: "sprites/gameover/playAgain-53.png"
+		playbutton2		: "sprites/gameover/playAgain-53.png",
+		tower_p_0		: "sprites/tower/tower-47.png",
+		tower_p_1		: "sprites/tower/tower-48.png",
+		tower_p_2		: "sprites/tower/tower-49.png",
+		tower_p_3		: "sprites/tower/tower-50.png",
+		tower_p_4		: "sprites/tower/tower-51.png",
+		tower_p_5		: "sprites/tower/tower-52.png",
+		tower_p_6		: "sprites/tower/tower-53.png",
+		tower_p_7		: "sprites/tower/tower-54.png",
 	};
 
 
