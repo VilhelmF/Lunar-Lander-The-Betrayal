@@ -66,7 +66,8 @@ Background.prototype.render = function(ctx) {
 		posX = 0;
 		posY = g_canvas.height-this.background["level1"].height;
 		
-		this.background["level1"].drawAt(ctx, posX,posY);
+		var numLevel = levelDesign.level;
+		this.background["level" + numLevel].drawAt(ctx, posX,posY);
 		
 		for(var r in this.mountain){
 			this.mountain[r].drawAt(ctx);

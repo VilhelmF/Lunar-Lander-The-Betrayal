@@ -80,9 +80,12 @@ Citizen.prototype.update = function (du) {
     if(this.isDead)
     {
 		console.log("game over !");
+		console.log("citizenDie audio played...");
 		g_gameOver = true;;
 		g_startGame = false;
 		muteAll();
+		g_audio.citizenDie.soundVolume(1);
+		g_audio.citizenDie.playSound();
     }
 
     var hitEntity = this.findHitEntity();

@@ -208,24 +208,21 @@ function muteTrigger( bool ){
 //	AUDIO INPUTS
 //
 var requiredSounds = {
+	//GAMEPLAY SOUND
+	shipWarp	 	: "sounds/warp.ogg",
+	shipThrust	 	: "sounds/thrust.ogg",
+	zappedSound  	: "sounds/bulletZapped.ogg",
+	plantOnPlank 	: "sounds/plantOnPlank.ogg",
+	rescue		 	: "sounds/rescue.ogg",
+	citizenDie		: "sounds/citizenDie.ogg",
+	laserCannon  	: "sounds/laser.ogg",
 	
-	//shipWarp	 : "sounds/shipWarp.ogg",
-	shipWarp	 : "sounds/warp.ogg",
-    //bulletFire	: "sounds/bulletFire.ogg",
-	zappedSound  : "sounds/bulletZapped.ogg",
-	plantOnPlank : "sounds/plantOnPlank.ogg",
-	rescue		 : "sounds/rescue.ogg",
-	//rescue		: "sounds/rescue2.mp3",
-	laserCannon  : "sounds/laser.ogg",
-	//bomb 		 : "sounds/Bomb_Exploding-Sound_Explorer-68256487.mp3",
-	//shipwarp 		: "sounds/warp.mp3",
-	themeSong 	 : 	"sounds/themeSong.ogg",
-	theme2 		 : 	"sounds/Daft_Punk_-_Contact_Official_Audio_.ogg",
-	//themeGamePlay: 	"sounds/themeGame.ogg",
-	theme4		 :  "sounds/themeGame.ogg",
-	//themestart
-	themeEnd	: "sounds/Walking_Into_A_Trap.ogg",
-	themeWon	: "sounds/gameWon.ogg",
+	//GAME SONGS
+	themeSong 	 	: "sounds/themeSong.ogg",
+	theme2 		 	: "sounds/Daft_Punk_-_Contact_Official_Audio_.ogg",
+	theme4		 	: "sounds/themeGame.ogg",
+	themeEnd		: "sounds/Walking_Into_A_Trap.ogg",
+	themeWon		: "sounds/gameWon.ogg",
 };
 
 

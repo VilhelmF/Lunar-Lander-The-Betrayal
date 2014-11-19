@@ -58,7 +58,7 @@ Gun.prototype.halfHeight = 30;
 Gun.prototype.vel = 5;
 Gun.prototype.type = "Destroy";
 
-Gun.prototype.life = 2;
+Gun.prototype.life = 0;
 
 Gun.prototype.cooldownRange = {
 	"min" : 4000,
@@ -95,7 +95,9 @@ Gun.prototype.update = function (du) {
 Gun.prototype.takeBulletHit = function () {
 
     this.life -= 1;
-	if(this.life <== 0){
+	if(this.life <= 0){
+
+		
 		for (var i in this.towerParticles) {
 			this.towerParticles[i].initTowerExplosion(
 					this.cx, this.cy, i);

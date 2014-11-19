@@ -227,7 +227,7 @@ function requestPreloads() {
 		oldManWalking2	: "sprites/oldManWalking-59.png",
 		fuelPackage		: "sprites/package/package-42.png",
 		randomPackage	: "sprites/package/package-41.png",
-		plank        	: "sprites/plank-48.png",
+		plank        	: "sprites/plank-61.png",
 		manWalking		: "sprites/manWalking-58.png",
         arrow           : "sprites/arrow-57.png",
 		tower			: "sprites/tower/tower-61.png",
