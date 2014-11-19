@@ -77,16 +77,9 @@ function gatherInputs() {
 
 function updateSimulation(du) {
     
-	if( !g_startGame && !g_gameOver && !g_gameWon){
+	if( startScreen.isVisible() && !g_gameOver && !g_gameWon){
 		
-		if(	(g_sprites.oldManWalking.posX > g_canvas.width))
-		{
-			g_sprites.oldManWalking.posX = 0;
-		}
-		else
-		{
-			g_sprites.oldManWalking.walkUpdate(2);
-		}
+		startScreen.update(du);
 		
 		/*setTimeout( function() { 
 					g_audio.themeGamePlay.soundVolume( 0.5 );
@@ -98,15 +91,13 @@ function updateSimulation(du) {
 				g_audio.startScreen2.volume+0.1
 			);*/
 	}				
-	else if(g_startGame && !g_gameOver && !g_gameWon)
+	
+	if(g_startGame && !g_gameOver && !g_gameWon)
 	{
 		processDiagnostics();
     
 		entityManager.update(du);
 		particleManager.update(du);
-
-		// Prevent perpetual firing!
-		eatKey(Ship.prototype.KEY_FIRE);
 	}
 	/*else if (g_gameOver){
 		//..
@@ -126,6 +117,9 @@ var g_doZoom = false;
 var g_startGame = false; //FIXME: change this to false
 var g_gameOver = false;
 var g_gameWon = false;
+
+var g_offsetX = 0;
+var g_offsetY = 0;
 
 var KEY_MIXED   = keyCode('M');
 var KEY_GRAVITY = keyCode('G');
@@ -165,49 +159,11 @@ function renderSimulation(ctx) {
     
 	//STARTSCREEN setup
 	if(g_gameWon /*&& !g_gameOver && !g_startGame*/){
-		
-		console.log("You won !!");
-		g_background["gameWon"].drawAt(ctx, 0,0);
-		
-		var mouse = util.onPlayButton(	{x: 295, y: 520 }, 
-										216,
-										33);
-		if(mouse.onButton){
-			g_sprites.playbutton1.drawAt(ctx, 0, 0);
-		}
-		else
-		{
-			g_sprites.playbutton2.drawAt(ctx, 0, 0);
-		}
-		
-		g_audio.themeWon.soundVolume(1);
-		g_audio.themeWon.playSound();
+		winScreen.render(ctx);
+		return;
 	}
 	
-	else if( !g_startGame && !g_gameOver && !g_gameWon /*&& !g_gameWon*/){
-		g_sprites.st_screenLayer1.drawAt(ctx, 0, 0);
-		g_sprites.st_screenLayer2.drawAt(ctx, 0, 0);
-
-		//position of sprite:
-		//			st_screenLayer3
-		//			st_screenLayer4
-		
-		var mouse = util.onPlayButton();
-
-		if(mouse.onButton){
-			g_sprites.st_screenLayer4.drawAt(ctx, mouse.x, mouse.y);
-		}else{
-			g_sprites.st_screenLayer3.drawAt(ctx, mouse.x, mouse.y);
-		}
-		
-
-		
-		
-		g_sprites.st_screenLayer5.drawAt(ctx, 0, 0);
-		
-		g_sprites.oldManWalking.walkRender(ctx, 0, 450, "right");
-	}
-	else if(g_startGame /*&& !g_gameOver && !g_gameWon*/)
+	if(g_startGame /*&& !g_gameOver && !g_gameWon*/)
 	{	
 		
 		if(g_doZoom) {
@@ -229,27 +185,13 @@ function renderSimulation(ctx) {
 		
 		if(g_doZoom) ctx.restore();
 	}
-	else if(g_gameOver && !g_startGame && !g_gameWon){
-		g_background["gameOver"].drawAt(ctx, 0,0);
-		
-		//PLAY BUTTON
-		//setTimeout(
-			//function () {
-		var mouse = util.onPlayButton(	{x: 295, y: 520 }, 
-										216,
-										33);
-		if(mouse.onButton){
-			g_sprites.playbutton1.drawAt(ctx, 0, 0);
-		}
-		else
-		{
-			g_sprites.playbutton2.drawAt(ctx, 0, 0);
-		}
-		
-		g_audio.themeEnd.soundVolume(1);
-		g_audio.themeEnd.playSound();
-		
-		
+	
+	if( startScreen.isVisible() && !g_gameOver && !g_gameWon /*&& !g_gameWon*/){
+		startScreen.render(ctx);
+	}
+
+	if(g_gameOver && !g_startGame && !g_gameWon){
+		gameOverScreen.render(ctx);	
 	}
 }
 

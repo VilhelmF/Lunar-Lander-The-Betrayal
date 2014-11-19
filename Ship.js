@@ -42,7 +42,6 @@ Ship.prototype.KEY_THRUST = 'W'.charCodeAt(0);
 Ship.prototype.KEY_RETRO  = 'S'.charCodeAt(0);
 Ship.prototype.KEY_LEFT   = 'A'.charCodeAt(0);
 Ship.prototype.KEY_RIGHT  = 'D'.charCodeAt(0);
-Ship.prototype.KEY_FIRE   = 'E'.charCodeAt(0);
 
 Ship.prototype.USE   = ' '.charCodeAt(0);
 
@@ -216,11 +215,7 @@ Ship.prototype.update = function (du) {
 
     var hitEntity = this.findHitEntity();
     if (hitEntity) 
-    {
-        // console.log("bomb audio played");
-		// g_audio.bomb.Play();
-        
-		
+    {	
 		if(Object.getPrototypeOf(hitEntity) === Citizen.prototype)
         {
             this.maybePickUpCitizen(hitEntity);
@@ -239,10 +234,8 @@ Ship.prototype.update = function (du) {
         {
             particleManager.explosion(this.cx, this.cy);
 			console.log("mountinSmash audio played");
-			//g_audio.mountainSmash.Play();
             this.warp();    
         }
-        
     }
     else
     {
@@ -253,13 +246,9 @@ Ship.prototype.update = function (du) {
    /*--------------------------------------------------------------------------------------------
                                     Required shipstatus checks
     ---------------------------------------------------------------------------------------------*/                      
-    // Handle firing
-    this.maybeFireBullet();
-
     if(this.fuel.status <= 0) 
     {
         particleManager.explosion(this.cx, this.cy);
-        //this.fuel.level = 100; // FIXME: temporary, should loose life
         this.fuel.status = 1;
         
         this.warp();
@@ -286,27 +275,6 @@ Ship.prototype.update = function (du) {
 /*-----------------------------------------------------------------------------------
                         Player input functions
 ------------------------------------------------------------------------------------*/                        
-
-Ship.prototype.maybeFireBullet = function () {
-
-    if (keys[this.KEY_FIRE]) {
-    
-        var dX = +Math.sin(this.rotation);
-        var dY = -Math.cos(this.rotation);
-        var launchDist = this.getRadius() * 1.2;
-        
-        var relVel = this.launchVel;
-        var relVelX = dX * relVel;
-        var relVelY = dY * relVel;
-
-        entityManager.fireBullet(
-           this.cx + dX * launchDist, this.cy + dY * launchDist,
-           this.velX + relVelX, this.velY + relVelY,
-           this.rotation,
-           1);
-           
-    }    
-};
 
 Ship.prototype.maybePickUpCitizen = function (Citizen) {
      if (eatKey(this.USE))

@@ -18,13 +18,14 @@ function Gun(descr) {
 	// put gun particle in array for explosion
 	this.towerParticles = [];
 	
-	/*var limitOfImage = 
-	var numOfTrue = 0;
-	for(var i=0;i<Answers.length;i++){
-    if(Answers[i] === "true")
-       numOfTrue++;
-	}*/
-	
+	//var limitOfImage = 
+	/*var numOfTrue = 0;
+	for(var i=0;i<g_sprites.length;i++){
+		var tempString = 
+		if(g_sprites[].indexOf("true")){
+			numOftowerPa++;
+	}
+	*/
 	for(var i=0; i<8; ++i){
 		this.towerParticles[i] = g_sprites["tower_p_" + i];
 		this.towerParticles[i] = new Particle();
