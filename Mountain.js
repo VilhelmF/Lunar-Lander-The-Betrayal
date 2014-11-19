@@ -39,7 +39,7 @@ var requiredMountains = {
 
 	//small mountains
 	mount_1_1 : "sprites/Mountains/Mountain_13.png",
-	//mount_1_2 : "sprites/Mountains/Mountain_14.png",
+	mount_1_2 : "sprites/Mountains/Mountain_14.png",
 	mount_1_3 : "sprites/Mountains/Mountain_15.png",
 	mount_1_4 : "sprites/Mountains/Mountain_16.png",
 	
