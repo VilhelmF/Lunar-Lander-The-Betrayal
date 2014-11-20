@@ -73,9 +73,11 @@ Ship.prototype.rightRotation = 0.01;
 Ship.prototype.leftRotation = 0.01;
 
 Ship.prototype.fuel = new Fuel();
-Ship.prototype.shield = 3;
+Ship.prototype.shield = 0;
+Ship.prototype.lives = 10;
 
 Ship.prototype.cooldown = 200 / NOMINAL_UPDATE_INTERVAL;
+Ship.prototype.restarting = 3000 / NOMINAL_UPDATE_INTERVAL;
 
 //Mission variables?
 Ship.prototype.landed = false;
@@ -87,6 +89,18 @@ Ship.prototype.Citizen = 0;
 //===========================================================================
 Ship.prototype.warp = function () {
 
+//    this._isWarping = true;
+//    this._scaleDirn = -0.5;
+    this.lives -= 1;
+
+    if(this.lives < 1)
+    {
+        g_gameOver = true;
+        g_startGame = false;
+        muteAll();
+    }
+
+
     if(this.Citizen)
     {
         this.Citizen.reset();
@@ -96,8 +110,15 @@ Ship.prototype.warp = function () {
     this.keyReset();
     this.warpToPlank();
 	
+	//ÞESSI ER EITTHVAÐ AÐ KLIKKA!!
 	// shipWarping death sound played
 	g_audio.shipWarp.Play();				
+	
+	
+    
+    // Unregister me from my old posistion
+    // ...so that I can't be collided with while warping
+//    spatialManager.unregister(this);
 };
 
 Ship.prototype._updateWarp = function (du) {
@@ -107,6 +128,7 @@ Ship.prototype._updateWarp = function (du) {
     
     if (this._scale < 0.2) {
     
+        //this._moveToASafePlace();
         this.cx = this.reset_cx;    
         this.cy = this.reset_cy; 
         NOMINAL_ROTATE_RATE_L = 0.01;
@@ -171,6 +193,18 @@ Ship.prototype.update = function (du) {
     if(this.cooldown > 0) {
         this.cooldown -= du;
         return;
+    }
+
+    
+
+    if(this.restarting < Ship.prototype.restarting)
+    {
+        this.restarting -= du;
+        if(this.restarting < 0)
+        {
+            console.log("öööööööööööööööööööööö");
+            levelDesign.restartLevel();
+        } 
     }
 
     // Handle warping
@@ -320,16 +354,21 @@ Ship.prototype.computeThrustMag = function () {
     
     if (keys[this.KEY_THRUST]) {
         thrust += NOMINAL_THRUST;
-        this.fuel.status -= 0.0001;
+        this.fuel.status -= 0.005;
         particleManager.thrust(this.cx, this.cy, this.rotation, this.getRadius());
         this.landed = false;
         g_audio.shipThrust.Play();
     }
-
+    
     return thrust;
 };
 /*-----------------------------------------------------------------------------
   ----------------------------------------------------------------------------*/
+Ship.prototype.informRestart = function (du)
+{
+    this.restarting -= du; 
+}
+
 
 Ship.prototype.giveFuel = function (fuel)
 {
@@ -519,6 +558,37 @@ Ship.prototype.rotationalLanding = function (shipsRotation, groundRotation)
     if(groundRotation === 0 && Math.abs(shipsRotation) > 0.5*Math.PI) return true; 
     if(groundRotation > 0 && !(shipsRotation < (groundRotation * 1.05) && (shipsRotation > (groundRotation * 0.95)))) return true;
     if(groundRotation < 0 && !(shipsRotation > (groundRotation * 1.05) && (shipsRotation < (groundRotation * 0.95)))) return true;
+    
+    /*    if((shipsRotation < (groundRotation * 1.1)) && (shipsRotation > (groundRotation * 0.9)))
+        {
+            return false
+        }
+
+        if((shipsRotation < (groundRotation * 1.1)) && (shipsRotation > (groundRotation * 0.9)))
+        {
+            var x1 = shipsRotation < (groundRotation * 1.1);
+            var x2 = shipsRotation > (groundRotation * 0.9);
+            console.log(x1);
+            console.log(x2)
+            return false;
+        }
+        else
+        {
+             var x1 = shipsRotation < (groundRotation * 1.1);
+            var x2 = shipsRotation > (groundRotation * 0.9);
+            console.log(x1);
+            console.log(x2)
+            console.log("búmm");
+            console.log(shipsRotation);
+            console.log(groundRotation);
+            console.log(groundRotation * 1.1);
+            console.log(groundRotation * 0.9);
+            
+
+            return true;
+        }
+       
+    } */  
     return false;
 };
 
@@ -558,6 +628,7 @@ Ship.prototype.landingOnPlank = function(shipsRotation, hitEntity, du)
             if(this.velY > 0) this.velY = 0;
             if(this.velX !== 0) this.velX = 0;
             this.landed = true;
+        //  this.cy = hitEntity.cy - hitEntity.halfHeight - this.getRadius();   
             this.adjustRotation(du);
             this.fuel.status = 1;
             this.keyReset();
@@ -571,13 +642,25 @@ Ship.prototype.landingOnPlank = function(shipsRotation, hitEntity, du)
         particleManager.explosion(this.cx, this.cy);
         this.warp();
     }
+
+    /*else if((this.cy - this.getRadius()) >= (hitEntity.cy - hitEntity.halfHeight)
+        && (this.cy - this.getRadius()) <= (hitEntity.cy + hitEntity.halfHeight))
+    {
+        this.velY = -this.velY;
+    }
+    else if(hitEntity.cx - hitEntity.radius > this.cx + this.getRadius() || hitEntity.cx + hitEntity.radius < this.cx - this.getRadius())
+    {
+        this.velX = -this.velX;
+    }               
+      */          
     spatialManager.register(this);
 };
 
 /*-------------------------------------------------------------------------------------------------------
   ------------------------------------------------------------------------------------------------------*/
 
-Ship.prototype.render = function (ctx) {	
+Ship.prototype.render = function (ctx) {
+	
 	this.fuel.render(ctx, this.cx, this.cy);
     var origScale = 0;
     if(this.shield > 0)
@@ -611,5 +694,26 @@ Ship.prototype.render = function (ctx) {
     this.sprite.drawWrappedCentredAt(
     ctx, this.cx, this.cy, this.rotation
     );
+    this.sprite.scale = origScale;
+
+    if(this.restarting < Ship.prototype.restarting)
+    {
+        ctx.beginPath();
+        ctx.font="15px Georgia";
+        var restartTime = Math.floor(this.restarting / 10);
+        ctx.fillText("A citizen died!",this.cx - 30, this.cy + this.getRadius() + 10);
+        ctx.fillText("Restarting level in " + restartTime,this.cx - 30, this.cy + this.getRadius() + 25 );
+
+    }
+    var xlives = 350;
+    origScale = this.sprite.scale;
+    this.sprite.scale = 0.15;
+    for(var i = 0; i < this.lives; i++)
+    {
+        this.sprite.drawWrappedCentredAt(
+        ctx, xlives, 25 - g_offsetY, 0
+        );
+        xlives += 10;
+    }
     this.sprite.scale = origScale;
 };

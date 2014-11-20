@@ -79,11 +79,11 @@ Citizen.prototype.update = function (du) {
     //Game is lost when a citizen dies
     if(this.isDead)
     {
-		g_gameOver = true;;
-		g_startGame = false;
-		muteAll();
 		g_audio.citizenDie.soundVolume(1);
 		g_audio.citizenDie.playSound();
+
+		entityManager._ships[0].informRestart(du);
+		return entityManager.KILL_ME_NOW;
     }
 
     var hitEntity = this.findHitEntity();
@@ -183,8 +183,8 @@ Citizen.prototype.pickedUp = function ()
 	}
 };
 
-Citizen.prototype.takeBulletHit = function () {
- 	this.isDead = true;
+Citizen.prototype.takeBulletHit = function (attackType) {
+	if(attackType === "Ship") this.isDead = true;
 };
 
 

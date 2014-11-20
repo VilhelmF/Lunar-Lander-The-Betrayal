@@ -35,6 +35,11 @@ tower : function(cx, cy){
 	}
 },
 
+
+clearAll : function() {
+	this._particles = [];
+},
+
 update : function(du) {
 	for(var i = 0; i < this._particles.length; i++) {
 		if(this._particles[i].update(du) === this.KILL_ME_NOW) {
