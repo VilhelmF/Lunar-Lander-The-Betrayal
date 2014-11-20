@@ -212,7 +212,8 @@ _generatePackage: function(descr) {
 
 shakeGround: function(velX, velY) {
     var speed = (velX + velY) / 2;
-    console.log(speed);
+    if(speed < 2) speed = 2;
+    
     var dirX = util.getRandomInt(0, 1) === 0 ? -1 : 1;
     var dirY = util.getRandomInt(0, 1) === 0 ? -1 : 1;
     var offsetX = util.getRandomInt(6, 12) * dirX * speed;
