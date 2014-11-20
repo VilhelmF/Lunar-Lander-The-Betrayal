@@ -106,9 +106,9 @@ Plank.prototype.render = function (ctx) {
 
 		ctx.fillStyle = "green";
 		ctx.rect(this.cx - halfDrawWidth,
-    			this.cy,
+    			this.cy - this.halfHeight,
     			halfDrawWidth * 2,
-    		    -(this.cy - this.halfHeight));
+    		    -this.cy - 200);
 
 		ctx.fill();
    	}

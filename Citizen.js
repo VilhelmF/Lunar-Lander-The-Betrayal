@@ -79,13 +79,15 @@ Citizen.prototype.update = function (du) {
     //Game is lost when a citizen dies
     if(this.isDead)
     {
-		console.log("game over !");
+		/*console.log("game over !");
 		console.log("citizenDie audio played...");
 		g_gameOver = true;;
-		g_startGame = false;
+		g_startGame = false;*/
 		muteAll();
 		g_audio.citizenDie.soundVolume(1);
 		g_audio.citizenDie.playSound();
+
+		this.reset();
     }
 
     var hitEntity = this.findHitEntity();
