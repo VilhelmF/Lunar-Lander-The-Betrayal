@@ -112,7 +112,9 @@ var levelDesign = {
 		return this.grid;
 	},
 
-    restartLevel : function() {
+    restart : function() {
+        this.level--;
+        if(this.level < 1) this.level = 1;
         entityManager.clearLevel = true;
         particleManager.clearAll();
     },
