@@ -175,25 +175,26 @@ function muteTrigger( bool ){
 //Plays theme sound in wich game sate is on
 function playThemeSong() {
 	var vol = g_audio.themeGame.lowVolume;
-	
-	if( startScreen.isVisible() && !g_gameOver && !g_gameWon)
-	{
-		g_audio.themeStart.soundVolume(vol);
-		g_audio.themeStart.playSound();
-	}
-	else if(g_startGame && !g_gameOver && !g_gameWon)
-	{	
-		g_audio.themeGame.soundVolume(vol);
-		g_audio.themeGame.playSound();
-	}
-	else if(g_gameOver && !g_startGame && !g_gameWon)
-	{
-		g_audio.themeEnd.soundVolume(vol);
-		g_audio.themeEnd.playSound();
-	}
-	else if(g_gameWon && !g_gameOver && !g_startGame){
-		g_audio.themeWon.soundVolume(vol);
-		g_audio.themeWon.playSound();
+	if( !g_audio.themeGame.mute ){
+		if( startScreen.isVisible() && !g_gameOver && !g_gameWon)
+		{
+			g_audio.themeStart.soundVolume(vol);
+			g_audio.themeStart.playSound();
+		}
+		else if(g_startGame && !g_gameOver && !g_gameWon)
+		{	
+			g_audio.themeGame.soundVolume(vol);
+			g_audio.themeGame.playSound();
+		}
+		else if(g_gameOver && !g_startGame && !g_gameWon)
+		{
+			g_audio.themeEnd.soundVolume(vol);
+			g_audio.themeEnd.playSound();
+		}
+		else if(g_gameWon && !g_gameOver && !g_startGame){
+			g_audio.themeWon.soundVolume(vol);
+			g_audio.themeWon.playSound();
+		}
 	}
 }
 
