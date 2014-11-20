@@ -1,9 +1,7 @@
 function Package(descr) {
 	
 	this.setup(descr);
-	
-	//this.rememberResets();
-	
+		
 	this.packagePoint = g_sprites.fuelPackage;
 	
 	this.width  = this.packagePoint.width;
@@ -39,7 +37,6 @@ Package.prototype.destroy = false;
 
 
 Package.prototype .findGroundLengthBetween = function(index1, index2){
-	
 	var firstX = this.groundInfo[index1].getPos().posX
 	var secondX= this.groundInfo[index2].getPos().posX
 	
@@ -60,32 +57,29 @@ Package.prototype .createGroundarrayInfo = function(index1, index2){
 
 
 Package.prototype.update = function(du) { 
-	
-	//if( !this.boxStill ) {
-		spatialManager.unregister(this);
 
-		if(this._isDeadNow) return entityManager.KILL_ME_NOW;
-		
-		var groundHit = spatialManager.collidesWithGround(
-													this.cx, 
-													this.cy, 
-													this.radius-4  //SKÍTA FIX
-													);
-		
-		// package stop if groundHit is true
-		// otherwise keep falling down
-		if( groundHit ) {
-			// 
-			this.velY = 0;
-			this.boxStill  = true;
-		} else {
-			this.rotation += 0.09;
-			this.velY += 0.01;
-			this.cy += this.velY * du;
-		}
-		
-		spatialManager.register(this);
-	//}
+	spatialManager.unregister(this);
+
+	if(this._isDeadNow) return entityManager.KILL_ME_NOW;
+	
+	var groundHit = spatialManager.collidesWithGround(
+												this.cx, 
+												this.cy, 
+												this.radius-4  //SKÍTA FIX
+												);
+	
+	// package stop if groundHit is true
+	// otherwise keep falling down
+	if( groundHit ) {
+		this.velY = 0;
+		this.boxStill  = true;
+	} else {
+		this.rotation += 0.09;
+		this.velY += 0.01;
+		this.cy += this.velY * du;
+	}
+	
+	spatialManager.register(this);
 };
 
 Package.prototype.getPackage = function(Player)
@@ -105,7 +99,6 @@ Package.prototype.takeBulletHit = function(attackType)
 
 
 Package.prototype.findSafePlace = function(){
-	
 	var randX = util.getRandomInt(0,800);
 	return this.findPlaceOnLand(randX);
 };
@@ -120,7 +113,7 @@ Package.prototype.findPlaceOnLand = function(randomX){
 	var nearestX = Number.MAX_VALUE;
 	var index   = 0;
 	var tempDist = -1;
-	var tempX    = 0;
+	
 	
 	var leftLimit = 0;
 	var rightLimit = 0;
@@ -151,10 +144,6 @@ Package.prototype.findPlaceOnLand = function(randomX){
 		
 		// center of groundPaddle
 		return x+(this.groundLength/2);
-	}
-	else
-	{
-		console.log("fail to find a flat land !");
 	}
 };	
 

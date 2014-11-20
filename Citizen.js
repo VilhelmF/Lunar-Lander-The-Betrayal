@@ -79,8 +79,6 @@ Citizen.prototype.update = function (du) {
     //Game is lost when a citizen dies
     if(this.isDead)
     {
-		console.log("game over !");
-		console.log("citizenDie audio played...");
 		g_gameOver = true;;
 		g_startGame = false;
 		muteAll();
@@ -144,7 +142,7 @@ Citizen.prototype.update = function (du) {
 				this.direction = !this.direction;
 				this.velX *= -1;
 			}			
-			else if(slope === 0 && (lineX == latterX || lineX == firstX+2))
+			else if(slope === 0 && (lineX == latterX-3 || lineX == firstX+3))
 			{
 				this.direction = !this.direction;
 				this.velX *= -1;
@@ -186,8 +184,7 @@ Citizen.prototype.pickedUp = function ()
 };
 
 Citizen.prototype.takeBulletHit = function () {
-  this.isDead = true;
-
+ 	this.isDead = true;
 };
 
 

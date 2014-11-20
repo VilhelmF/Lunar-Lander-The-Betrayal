@@ -110,7 +110,7 @@ Ground.prototype.update = function (du) {
 
 
 Ground.prototype.takeBulletHit = function (attackType) {
-    //console.log(attackType);
+
 };
 
 Ground.prototype.reset = function () {
@@ -129,8 +129,6 @@ Ground.prototype.getSlope = function () {
 
 
 Ground.prototype.render = function (ctx) {
-    //var origScale = this.sprite.scale;
-    
     ctx.save();
     ctx.translate(this.offsetX, this.offsetY);
 
@@ -147,14 +145,9 @@ Ground.prototype.render = function (ctx) {
     ctx.stroke();
     ctx.fill();
 
-    
-   
-  
-  
-
-  ctx.translate(this.firstX, this.firstY);  
-  ctx.rotate(this.rotation);
-  ctx.translate(-this.firstX,-this.firstY);
+    ctx.translate(this.firstX, this.firstY);  
+    ctx.rotate(this.rotation);
+    ctx.translate(-this.firstX,-this.firstY);
 
     ctx.drawImage(this.sprite.image, 
                     this.spritePick, 
@@ -167,5 +160,4 @@ Ground.prototype.render = function (ctx) {
                     6);
 
     ctx.restore();
-
 };
