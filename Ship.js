@@ -83,7 +83,6 @@ Ship.prototype.Citizen = 0;
 //===========================================================================
 Ship.prototype.warp = function () {
 
-<<<<<<< HEAD
 //    this._isWarping = true;
 //    this._scaleDirn = -0.5;
     this.lives -= 1;
@@ -96,8 +95,6 @@ Ship.prototype.warp = function () {
     }
 
 
-=======
->>>>>>> 6086b34a8ec0b1a0f736ad96b079f4e28cf11663
     if(this.Citizen)
     {
         this.Citizen.reset();
@@ -107,8 +104,15 @@ Ship.prototype.warp = function () {
     this.keyReset();
     this.warpToPlank();
 	
+	//ÞESSI ER EITTHVAÐ AÐ KLIKKA!!
 	// shipWarping death sound played
 	g_audio.shipWarp.Play();				
+	
+	
+    
+    // Unregister me from my old posistion
+    // ...so that I can't be collided with while warping
+//    spatialManager.unregister(this);
 };
 
 Ship.prototype._updateWarp = function (du) {
@@ -118,6 +122,7 @@ Ship.prototype._updateWarp = function (du) {
     
     if (this._scale < 0.2) {
     
+        //this._moveToASafePlace();
         this.cx = this.reset_cx;    
         this.cy = this.reset_cy; 
         NOMINAL_ROTATE_RATE_L = 0.01;
@@ -348,7 +353,7 @@ Ship.prototype.computeThrustMag = function () {
         this.landed = false;
         g_audio.shipThrust.Play();
     }
-
+    
     return thrust;
 };
 /*-----------------------------------------------------------------------------
@@ -547,6 +552,37 @@ Ship.prototype.rotationalLanding = function (shipsRotation, groundRotation)
     if(groundRotation === 0 && Math.abs(shipsRotation) > 0.5*Math.PI) return true; 
     if(groundRotation > 0 && !(shipsRotation < (groundRotation * 1.05) && (shipsRotation > (groundRotation * 0.95)))) return true;
     if(groundRotation < 0 && !(shipsRotation > (groundRotation * 1.05) && (shipsRotation < (groundRotation * 0.95)))) return true;
+    
+    /*    if((shipsRotation < (groundRotation * 1.1)) && (shipsRotation > (groundRotation * 0.9)))
+        {
+            return false
+        }
+
+        if((shipsRotation < (groundRotation * 1.1)) && (shipsRotation > (groundRotation * 0.9)))
+        {
+            var x1 = shipsRotation < (groundRotation * 1.1);
+            var x2 = shipsRotation > (groundRotation * 0.9);
+            console.log(x1);
+            console.log(x2)
+            return false;
+        }
+        else
+        {
+             var x1 = shipsRotation < (groundRotation * 1.1);
+            var x2 = shipsRotation > (groundRotation * 0.9);
+            console.log(x1);
+            console.log(x2)
+            console.log("búmm");
+            console.log(shipsRotation);
+            console.log(groundRotation);
+            console.log(groundRotation * 1.1);
+            console.log(groundRotation * 0.9);
+            
+
+            return true;
+        }
+       
+    } */  
     return false;
 };
 
@@ -586,6 +622,7 @@ Ship.prototype.landingOnPlank = function(shipsRotation, hitEntity, du)
             if(this.velY > 0) this.velY = 0;
             if(this.velX !== 0) this.velX = 0;
             this.landed = true;
+        //  this.cy = hitEntity.cy - hitEntity.halfHeight - this.getRadius();   
             this.adjustRotation(du);
             this.fuel.status = 1;
             this.keyReset();
@@ -599,13 +636,25 @@ Ship.prototype.landingOnPlank = function(shipsRotation, hitEntity, du)
         particleManager.explosion(this.cx, this.cy);
         this.warp();
     }
+
+    /*else if((this.cy - this.getRadius()) >= (hitEntity.cy - hitEntity.halfHeight)
+        && (this.cy - this.getRadius()) <= (hitEntity.cy + hitEntity.halfHeight))
+    {
+        this.velY = -this.velY;
+    }
+    else if(hitEntity.cx - hitEntity.radius > this.cx + this.getRadius() || hitEntity.cx + hitEntity.radius < this.cx - this.getRadius())
+    {
+        this.velX = -this.velX;
+    }               
+      */          
     spatialManager.register(this);
 };
 
 /*-------------------------------------------------------------------------------------------------------
   ------------------------------------------------------------------------------------------------------*/
 
-Ship.prototype.render = function (ctx) {	
+Ship.prototype.render = function (ctx) {
+	
 	this.fuel.render(ctx, this.cx, this.cy);
     if(this.shield > 0)
     {
@@ -619,10 +668,7 @@ Ship.prototype.render = function (ctx) {
         ctx.stroke();
     }
     
-<<<<<<< HEAD
 	
-=======
->>>>>>> 6086b34a8ec0b1a0f736ad96b079f4e28cf11663
 	var origScale = this.sprite.scale;
     // pass my scale into the sprite, for drawing
     this.sprite.scale = this._scale;
@@ -630,7 +676,6 @@ Ship.prototype.render = function (ctx) {
     ctx, this.cx, this.cy, this.rotation
     );
     this.sprite.scale = origScale;
-<<<<<<< HEAD
 
     if(this.restarting < Ship.prototype.restarting)
     {
@@ -672,6 +717,4 @@ Ship.prototype.render = function (ctx) {
     //util.fillBox(ctx, this.fuel.cx, this.fuel.cy, this.fuel.level, this.fuel.height, this.fuel.color);
 
 
-=======
->>>>>>> 6086b34a8ec0b1a0f736ad96b079f4e28cf11663
 };

@@ -183,8 +183,8 @@ Citizen.prototype.pickedUp = function ()
 	}
 };
 
-Citizen.prototype.takeBulletHit = function () {
- 	this.isDead = true;
+Citizen.prototype.takeBulletHit = function (attackType) {
+	if(attackType === "Ship") this.isDead = true;
 };
 
 
