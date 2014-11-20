@@ -22,6 +22,12 @@ function Ship(descr) {
     
     // Default sprite, if not otherwise specified
     this.sprite = this.sprite || g_sprites.shipZoom;
+
+    //SHIELDS
+    this.spriteShieldGreen = g_sprites.shipShieldGreen;
+    this.spriteShieldOrange = g_sprites.shipShieldOrange;
+    this.spriteShieldRed = g_sprites.shipShieldRed;
+
     this.arrowSprite = g_sprites.arrow;
 
     // Set normal drawing scale, and warp state off
@@ -573,19 +579,33 @@ Ship.prototype.landingOnPlank = function(shipsRotation, hitEntity, du)
 
 Ship.prototype.render = function (ctx) {	
 	this.fuel.render(ctx, this.cx, this.cy);
+    var origScale = 0;
     if(this.shield > 0)
     {
-        ctx.beginPath();
-        ctx.arc(this.cx, this.cy, this.getRadius() + 3, 0, 2*Math.PI);
-        if(this.shield === 3) ctx.strokeStyle = "green";
-        else if(this.shield === 2) ctx.strokeStyle = "orange";
-        else if(this.shield === 1) ctx.strokeStyle = "red";
+        origScale = this.sprite.scale;
+        // pass my scale into the sprite, for drawing
+        this.sprite.scale = this._scale;
+        
+        if(this.shield === 3){
+        this.spriteShieldGreen.drawWrappedCentredAt(
+         ctx, this.cx, this.cy, this.rotation
+         );
+        }
+        else if(this.shield === 2){
+        this.spriteShieldOrange.drawWrappedCentredAt(
+         ctx, this.cx, this.cy, this.rotation
+         );
+        }
+        else if(this.shield === 1){
+        this.spriteShieldRed.drawWrappedCentredAt(
+         ctx, this.cx, this.cy, this.rotation
+         );
+        }
 
-        ctx.lineWidth = 3;
-        ctx.stroke();
+        this.sprite.scale = origScale;
     }
     
-	var origScale = this.sprite.scale;
+	origScale = this.sprite.scale;
     // pass my scale into the sprite, for drawing
     this.sprite.scale = this._scale;
     this.sprite.drawWrappedCentredAt(
