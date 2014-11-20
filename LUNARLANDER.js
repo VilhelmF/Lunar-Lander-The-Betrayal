@@ -98,6 +98,7 @@ function updateSimulation(du) {
     
 		entityManager.update(du);
 		particleManager.update(du);
+
 	}
 	/*else if (g_gameOver){
 		//..
@@ -185,6 +186,8 @@ function renderSimulation(ctx) {
 		if (g_renderSpatialDebug) spatialManager.render(ctx);
 		
 		if(g_doZoom) ctx.restore();
+
+		playThemeSong();
 	}
 	
 	if( startScreen.isVisible() && !g_gameOver && !g_gameWon /*&& !g_gameWon*/){
@@ -208,34 +211,30 @@ var g_images = [];
 function requestPreloads() {
 
     var requiredImages = {
-        //ship   : "https://notendur.hi.is/~pk/308G/images/ship.png",
-
         ship            : "sprites/landerShip-36.png",
         shipZoom        : "sprites/landerShip-40.png",
-        rock            : "https://notendur.hi.is/~pk/308G/images/rock.png",
-		kassi1          : "sprites/package/kassi1-37.png",
 		fuelBarOutline  : "sprites/fuelBar/fuelBar-32.png",
 		fuelBarFill     : "sprites/fuelBar/fuelBar-33.png",
 		fuelBarSlide    : "sprites/fuelBar/fuelBar-35.png",
+		fuelPackage		: "sprites/package/package-42.png",
         ground          : "sprites/ground-39.png",
 		st_screenLayer1 : "sprites/startScreen/gameStart-40.png",
 		st_screenLayer2 : "sprites/startScreen/gameStart-54.png",
 		st_screenLayer3 : "sprites/startScreen/gameStart-44.png",
 		st_screenLayer4 : "sprites/startScreen/gameStart-47.png",
 		st_screenLayer5 : "sprites/startScreen/gameStart-43.png",
+		manWalking		: "sprites/manWalking-58.png",
 		oldManWalking	: "sprites/oldManWalking-56.png",
 		oldManWalking2	: "sprites/oldManWalking-59.png",
-		fuelPackage		: "sprites/package/package-42.png",
-		randomPackage	: "sprites/package/package-41.png",
 		plank        	: "sprites/plank-61.png",
-		manWalking		: "sprites/manWalking-58.png",
-        arrow           : "sprites/arrow-57.png",
 		tower			: "sprites/tower/tower-61.png",
 		diamond			: "sprites/tower/tower-60.png",
 		muteOn			: "sprites/mute-60.png",
 		muteOff			: "sprites/mute-62.png",
 		playbutton1		: "sprites/gameover/playAgain-52.png",
 		playbutton2		: "sprites/gameover/playAgain-53.png",
+		
+		//FOR TOWER EXPLOSION
 		tower_p_0		: "sprites/tower/tower-47.png",
 		tower_p_1		: "sprites/tower/tower-48.png",
 		tower_p_2		: "sprites/tower/tower-49.png",

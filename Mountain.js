@@ -67,6 +67,7 @@ var requiredBackgrounds = {
 	level4	 : "sprites/background_color/gameStart-64.png",
 	level5	 : "sprites/background_color/gameStart2-55.png",
 	level6	 : "sprites/background_color/gameStart-65.png",
+	
 	gameOver : "sprites/backgroundcolor/gameOver-50.png",
 	gameWon	 : "sprites/backgroundcolor/gameStart-42.png"
 };

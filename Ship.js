@@ -328,6 +328,7 @@ Ship.prototype.computeThrustMag = function () {
         this.fuel.status -= 0.0001;
         particleManager.thrust(this.cx, this.cy, this.rotation, this.getRadius());
         this.landed = false;
+        g_audio.shipThrust.Play();
     }
     
     return thrust;

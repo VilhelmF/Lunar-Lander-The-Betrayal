@@ -4,7 +4,6 @@ function Background() {
 	
 	this.setup();
 	
-	
 	this.background = [];
 	this.mountain   = [];
 	
@@ -16,37 +15,13 @@ function Background() {
 		this.mountain[r] = g_mountain[r];
 	}
 	
-	this.muteOnSprite  = g_sprites.muteOn;
-	this.muteOffSprite = g_sprites.muteOff;
-	
 	this.mute = false;
 	
 	this.beginX = g_canvas.width-30; 
 	this.beginY = 10;
 };
 
-
-/*Background.prototype.muteConstruction = function() {
-
-	this.mute = g_audio.themeSong.mute;
-
-	this.muteOnSprite  = g_sprites.muteOn;
-	this.muteOffSprite = g_sprites.muteOff;
-	
-	this.beginX = g_canvas.width-30;
-	
-	this.beginY = 10;
-};*/
-
-
-
-
-//Background.prototype.mute;
-
-
-
 Background.prototype = new Entity();
-
 
 Background.prototype.message = function(ctx, message, posX, posY, fontInfo){
 	ctx.save();
@@ -56,30 +31,26 @@ Background.prototype.message = function(ctx, message, posX, posY, fontInfo){
 	ctx.restore();
 };
 
-
-
 Background.prototype.render = function(ctx) {
+		
+	posX = 0;
+	posY = g_canvas.height-this.background["level1"].height;
 	
-	// TÍMABUNDIN BREYTA LEVEL1, GLOBAL BREYTA SEM
-	// SEM SEGIR TIL HVAÐA LEVEL ER Í GANGI.
+	//Draw different backgrounds level
+	var numLevel = levelDesign.level;
+	this.background["level" + numLevel].drawAt(ctx, posX,posY);
 	
-		posX = 0;
-		posY = g_canvas.height-this.background["level1"].height;
-		
-		var numLevel = levelDesign.level;
-		this.background["level" + numLevel].drawAt(ctx, posX,posY);
-		
-		for(var r in this.mountain){
-			this.mountain[r].drawAt(ctx);
-		}
-		
-		if(levelDesign.level == 1)
-		{
-			this.message(ctx, "SAVE THE CITIZEN", 300, 100, "bold 40px Courier New");
-			this.message(ctx, "press 'SPACE' to pick them up", 360, 125, "20px Courier New");
-			this.message(ctx, "WATCH OUT FOR THE ENEMY!", 360, 150, "20px Courier New");
-		}
-	//}
+	//Draw all mountains
+	for(var r in this.mountain){
+		this.mountain[r].drawAt(ctx);
+	}
+	
+	if(levelDesign.level == 1)
+	{
+		this.message(ctx, "SAVE THE CITIZEN", 300, 100, "bold 40px Courier New");
+		this.message(ctx, "press 'SPACE' to pick them up", 360, 125, "20px Courier New");
+		this.message(ctx, "WATCH OUT FOR THE ENEMY!", 360, 150, "20px Courier New");
+	}
 	
 	if(!this.mute){
 		g_sprites.muteOn.drawAt(ctx, this.beginX, this.beginY - g_offsetY);
@@ -89,19 +60,13 @@ Background.prototype.render = function(ctx) {
 		g_sprites.muteOff.drawAt(ctx, this.beginX, this.beginY - g_offsetY);	
 	}
 	
-	
 	this.renderSptailDebug();
 };
 
 
 Background.prototype.update = function(){
-	/*if(g_audio.themeSong.currentTime === 0){
-		g_audio.themeSong.playSound();
-	}*/
-	this.mute = g_audio.themeSong.mute;
+	this.mute = g_audio.themeGame.mute;
 };
-
-
 
 
 Background.prototype.renderSptailDebug = function(){

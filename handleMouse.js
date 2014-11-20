@@ -19,7 +19,6 @@ function handleMouse(evt) {
     var button = evt.buttons === undefined ? evt.which : evt.buttons;
     if (!button) return;
       
-	
 	checkPlayButton();
 	checkPlayAgain();
 
@@ -31,12 +30,10 @@ function handleMouse(evt) {
 function checkPlayButton() {
 	var value = util.onPlayButton(); 
 	if( value.onButton && !g_startGame && !g_gameOver){
+		startScreen.visible = false;
 		g_startGame = true;
 		resetAllAudio();
-		g_audio.theme4.soundVolume(0.1);
-		g_audio.theme4.playSound(0.1);
-		/*g_audio.theme4.(g_audio.themeGamePlay.lowVolume);
-		g_audio.theme4.playOnVolume(g_audio.themeGamePlay.lowVolume);*/
+		playThemeSong();
 	}
 }
 
@@ -51,10 +48,10 @@ function checkMuteButton() {
 		
 	if(util.isMouseInRec(x, y, width, height))
 	{
-		var mute = g_audio.themeSong.mute;
+		var mute = g_audio.themeGame.mute;
 		mute = !mute;
 		muteTrigger(mute);
-		g_audio.themeSong.mute = mute;
+		g_audio.themeGame.mute = mute;
 	}
 }
 
@@ -69,7 +66,8 @@ function checkPlayAgain() {
 			g_startGame  = true;
 			levelDesign.restartGame();
 			resetAllAudio();
-			g_audio.theme4.playOnVolume(g_audio.themeGamePlay.lowVolume);
+			setAllVolume();
+			playThemeSong();
 		}
 }
 

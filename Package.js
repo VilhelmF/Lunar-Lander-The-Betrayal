@@ -90,9 +90,10 @@ Package.prototype.update = function(du) {
 
 Package.prototype.getPackage = function(Player)
 {
+	g_audio.getBox.playSound();
+
 	this.kill();
 	
-
 	Player.giveFuel(0.25);
 	Player.addShield(3);
 }

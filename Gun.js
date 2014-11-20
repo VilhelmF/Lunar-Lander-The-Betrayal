@@ -21,10 +21,6 @@ function Gun(descr) {
 	//var limitOfImage = 
 	var numOfTowerPart= 0;
 	
-	
-	
-	
-	
 	this.tower = g_sprites.tower;
     this.diamond = g_sprites.diamond;
 	
@@ -55,12 +51,9 @@ Gun.prototype.halfHeight = 30;
 Gun.prototype.vel = 5;
 Gun.prototype.type = "Destroy";
 
-<<<<<<< HEAD
-Gun.prototype.life = 0;
-=======
+
 Gun.prototype.life = 1;
 Gun.prototype.dead = false;
->>>>>>> 20a1a98863c150673793559d8fa0f1262458bcae
 
 Gun.prototype.cooldownRange = {
 	"min" : 4000,
