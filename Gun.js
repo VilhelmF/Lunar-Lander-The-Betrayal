@@ -18,9 +18,6 @@ function Gun(descr) {
 	// put gun particle in array for explosion
 	this.towerParticles = [];
 	
-	//var limitOfImage = 
-	var numOfTowerPart= 0;
-	
 	this.tower = g_sprites.tower;
     this.diamond = g_sprites.diamond;
 	

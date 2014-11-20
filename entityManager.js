@@ -43,32 +43,8 @@ _plank      : [],
 
 
 _generateLevel : function() {
- //   this._bullets = [];
- //   this._ground = [];
- //   this._guns = [];
- //   this._citizens = [];
     levelDesign.setUp();
     this.clearLevel = false;
-    
-//    var levelArray = levelDesign.getLevel();
-/*
-    var i = 0;
-    var firstX = 0;
-    var firstY = levelArray[i];
-    var latterX = Ground.prototype.plankWidth;
-    var latterY = levelArray[i+1];
-    while(i < levelArray.length-1)
-    {
-        this.generateGround(firstX, latterX, firstY, latterY);
-        i++;
-        firstX = latterX;
-        firstY = latterY;
-        latterX += Ground.prototype.plankWidth;
-        latterY = levelArray[i]; 
-    }
-
-    this.generateGround(firstX, latterX, firstY, latterY); */
-
 },
 
 
@@ -116,7 +92,6 @@ clearLevel  : false,
 // i.e. thing which need `this` to be defined.
 //
 deferredSetup : function () {
-
 
     this._categories = [this._background,
                         this._bullets, 
@@ -180,7 +155,6 @@ generateCitizen : function(cx, cy) {
 		
 		//FIND TYPE OF CITIZEN
 		type : function() {
-			
 			if( this.typeId == 0 ){
 				return g_sprites.manWalking;
 			}
@@ -306,10 +280,6 @@ update: function(du) {
                 if (status === this.KILL_ME_NOW) {
                     // remove the dead guy, and shuffle the others down to
                     // prevent a confusing gap from appearing in the array
-                    
-    				//Þ:  delete aCategory[i];
-    				//Þ: SÉRÐU NÚNA HELVÍTIÐ ÞITT?!
-                    console.log(aCategory[i]);
     				aCategory.splice(i,1);
                 }
                 else {
@@ -333,8 +303,6 @@ render: function(ctx) {
         for (var i = 0; i < aCategory.length; ++i) {
 
             aCategory[i].render(ctx);
-            //debug.text(".", debugX + i * 10, debugY);
-
         }
         debugY += 10;
     }

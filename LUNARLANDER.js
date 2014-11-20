@@ -1,29 +1,6 @@
-// =========
-// ASTEROIDS
-// =========
-/*
-
-A sort-of-playable version of the classic arcade game.
-
-
-HOMEWORK INSTRUCTIONS:
-
-You have some "TODO"s to fill in again, particularly in:
-
-spatialManager.js
-
-But also, to a lesser extent, in:
-
-Rock.js
-Bullet.js
-Ship.js
-
-
-...Basically, you need to implement the core of the spatialManager,
-and modify the Rock/Bullet/Ship to register (and unregister)
-with it correctly, so that they can participate in collisioans.
-
-*/
+// ==============
+// LUNAR RESCUER
+// ==============
 
 "use strict";
 
@@ -37,26 +14,11 @@ var g_ctx = g_canvas.getContext("2d");
 12345678901234567890123456789012345678901234567890123456789012345678901234567890
 */
 
-
-// ====================
-// CREATE INITIAL SHIPS
-// ====================
-/*
-function createInitialShips() {
-
-    entityManager.generateShip({
-        cx : 200,
-        cy : 200
-    });
-    
-}*/
-
 // =============
 // GATHER INPUTS
 // =============
 
 function gatherInputs() {
-    // Nothing to do here!
     // The event handlers do everything we need for now.
 }
 
@@ -78,18 +40,7 @@ function gatherInputs() {
 function updateSimulation(du) {
     
 	if( startScreen.isVisible() && !g_gameOver && !g_gameWon){
-		
 		startScreen.update(du);
-		
-		/*setTimeout( function() { 
-					g_audio.themeGamePlay.soundVolume( 0.5 );
-					g_audio.themeGamePlay.playSound(); }, 60100);*/
-					
-		//increase volume
-		/*if(g_audio.startScreen2.volume < 1){
-			g_audio.startScreen2.soundVolume(
-				g_audio.startScreen2.volume+0.1
-			);*/
 	}				
 	
 	if(g_startGame && !g_gameOver && !g_gameWon)
@@ -100,22 +51,18 @@ function updateSimulation(du) {
 		particleManager.update(du);
 
 	}
-	/*else if (g_gameOver){
-		//..
-	}*/
 	else if( g_gameWon && !g_gameOver && !g_startGame ){
-		
+		//any victory screen updates ?
 	}
 }
 
 // GAME-SPECIFIC DIAGNOSTICS
-
 var g_allowMixedActions = true;
 var g_useGravity = false;
 var g_useAveVel = true;
 var g_renderSpatialDebug = false;
 var g_doZoom = false;
-var g_startGame = false; //FIXME: change this to false
+var g_startGame = false;
 var g_gameOver = false;
 var g_gameWon = false;
 
@@ -154,18 +101,18 @@ function processDiagnostics() {
 
 
 // GAME-SPECIFIC RENDERING
-
 function renderSimulation(ctx) {
 	ctx.save();
 	ctx.translate(0, g_offsetY);
     
-	//STARTSCREEN setup
-	if(g_gameWon /*&& !g_gameOver && !g_startGame*/){
+    //VICTORY SCREEN
+	if(g_gameWon){
 		winScreen.render(ctx);
 		return;
 	}
 	
-	if(g_startGame /*&& !g_gameOver && !g_gameWon*/)
+	//MAIN GAME
+	if(g_startGame)
 	{	
 		
 		if(g_doZoom) {
@@ -190,10 +137,12 @@ function renderSimulation(ctx) {
 		playThemeSong();
 	}
 	
+	//STARTSCREEN setup
 	if( startScreen.isVisible() && !g_gameOver && !g_gameWon /*&& !g_gameWon*/){
 		startScreen.render(ctx);
 	}
 
+	//GAME OVER SCREEN
 	if(g_gameOver && !g_startGame && !g_gameWon){
 		gameOverScreen.render(ctx);	
 	}

@@ -98,59 +98,30 @@ collidesWithGround : function(posX, posY, radius)
            (firstX <= posX + groundLength && latterX > posX + groundLength) ||
            (firstX <= posX - groundLength && latterX > posX - groundLength ))
         { 
-                for(var i = 0; i < groundLength; i++)
+            for(var i = 0; i < groundLength; i++)
+            {
+                var lineX = firstX + i;
+                var lineY = firstY + i * slope;
+
+                var x = util.square(lineX - posX);
+                var y = util.square(lineY - posY);
+
+                var d = x + y;
+                if(d < util.square(radius))
                 {
-                    var lineX = firstX + i;
-                    var lineY = firstY + i * slope;
-
-                    var x = util.square(lineX - posX);
-                    var y = util.square(lineY - posY);
-
-                    var d = x + y;
-                    if(d < util.square(radius))
-                    {
-           
-                        return  {
-                                    slope   :   slope,
-									firstX  : 	firstX,
-                                    latterX :   latterX,
-                                    latterY :   latterY,
-                                    lineX   :   lineX,
-                                    lineY   :   lineY,
-                                    rotation:   groundBit.rotation,
-									index   :   i,
-                                };
-                    }
-                }
-                /*
-                   var dX = latterX - firstX;
-                var dY = latterY - firstY;
-                var fX = firstX - posX;
-                var fY = firstY - posY; */
-
-              /*  //  y = mx + c  and (x - p)^2 + (y - q)^2 = r^2
-                //  so (x - p)^2 + (mx + c - q)^2 = r^2
-                //  giving (m^2 + 1)x^2 + 2(mc - mq - p)x + (q^2-r^2+p^2-2cq + c^2) = 0
-                // p = posX   q = posY  
-                var A = Math.pow(slope, 2) + 1;
-                var B = 2*((slope * lineC) - (slope * posY) - posX);
-                var C = (Math.pow(posY,2) - Math.pow(radius, 2) + Math.pow(posX, 2) - 2*lineC*posY + Math.pow(lineC,2));
-               // var x1 = (-B + Math.sqrt(Math.pow(B,2)-4*A*C) / (2 * A));
-               // var x2 = (-B - Math.sqrt(Math.pow(B,2)-4*A*C) / (2 * A));
-
-               if(Math.pow(B, 2) - 4*A*C > 0)
-               {
+                    
                     return  {
-                                    slope   :   slope,
-                                    latterX :   latterX,
-                                    latterY :   latterY,
-                                   // lineX   :   lineX,
-                                   // lineY   :   lineY,
-                                    rotation:   groundBit.rotation,
-                                  //  index   :   i,
-                                };
-               }
-        */        
+                                slope   :   slope,
+								firstX  : 	firstX,
+                                latterX :   latterX,
+                                latterY :   latterY,
+                                lineX   :   lineX,
+                                lineY   :   lineY,
+                                rotation:   groundBit.rotation,
+								index   :   i,
+                            };
+                }
+            }
         }      
     }
 },

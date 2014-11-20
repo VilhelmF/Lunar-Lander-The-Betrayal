@@ -18,7 +18,6 @@ Mountain.prototype.cy;
 
 
 Mountain.prototype.setPosition = function() {
-
 	this.cx = 0;
 	this.cy = g_canvas.height - this.height;
 };
@@ -123,6 +122,8 @@ function findRandomMountains() {
 		Math.floor(util.randRange(1,4))	 //4
 	];
 	
+	//after function done, this show
+	//have one true in each set (four false)
 	var show = [
 		
 		false, //s1_1 

@@ -9,13 +9,9 @@
 //		- Put anywhere in the code:
 //
 //			g_audio.nameOfSound.Play();
-
-//var g_mute = false;
-
 // ==============
 // AUDIO OBJECT
 // ==============
-
 
 // Construct a "sound" from the given `audio`,
 //
@@ -50,11 +46,6 @@ Sound.prototype.cloneNodes = 0;
 
 Sound.prototype.volume = 1;
 Sound.prototype.storeVolume = 1;
-
-
-//Þarf þetta ekki
-//Sound.prototype.beginTime = 0;
-//Sound.prototype.endTime   = 0;
 
 //volume scale from 0.0 to 1.0
 Sound.prototype.soundVolume = function( volume ){
@@ -109,7 +100,6 @@ Sound.prototype.playSound = function (){
 
 
 Sound.prototype.reset = function (){
-
 	var time = this.sound.currentTime;
 	this.sound.currentTime = 0;
 	this.sound.pause();
@@ -118,24 +108,19 @@ Sound.prototype.reset = function (){
 
 
 Sound.prototype.playOnVolume = function ( volume ){
-
 	var time = this.reset();
 	this.soundVolume( volume );
 	this.sound.currentTime = time;
 	this.playSound();
-
 };
 
 
 Sound.prototype.playAt = function ( time, volume ){
-	
 	var temp = this.reset();
 	this.sound.soundVolume( volume );
 	this.sound.currentTime = time;
 	this.sound.playSound();
-	
 };
-
 
 
 //==========================
@@ -165,13 +150,17 @@ function setAllVolume() {
 	}
 }
 
+//all audio file will reset (start on time zero)
 function resetAllAudio(){
 	for(var sound in g_audio) {
 		g_audio[sound].reset();
 	}
 }
 
-
+//Trigger when ever bool=true every
+//sound be mute, otherwise all sound
+//volume get their old volume and
+//duration time
 function muteTrigger( bool ){	
 	if(bool){
 		muteAll();
@@ -183,27 +172,29 @@ function muteTrigger( bool ){
 }
 
 
+//Plays theme sound in wich game sate is on
 function playThemeSong() {
 	var vol = g_audio.themeGame.lowVolume;
-	
-	if( startScreen.isVisible() && !g_gameOver && !g_gameWon)
-	{
-		g_audio.themeStart.soundVolume(vol);
-		g_audio.themeStart.playSound();
-	}
-	else if(g_startGame && !g_gameOver && !g_gameWon)
-	{	
-		g_audio.themeGame.soundVolume(vol);
-		g_audio.themeGame.playSound();
-	}
-	else if(g_gameOver && !g_startGame && !g_gameWon)
-	{
-		g_audio.themeEnd.soundVolume(vol);
-		g_audio.themeEnd.playSound();
-	}
-	else if(g_gameWon && !g_gameOver && !g_startGame){
-		g_audio.themeWon.soundVolume(vol);
-		g_audio.themeWon.playSound();
+	if( !g_audio.themeGame.mute ){
+		if( startScreen.isVisible() && !g_gameOver && !g_gameWon)
+		{
+			g_audio.themeStart.soundVolume(vol);
+			g_audio.themeStart.playSound();
+		}
+		else if(g_startGame && !g_gameOver && !g_gameWon)
+		{	
+			g_audio.themeGame.soundVolume(vol);
+			g_audio.themeGame.playSound();
+		}
+		else if(g_gameOver && !g_startGame && !g_gameWon)
+		{
+			g_audio.themeEnd.soundVolume(vol);
+			g_audio.themeEnd.playSound();
+		}
+		else if(g_gameWon && !g_gameOver && !g_startGame){
+			g_audio.themeWon.soundVolume(vol);
+			g_audio.themeWon.playSound();
+		}
 	}
 }
 

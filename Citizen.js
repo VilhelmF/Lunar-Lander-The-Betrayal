@@ -142,7 +142,7 @@ Citizen.prototype.update = function (du) {
 				this.direction = !this.direction;
 				this.velX *= -1;
 			}			
-			else if(slope === 0 && (lineX == latterX || lineX == firstX+2))
+			else if(slope === 0 && (lineX == latterX-3 || lineX == firstX+3))
 			{
 				this.direction = !this.direction;
 				this.velX *= -1;
@@ -184,8 +184,7 @@ Citizen.prototype.pickedUp = function ()
 };
 
 Citizen.prototype.takeBulletHit = function () {
-  this.isDead = true;
-
+ 	this.isDead = true;
 };
 
 

@@ -81,6 +81,7 @@ inRec: function(posX, posY, rec){
 	}
 },
 
+//hardcoded specified for startGame play Button
 onPlayButton: function	(pos, width, height){
 	//position of sprite:
 	//			st_screenLayer3
