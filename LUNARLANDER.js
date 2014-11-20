@@ -161,6 +161,9 @@ function requestPreloads() {
 
     var requiredImages = {
         shipZoom        : "sprites/landerShip-40.png",
+        shipShieldRed	: "sprites/shield-43.png",
+        shipShieldGreen	: "sprites/shield-80.png",
+        shipShieldOrange: "sprites/shield-81.png",
 		fuelBarOutline  : "sprites/fuelBar/fuelBar-32.png",
 		fuelBarFill     : "sprites/fuelBar/fuelBar-33.png",
 		fuelBarSlide    : "sprites/fuelBar/fuelBar-35.png",

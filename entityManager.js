@@ -131,10 +131,12 @@ generateShip : function() {
     this._ships.push(ship);
 },
 
-generateGun : function(cx, cy) {
+generateGun : function(cx, cy, type) {
     this._guns.push(new Gun({
         cx   : cx,
         cy   : cy,
+
+        type : type,
     }));
 },
 
