@@ -23,7 +23,7 @@ function Ship(descr) {
     // Default sprite, if not otherwise specified
     this.sprite = this.sprite || g_sprites.shipZoom;
 
-    //SHIELDS
+    //sprite SHIELDS
     this.spriteShieldGreen = g_sprites.shipShieldGreen;
     this.spriteShieldOrange = g_sprites.shipShieldOrange;
     this.spriteShieldRed = g_sprites.shipShieldRed;
@@ -570,6 +570,7 @@ Ship.prototype.landingOnPlank = function(shipsRotation, hitEntity, du)
             this.fuel.status = 1;
             //this.keyReset();
         
+
         }
         else this.velX = -this.velX;
 
@@ -579,7 +580,7 @@ Ship.prototype.landingOnPlank = function(shipsRotation, hitEntity, du)
         particleManager.explosion(this.cx, this.cy);
         this.warp();
     }
-          
+
     spatialManager.register(this);
 };
 
