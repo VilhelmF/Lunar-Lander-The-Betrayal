@@ -15,9 +15,6 @@ function Gun(descr) {
 
     this.rememberResets();
 	
-	// put gun particle in array for explosion
-	this.towerParticles = [];
-	
 	this.tower = g_sprites.tower;
     this.diamond = g_sprites.diamond;
 	
@@ -49,7 +46,7 @@ Gun.prototype.vel = 5;
 Gun.prototype.type = "Destroy";
 
 
-Gun.prototype.life = 1;
+Gun.prototype.life = 2;
 Gun.prototype.dead = false;
 
 Gun.prototype.cooldownRange = {

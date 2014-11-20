@@ -76,7 +76,7 @@ Citizen.prototype.update = function (du) {
 
     spatialManager.unregister(this);
 
-    //Game is lost when a citizen dies
+    //Game restarts if a citizen dies
     if(this.isDead)
     {
 		g_audio.citizenDie.soundVolume(1);
@@ -91,7 +91,7 @@ Citizen.prototype.update = function (du) {
     {
 		if(Object.getPrototypeOf(hitEntity) === Plank.prototype  && this.isPickedUp === false)
 		{
-			if(this.velY > 3)
+			if(this.velY > 2)
 	    	{
 	    		this.isDead = true;
 	    	}

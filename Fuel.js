@@ -13,8 +13,6 @@ Fuel.prototype.status = 1; //100%
 Fuel.prototype.height = 20;
 Fuel.prototype.color = "red";
 
-
- 
 Fuel.prototype.render = function(ctx, cx, cy) 
 {
 	if(!g_doZoom)

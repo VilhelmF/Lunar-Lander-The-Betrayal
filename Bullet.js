@@ -18,9 +18,6 @@ function Bullet(descr) {
     // Common inherited setup logic from Entity
     this.setup(descr);
 
-    // Make a noise when I am created (i.e. fired)   
-	//g_audio.bulletFire.Play();
-	console.log("laser audio played");
 	g_audio.laserCannon.Play();
 	
 /*
@@ -28,7 +25,6 @@ function Bullet(descr) {
     this._bulletProperty = true;
     console.dir(this);
 */
-
 }
 
 Bullet.prototype = new Entity();
@@ -52,7 +48,6 @@ Bullet.prototype.update = function (du) {
     this.lifeSpan -= du;
     if (this.lifeSpan < 0)
     {
-
         return entityManager.KILL_ME_NOW;  
     } 
 
@@ -63,10 +58,9 @@ Bullet.prototype.update = function (du) {
     this.rotation = util.wrapRange(this.rotation,
                                    0, consts.FULL_CIRCLE);
 
-    
-    //
-    // Handle collisions
-    //
+    /*---------------------------------------------------------
+                        Collision Handling
+    -----------------------------------------------------------*/
     var hitEntity = this.findHitEntity();
     if (hitEntity) {
 
@@ -88,9 +82,6 @@ Bullet.prototype.getRadius = function () {
 
 Bullet.prototype.takeBulletHit = function (attackType) {
     this.kill();
-    
-    // Make a noise when I am zapped by another bullet
-    //g_audio.zappedSound.Play();
 };
 
 Bullet.prototype.render = function (ctx) {

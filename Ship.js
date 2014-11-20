@@ -53,11 +53,7 @@ Ship.prototype.KEY_THRUST = 'W'.charCodeAt(0);
 Ship.prototype.KEY_RETRO  = 'S'.charCodeAt(0);
 Ship.prototype.KEY_LEFT   = 'A'.charCodeAt(0);
 Ship.prototype.KEY_RIGHT  = 'D'.charCodeAt(0);
-
-
-
 Ship.prototype.USE      = ' '.charCodeAt(0);
-Ship.prototype.KEY_FIRE = 'E'.charCodeAt(0);
 
 // Initial, inheritable, default values
 Ship.prototype.rotation = 0;
@@ -128,7 +124,6 @@ Ship.prototype._updateWarp = function (du) {
     
     if (this._scale < 0.2) {
     
-        //this._moveToASafePlace();
         this.cx = this.reset_cx;    
         this.cy = this.reset_cy; 
         NOMINAL_ROTATE_RATE_L = 0.01;
@@ -195,14 +190,11 @@ Ship.prototype.update = function (du) {
         return;
     }
 
-    
-
     if(this.restarting < Ship.prototype.restarting)
     {
         this.restarting -= du;
         if(this.restarting < 0)
         {
-            console.log("öööööööööööööööööööööö");
             levelDesign.restart();
         } 
     }
@@ -258,7 +250,6 @@ Ship.prototype.update = function (du) {
 
     if(typeof ground !== 'undefined')
     {
-        console.log(ground);
         this.landingOnGround(this.rotation % (2*Math.PI), ground, du);
     }
 
@@ -306,7 +297,6 @@ Ship.prototype.update = function (du) {
    /*--------------------------------------------------------------------------------------------
                                     Required shipstatus checks
     ---------------------------------------------------------------------------------------------*/                      
-    this.maybeFireBullet();
 
     if(this.fuel.status <= 0) 
     {
@@ -409,28 +399,6 @@ Ship.prototype.takeBulletHit = function (attackType) {
         particleManager.explosion(this.cx, this.cy);
         this.warp();
     }   
-};
-
-Ship.prototype.maybeFireBullet = function () {
-
-    if (eatKey(this.KEY_FIRE)) {
-    
-        var dX = +Math.sin(this.rotation);
-        var dY = -Math.cos(this.rotation);
-        var launchDist = this.getRadius() * 1.2;
-        
-        var relVel = this.launchVel;
-        var relVelX = dX * relVel;
-        var relVelY = 1;
-
-        entityManager.fireBullet(
-           this.cx + dX * launchDist, this.cy + launchDist,
-           this.velX + relVelX, relVelY,
-           this.rotation,
-           1,
-           "Ship");
-           
-    }    
 };
 
 Ship.prototype.reset = function () {
@@ -559,36 +527,6 @@ Ship.prototype.rotationalLanding = function (shipsRotation, groundRotation)
     if(groundRotation > 0 && !(shipsRotation < (groundRotation * 1.05) && (shipsRotation > (groundRotation * 0.95)))) return true;
     if(groundRotation < 0 && !(shipsRotation > (groundRotation * 1.05) && (shipsRotation < (groundRotation * 0.95)))) return true;
     
-    /*    if((shipsRotation < (groundRotation * 1.1)) && (shipsRotation > (groundRotation * 0.9)))
-        {
-            return false
-        }
-
-        if((shipsRotation < (groundRotation * 1.1)) && (shipsRotation > (groundRotation * 0.9)))
-        {
-            var x1 = shipsRotation < (groundRotation * 1.1);
-            var x2 = shipsRotation > (groundRotation * 0.9);
-            console.log(x1);
-            console.log(x2)
-            return false;
-        }
-        else
-        {
-             var x1 = shipsRotation < (groundRotation * 1.1);
-            var x2 = shipsRotation > (groundRotation * 0.9);
-            console.log(x1);
-            console.log(x2)
-            console.log("búmm");
-            console.log(shipsRotation);
-            console.log(groundRotation);
-            console.log(groundRotation * 1.1);
-            console.log(groundRotation * 0.9);
-            
-
-            return true;
-        }
-       
-    } */  
     return false;
 };
 
@@ -627,11 +565,10 @@ Ship.prototype.landingOnPlank = function(shipsRotation, hitEntity, du)
         {
             if(this.velY > 0) this.velY = 0;
             if(this.velX !== 0) this.velX = 0;
-            this.landed = true;
-        //  this.cy = hitEntity.cy - hitEntity.halfHeight - this.getRadius();   
+            this.landed = true;   
             this.adjustRotation(du);
             this.fuel.status = 1;
-            this.keyReset();
+            //this.keyReset();
         
         }
         else this.velX = -this.velX;
@@ -642,17 +579,7 @@ Ship.prototype.landingOnPlank = function(shipsRotation, hitEntity, du)
         particleManager.explosion(this.cx, this.cy);
         this.warp();
     }
-
-    /*else if((this.cy - this.getRadius()) >= (hitEntity.cy - hitEntity.halfHeight)
-        && (this.cy - this.getRadius()) <= (hitEntity.cy + hitEntity.halfHeight))
-    {
-        this.velY = -this.velY;
-    }
-    else if(hitEntity.cx - hitEntity.radius > this.cx + this.getRadius() || hitEntity.cx + hitEntity.radius < this.cx - this.getRadius())
-    {
-        this.velX = -this.velX;
-    }               
-      */          
+          
     spatialManager.register(this);
 };
 

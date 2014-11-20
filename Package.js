@@ -8,7 +8,6 @@ function Package(descr) {
 	this.height = this.packagePoint.height;
 	this.radius = util.findRadius(this.width, this.height);
 	
-	
 	this.createGroundarrayInfo();
 	
 	this.findGroundLengthBetween(0,1);
@@ -20,10 +19,7 @@ function Package(descr) {
 
 Package.prototype = new Entity();
 
-
 Package.prototype.rotation = 0;
-
-
 Package.prototype.velX = 0;
 Package.prototype.velY = 0;
 
@@ -33,9 +29,6 @@ Package.prototype.height;
 Package.prototype.boxStill = false;
 Package.prototype.destroy = false;
 
-
-
-
 Package.prototype .findGroundLengthBetween = function(index1, index2){
 	var firstX = this.groundInfo[index1].getPos().posX
 	var secondX= this.groundInfo[index2].getPos().posX
@@ -43,17 +36,11 @@ Package.prototype .findGroundLengthBetween = function(index1, index2){
 	this.groundLength = Math.abs(secondX - firstX);
 };
 
-
-
-
 // package gets all ground information into array.
 Package.prototype .createGroundarrayInfo = function(index1, index2){
 	this.groundInfo = [];
 	this.groundInfo = util.getGroundSlopes();
 };
-
-
-
 
 
 Package.prototype.update = function(du) { 
@@ -146,7 +133,6 @@ Package.prototype.findPlaceOnLand = function(randomX){
 		return x+(this.groundLength/2);
 	}
 };	
-
 
 Package.prototype.render = function(ctx) { 
 	this.packagePoint.drawCentredAt(ctx, 

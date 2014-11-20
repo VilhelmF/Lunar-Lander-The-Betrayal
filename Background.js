@@ -1,5 +1,3 @@
-
-
 function Background() {
 	
 	this.setup();

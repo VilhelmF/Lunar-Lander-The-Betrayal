@@ -100,7 +100,7 @@ Particle.prototype.update = function(du) {
 
 	this.lifeSpan -= du;
 
-	if(this.lifeSpan <= 0) {
+	if(this.lifeSpan <= 0  || this.cx > g_canvas.width || this.cx < 0) {
 		return particleManager.KILL_ME_NOW;
 	}
 
@@ -135,7 +135,6 @@ Particle.prototype.render = function(ctx) {
    
     if(this.sprite)
     {
-    	console.log("cant render sprite");
     	this.sprite.drawWrappedCentredAt(
     	ctx, this.cx, this.cy, this.rotation
     	);

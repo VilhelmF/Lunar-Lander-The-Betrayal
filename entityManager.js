@@ -15,11 +15,6 @@ with suitable 'data' and 'methods'.
 
 "use strict";
 
-
-// Tell jslint not to complain about my use of underscore prefixes (nomen),
-// my flattening of some indentation (white), or my use of incr/decr ops 
-// (plusplus).
-//
 /*jslint nomen: true, white: true, plusplus: true*/
 
 
@@ -212,7 +207,6 @@ _generatePackage: function(descr) {
 
 shakeGround: function(velX, velY) {
     var speed = (velX + velY) / 2;
-    console.log(speed);
     var dirX = util.getRandomInt(0, 1) === 0 ? -1 : 1;
     var dirY = util.getRandomInt(0, 1) === 0 ? -1 : 1;
     var offsetX = util.getRandomInt(6, 12) * dirX * speed;
@@ -243,7 +237,6 @@ resetShips: function() {
 
 rescueCitizen: function() 
 {
-    console.log("rescued");
      for(var z = 0; z < entityManager._plank.length; z++)
     {
         entityManager._plank[z].rescueNumber += 1; 
@@ -257,11 +250,9 @@ update: function(du) {
         for (var c = 0; c < this._categories.length; ++c) {
 
             var aCategory = this._categories[c];
-            console.log(this._categories[c]);
             
             while (aCategory.length) 
             {
-                console.log("delete");
                 aCategory.pop();
             }
         }

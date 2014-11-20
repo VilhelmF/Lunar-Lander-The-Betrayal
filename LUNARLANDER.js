@@ -138,7 +138,7 @@ function renderSimulation(ctx) {
 	}
 	
 	//STARTSCREEN setup
-	if( startScreen.isVisible() && !g_gameOver && !g_gameWon /*&& !g_gameWon*/){
+	if( startScreen.isVisible() && !g_gameOver && !g_gameWon){
 		startScreen.render(ctx);
 	}
 

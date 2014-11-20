@@ -45,6 +45,7 @@ Ground.prototype.rememberResets = function () {
     this.reset_latterY = this.latterY;
 };
 
+//Each ground is given a ground sprite randomly
 Ground.prototype.prepareSprite = function ()
 {
     var width = 72;

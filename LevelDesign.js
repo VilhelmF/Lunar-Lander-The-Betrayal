@@ -2,7 +2,7 @@
 var levelDesign = {
 	columns : 17,
 	rows    : 12,
-	level   : 4,
+	level   : 1,
 	grid    : [],
  
     items : {
