@@ -197,7 +197,7 @@ Ship.prototype.update = function (du) {
         if(this.restarting < 0)
         {
             console.log("öööööööööööööööööööööö");
-            levelDesign.restartLevel();
+            levelDesign.restart();
         } 
     }
 
@@ -683,7 +683,7 @@ Ship.prototype.render = function (ctx) {
         ctx.font="15px Georgia";
         var restartTime = Math.floor(this.restarting / 10);
         ctx.fillText("A citizen died!",this.cx - 30, this.cy + this.getRadius() + 10);
-        ctx.fillText("Restarting level in " + restartTime,this.cx - 30, this.cy + this.getRadius() + 25 );
+        ctx.fillText("Warping back in time in " + restartTime,this.cx - 70, this.cy + this.getRadius() + 25 );
 
     }
     var xlives = 350;
