@@ -1,6 +1,8 @@
 var gameOverScreen = {
 	render : function(ctx) {
 		g_background["gameOver"].drawAt(ctx, 0,0);
+
+		g_offsetY = 0;
 		
 		//PLAY BUTTON
 		var mouse = util.onPlayButton(	{x: 295, y: 520 }, 
