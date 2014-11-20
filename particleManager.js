@@ -4,13 +4,6 @@ var particleManager = {
 _particles : [],
 KILL_ME_NOW : -1,
 
-/*
-towerExplosion : function(cx, cy, i, ) {
-	for(var i = 0; i < 8; i++) {
-		initToxerExplosion(cx, cy, i);
-		this._particles.push(particle);
-	}
-},*/
 
 explosion : function(cx, cy, tower) {
 	for(var i = 0; i < 30; i++) {
@@ -40,6 +33,11 @@ tower : function(cx, cy){
 
 		corner += 22;
 	}
+},
+
+
+clearAll : function() {
+	this._particles = [];
 },
 
 update : function(du) {

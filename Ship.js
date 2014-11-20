@@ -67,9 +67,11 @@ Ship.prototype.rightRotation = 0.01;
 Ship.prototype.leftRotation = 0.01;
 
 Ship.prototype.fuel = new Fuel();
-Ship.prototype.shield = 3;
+Ship.prototype.shield = 0;
+Ship.prototype.lives = 10;
 
 Ship.prototype.cooldown = 200 / NOMINAL_UPDATE_INTERVAL;
+Ship.prototype.restarting = 3000 / NOMINAL_UPDATE_INTERVAL;
 
 //Mission variables?
 Ship.prototype.landed = false;
@@ -83,6 +85,15 @@ Ship.prototype.warp = function () {
 
 //    this._isWarping = true;
 //    this._scaleDirn = -0.5;
+    this.lives -= 1;
+
+    if(this.lives < 1)
+    {
+        g_gameOver = true;
+        g_startGame = false;
+        muteAll();
+    }
+
 
     if(this.Citizen)
     {
@@ -176,6 +187,18 @@ Ship.prototype.update = function (du) {
     if(this.cooldown > 0) {
         this.cooldown -= du;
         return;
+    }
+
+    
+
+    if(this.restarting < Ship.prototype.restarting)
+    {
+        this.restarting -= du;
+        if(this.restarting < 0)
+        {
+            console.log("öööööööööööööööööööööö");
+            levelDesign.restartLevel();
+        } 
     }
 
     // Handle warping
@@ -325,7 +348,7 @@ Ship.prototype.computeThrustMag = function () {
     
     if (keys[this.KEY_THRUST]) {
         thrust += NOMINAL_THRUST;
-        this.fuel.status -= 0.0001;
+        this.fuel.status -= 0.005;
         particleManager.thrust(this.cx, this.cy, this.rotation, this.getRadius());
         this.landed = false;
         g_audio.shipThrust.Play();
@@ -335,6 +358,11 @@ Ship.prototype.computeThrustMag = function () {
 };
 /*-----------------------------------------------------------------------------
   ----------------------------------------------------------------------------*/
+Ship.prototype.informRestart = function (du)
+{
+    this.restarting -= du; 
+}
+
 
 Ship.prototype.giveFuel = function (fuel)
 {
@@ -640,8 +668,6 @@ Ship.prototype.render = function (ctx) {
         ctx.stroke();
     }
     
-
-    
 	
 	var origScale = this.sprite.scale;
     // pass my scale into the sprite, for drawing
@@ -649,6 +675,29 @@ Ship.prototype.render = function (ctx) {
     this.sprite.drawWrappedCentredAt(
     ctx, this.cx, this.cy, this.rotation
     );
+    this.sprite.scale = origScale;
+
+    if(this.restarting < Ship.prototype.restarting)
+    {
+        ctx.beginPath();
+        ctx.font="15px Georgia";
+        var restartTime = Math.floor(this.restarting / 10);
+        ctx.fillText("A citizen died!",this.cx - 30, this.cy + this.getRadius() + 10);
+        ctx.fillText("Restarting level in " + restartTime,this.cx - 30, this.cy + this.getRadius() + 25 );
+
+    }
+    var xlives = 350;
+    origScale = this.sprite.scale;
+    this.sprite.scale = 0.15;
+    for(var i = 0; i < this.lives; i++)
+    {
+        this.sprite.drawWrappedCentredAt(
+        ctx, xlives, 25 - g_offsetY, 0
+        );
+        xlives += 10;
+
+        
+    }
     this.sprite.scale = origScale;
 	
 /*    if(!this.isOnScreenHeight()) {

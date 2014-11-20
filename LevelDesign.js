@@ -111,9 +111,15 @@ var levelDesign = {
 		return this.grid;
 	},
 
+    restartLevel : function() {
+        entityManager.clearLevel = true;
+        particleManager.clearAll();
+    },
+
     restartGame : function() {
         this.level = 1;
         entityManager.clearLevel = true;
+        particleManager.clearAll();
     },
 
 	setUp : function() {
