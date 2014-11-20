@@ -106,7 +106,7 @@ init: function() {
     this.generateShip();
 },
 
-fireBullet: function(cx, cy, velX, velY, rotation, team, type) {
+fireBullet: function(cx, cy, velX, velY, rotation, team, type, owner) {
     this._bullets.push(new Bullet({
         cx   : cx,
         cy   : cy,
@@ -115,7 +115,8 @@ fireBullet: function(cx, cy, velX, velY, rotation, team, type) {
         type : type,
 
         rotation : rotation,
-        team    : team,
+        team     : team,
+        owner    :  owner
     }));
 
 },

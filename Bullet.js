@@ -37,6 +37,7 @@ Bullet.prototype.velX = 1;
 Bullet.prototype.velY = 1;
 Bullet.prototype.team = 1;
 Bullet.prototype.type = "Confusion";
+Bullet.prototype.owner = "";
 
 // Convert times from milliseconds to "nominal" time units.
 Bullet.prototype.lifeSpan = 3000 / NOMINAL_UPDATE_INTERVAL;
@@ -64,7 +65,7 @@ Bullet.prototype.update = function (du) {
     var hitEntity = this.findHitEntity();
     if (hitEntity) {
 
-        var canTakeHit = hitEntity.takeBulletHit(this.type);
+        var canTakeHit = hitEntity.takeBulletHit(this.type, this.owner);
         if (canTakeHit) canTakeHit.call(hitEntity); 
         return entityManager.KILL_ME_NOW;
     }

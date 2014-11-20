@@ -46,7 +46,7 @@ Gun.prototype.vel = 5;
 Gun.prototype.type = "Destroy";
 
 
-Gun.prototype.life = 2;
+Gun.prototype.life = 1;
 Gun.prototype.dead = false;
 
 Gun.prototype.cooldownRange = {
@@ -81,7 +81,9 @@ Gun.prototype.update = function (du) {
 };
 
 
-Gun.prototype.takeBulletHit = function () {
+Gun.prototype.takeBulletHit = function (type, owner) {
+
+	if(this === owner) return;
 
     this.life -= 1;
 	if(this.life === 0)
@@ -143,7 +145,8 @@ Gun.prototype.fireBullet = function ()
 						     velY,
 						   	 0,
 						     2,
-						     this.type);
+						     this.type,
+						     this);
            
     
 }
@@ -162,19 +165,38 @@ Gun.prototype.render = function (ctx) {
 		this.tower.drawAt(	ctx, 
 						this.cx-this.towerWidth/2, 
 						this.cy-this.towerHeight+1);
-		ctx.drawImage(
-		this.diamond.image,
-		0,
-		0,
-		this.diamond.width-(this.cooldown/3),
-		this.diamond.height,
+		if(this.type === "Destroy")
+		{
+			ctx.drawImage(
+			this.diamond.image,
+			0,
+			0,
+			this.diamond.width-(this.cooldown/3),
+			this.diamond.height,
+			
+			this.cx-this.diamond.width/2,
+			this.cy-this.diamond.height,
+			
+			this.diamond.width-(this.cooldown/3),
+			this.diamond.height
+			);
+		}
+		else
+		{
+			ctx.drawImage(
+			g_sprites.redDiamond.image,
+			0,
+			0,
+			this.diamond.width-(this.cooldown/3),
+			this.diamond.height,
+			
+			this.cx-this.diamond.width/2,
+			this.cy-this.diamond.height,
+			
+			this.diamond.width-(this.cooldown/3),
+			this.diamond.height);
+		}
 		
-		this.cx-this.diamond.width/2,
-		this.cy-this.diamond.height,
-		
-		this.diamond.width-(this.cooldown/3),
-		this.diamond.height
-		);
 	
 	}
 
