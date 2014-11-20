@@ -2,14 +2,15 @@
 var levelDesign = {
 	columns : 17,
 	rows    : 12,
-	level   : 1,
+	level   : 3,
 	grid    : [],
  
     items : {
         ground  : 1,
-        gun     : 2,
+        destroyTower : 2,
         citizen : 3,
         plank   : 4,
+        confuseTower : 5,
     },
 
 	levels : {
@@ -40,10 +41,10 @@ var levelDesign = {
             0, 0, 0, 1, 0, 0, 1, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
 
-    "3" : [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    "3" : [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
-            0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
-            0, 0, 0, 0, 1, 1, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+            0, 0, 0, 0, 1, 1, 0, 0, 0, 4, 0, 0, 0, 1, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 0, 0, 0, 0, 0, 0,
@@ -54,17 +55,17 @@ var levelDesign = {
             0, 0, 0, 0, 0, 0, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
 
     "4" : [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2,
-            1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5,
+            1, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 0, 0,
+            0, 0, 1, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 1, 3, 1, 2, 1, 3, 3, 1, 2, 0, 0, 0, 0 ],
+            0, 0, 0, 0, 1, 3, 1, 5, 1, 3, 3, 1, 5, 0, 0, 0, 0 ],
 			
 	"5" : [ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -111,7 +112,9 @@ var levelDesign = {
 		return this.grid;
 	},
 
-    restartLevel : function() {
+    restart : function() {
+        this.level--;
+        if(this.level < 1) this.level = 1;
         entityManager.clearLevel = true;
         particleManager.clearAll();
     },
@@ -132,10 +135,16 @@ var levelDesign = {
     				this.grid[j] = i * (g_canvas.height / this.rows);
 
 
-                    if(this.items.gun === this.levels[this.level][index]) {
+                    if(this.items.destroyTower === this.levels[this.level][index]) {
                         var cx = j * Ground.prototype.width - Ground.prototype.width/2;
                         var cy = i * (g_canvas.height / this.rows);
-                        entityManager.generateGun(cx, cy);
+                        entityManager.generateGun(cx, cy, "Destroy");
+                    }
+
+                    if(this.items.confuseTower === this.levels[this.level][index]) {
+                        var cx = j * Ground.prototype.width - Ground.prototype.width/2;
+                        var cy = i * (g_canvas.height / this.rows);
+                        entityManager.generateGun(cx, cy, "Confuse");
                     }
 
                     if(this.items.citizen === this.levels[this.level][index]) {
