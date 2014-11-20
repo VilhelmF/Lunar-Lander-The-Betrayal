@@ -211,7 +211,6 @@ var g_images = [];
 function requestPreloads() {
 
     var requiredImages = {
-        ship            : "sprites/landerShip-36.png",
         shipZoom        : "sprites/landerShip-40.png",
 		fuelBarOutline  : "sprites/fuelBar/fuelBar-32.png",
 		fuelBarFill     : "sprites/fuelBar/fuelBar-33.png",
@@ -268,7 +267,7 @@ function preloadDone() {
 	}
 
 	
-    g_sprites.bullet = new Sprite(g_images.ship);
+    g_sprites.bullet = new Sprite(g_images.shipZoom);
     g_sprites.bullet.scale = 0.25;
 
 

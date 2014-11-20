@@ -145,7 +145,7 @@ Entity.prototype.applyAccel = function (accelX, accelY, du) {
     // bounce
     if (g_useGravity) {
 
-        var minY = g_sprites.ship.height / 2;
+        var minY = g_sprites.shipZoom.height / 2;
         var maxY = g_canvas.height - minY;
 
         // Ignore the bounce if the ship is already in
