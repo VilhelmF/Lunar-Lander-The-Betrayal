@@ -23,7 +23,7 @@ function Ship(descr) {
     // Default sprite, if not otherwise specified
     this.sprite = this.sprite || g_sprites.shipZoom;
 
-    //SHIELDS
+    //sprite SHIELDS
     this.spriteShieldGreen = g_sprites.shipShieldGreen;
     this.spriteShieldOrange = g_sprites.shipShieldOrange;
     this.spriteShieldRed = g_sprites.shipShieldRed;
@@ -627,12 +627,10 @@ Ship.prototype.landingOnPlank = function(shipsRotation, hitEntity, du)
         {
             if(this.velY > 0) this.velY = 0;
             if(this.velX !== 0) this.velX = 0;
-            this.landed = true;
-        //  this.cy = hitEntity.cy - hitEntity.halfHeight - this.getRadius();   
+            this.landed = true;  
             this.adjustRotation(du);
             this.fuel.status = 1;
             this.keyReset();
-        
         }
         else this.velX = -this.velX;
 
@@ -643,16 +641,6 @@ Ship.prototype.landingOnPlank = function(shipsRotation, hitEntity, du)
         this.warp();
     }
 
-    /*else if((this.cy - this.getRadius()) >= (hitEntity.cy - hitEntity.halfHeight)
-        && (this.cy - this.getRadius()) <= (hitEntity.cy + hitEntity.halfHeight))
-    {
-        this.velY = -this.velY;
-    }
-    else if(hitEntity.cx - hitEntity.radius > this.cx + this.getRadius() || hitEntity.cx + hitEntity.radius < this.cx - this.getRadius())
-    {
-        this.velX = -this.velX;
-    }               
-      */          
     spatialManager.register(this);
 };
 

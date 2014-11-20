@@ -180,20 +180,28 @@ function requestPreloads() {
 		plank        	: "sprites/plank-61.png",
 		tower			: "sprites/tower/tower-61.png",
 		diamond			: "sprites/tower/tower-60.png",
+		redDiamond		: "sprites/tower/tower-83.png",
 		muteOn			: "sprites/mute-60.png",
 		muteOff			: "sprites/mute-62.png",
 		playbutton1		: "sprites/gameover/playAgain-52.png",
 		playbutton2		: "sprites/gameover/playAgain-53.png",
 		
-		//FOR TOWER EXPLOSION
+		//rightside of tower 
 		tower_p_0		: "sprites/tower/tower-47.png",
 		tower_p_1		: "sprites/tower/tower-48.png",
 		tower_p_2		: "sprites/tower/tower-49.png",
+		
+		//blue diamond parts
 		tower_p_3		: "sprites/tower/tower-50.png",
 		tower_p_4		: "sprites/tower/tower-51.png",
+		//Leftside of tower
 		tower_p_5		: "sprites/tower/tower-52.png",
 		tower_p_6		: "sprites/tower/tower-53.png",
 		tower_p_7		: "sprites/tower/tower-54.png",
+		//
+		//red diamond parts
+		tower_p_8		: "sprites/tower/tower-84.png",
+		tower_p_9		: "sprites/tower/tower-85.png",
 	};
 
 
